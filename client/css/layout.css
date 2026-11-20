@@ -1,0 +1,857 @@
+/* =====================================================================
+   FIABESCO PALACE — layout.css  ·  KHUNG DÙNG CHUNG: HEADER + FOOTER
+   ---------------------------------------------------------------------
+   • Kế thừa toàn bộ biến :root từ global.css (nạp global.css TRƯỚC).
+   • Mobile-first: style mặc định = đúng thông số Mobile trên Figma
+     (khung 402px). Mở rộng tại 768px (Tablet) và 1024px (Desktop).
+   • Giá trị chỉ có ở Header/Footer trên Figma (bo 44px của footer,
+     bóng footer, kích thước icon…) được gom vào biến "--lay-*" ngay dưới
+     đây, không rải số cứng trong code.
+   • Chỗ Figma không có (Tablet/Desktop) được ghi "[MỞ RỘNG]".
+
+   MARKUP CHUẨN (cả nhóm dùng chung)
+   <body>
+     <header class="site-header">
+       <div class="container site-header__inner">
+         <a class="brand" href="/">
+           <img class="brand__logo" src="assets/img/logo-fiabesco.png" alt="">
+           <span class="brand__text">
+             <span class="brand__name">FiabescoPalace</span>
+             <span class="brand__tagline">Italy on Every Plate</span>
+           </span>
+         </a>
+
+         <nav class="site-nav" id="site-nav" aria-label="Điều hướng chính">
+           <div class="site-nav__head">
+             <span class="site-nav__label">MENU</span>
+             <button class="site-nav__close" aria-label="Đóng menu">✕</button>
+           </div>
+           <ul class="site-nav__list">
+             <li><a class="site-nav__link" href="/" aria-current="page">Trang chủ</a></li>
+             … Thực đơn · Tra cứu đơn · Đặt bàn · Về chúng tôi · Tuyển dụng · Blog · Liên hệ · Ưu đãi
+           </ul>
+           <div class="site-nav__contact"> logo + HOTLINE + .social-dots </div>
+         </nav>
+
+         <div class="header-actions">
+           <a class="header-action" href="/gio-hang" aria-label="Giỏ hàng">
+             <img src="assets/icons/cart-trolley.svg" alt=""><span class="cart-badge">0</span>
+           </a>
+           <a class="header-action" href="/dang-nhap" aria-label="Tài khoản"><img src="assets/icons/user.svg" alt=""></a>
+           <button class="header-action nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Mở menu">
+             <img src="assets/icons/menu.svg" alt="">
+           </button>
+         </div>
+       </div>
+     </header>
+     <div class="nav-overlay" data-close-nav></div>
+
+     <main class="site-main"> … </main>
+
+     <footer class="site-footer">
+       <div class="site-footer__inner">
+         <div class="footer-top">            ← logo tròn + tên + Công ty TNHH Fiabesco · Est. 2014
+           <a class="footer-brand"><span class="footer-brand__badge"><img …></span>
+             <span><span class="footer-brand__name">FiabescoPalace</span><br>
+                   <span class="footer-brand__tagline">Italy on Every Plate</span></span></a>
+           <div class="footer-company"><p class="footer-company__name">…</p><p class="footer-company__est">…</p></div>
+         </div>
+         <section class="footer-col"><h2 class="footer-col__title">Giới thiệu</h2><ul class="footer-links">…</ul></section>
+         <section class="footer-col"><h2 class="footer-col__title">Chính sách</h2><ul class="footer-links">…</ul></section>
+         <section class="footer-col"><h2 class="footer-col__title">Liên hệ với chúng tôi</h2>
+           <ul class="footer-social">…4 icon…</ul><a class="footer-hotline" href="tel:0123456789">Hotline: 0123456789</a></section>
+         <div class="footer-bottom"><p class="footer-copy">© 2026 Fiabesco Palace</p></div>
+       </div>
+     </footer>
+     <nav class="bottom-nav"> … </nav>   ← chỉ trang QR tại bàn, kèm <body class="has-bottom-nav">
+   </body>
+
+   JS tối thiểu: bấm .nav-toggle → thêm class "is-open" cho .site-nav và
+   .nav-overlay, thêm "no-scroll" cho <body>; bấm .site-nav__close hoặc
+   .nav-overlay → gỡ các class đó.
+   ===================================================================== */
+
+:root {
+  /* Thông số riêng của Header / Footer đo từ Figma */
+  --lay-header-h: 62px; /* chiều cao thanh tiêu đề */
+  --lay-logo-w: 58px; /* logo đầu bếp 58 × 49 */
+  --lay-logo-h: 49px;
+  --lay-icon: 30px; /* icon giỏ hàng / tài khoản */
+  --lay-icon-menu-w: 30px; /* icon 3 gạch 30 × 22 */
+  --lay-icon-menu-h: 22px;
+  --lay-drawer-w: 300px; /* bề rộng menu trượt */
+  --lay-drawer-radius: 24px;
+  --lay-drawer-shadow: -6px 0 24px 0 rgba(0, 0, 0, 0.25);
+  --lay-footer-radius: 44px;
+  --lay-footer-shadow: 0 -4px 14px 0 rgba(0, 40, 66, 0.08);
+  --lay-bottom-nav-h: 72px; /* thanh điều hướng đáy (QR tại bàn) */
+
+  /* Thứ tự lớp */
+  --z-bottom-nav: 90;
+  --z-header: 100;
+  --z-overlay: 190;
+  --z-drawer: 200;
+}
+
+/* =====================================================================
+   1. KHUNG TRANG TỔNG THỂ (STICKY FOOTER)
+   <main> co giãn chiếm phần còn lại → footer luôn nằm sát đáy màn hình
+   ngay cả khi nội dung ngắn.
+   ===================================================================== */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.site-main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.site-footer {
+  flex-shrink: 0;
+}
+
+/* =====================================================================
+   2. HEADER (MOBILE)
+   Figma: nền trắng · cao 62px · vạch đáy 1px #ebe7de · không đổ bóng.
+   Logo sát trái, cụm icon (giỏ hàng – tài khoản – menu) sát phải.
+   ===================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  height: calc(var(--lay-header-h) - 1px); /* trừ 1px vạch đáy */
+  /* Figma: logo cách mép trái ~0, icon cuối cách mép phải 11px */
+  padding-left: 0;
+  padding-right: 11px;
+}
+
+/* ---- 2.1 Logo ---- */
+.brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.brand__logo {
+  width: var(--lay-logo-w);
+  height: var(--lay-logo-h);
+  object-fit: cover;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  margin-left: -6px; /* chữ bắt đầu ở x = 52px như Figma */
+}
+
+.brand__name {
+  font-family: var(--font-logo);
+  font-size: 30px;
+  line-height: 1;
+  color: var(--color-primary);
+  text-shadow: var(--shadow-text);
+  white-space: nowrap;
+}
+
+.brand__tagline {
+  font-family: var(--font-price); /* Lusitana */
+  font-size: 10px;
+  line-height: 16px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ---- 2.2 Cụm icon hành động ---- */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.header-action {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--lay-icon);
+  height: var(--lay-icon);
+  transition: opacity var(--transition);
+}
+
+.header-action:hover {
+  opacity: 0.7;
+}
+
+.header-action img {
+  width: var(--lay-icon);
+  height: var(--lay-icon);
+  object-fit: contain;
+}
+
+.nav-toggle img {
+  width: var(--lay-icon-menu-w);
+  height: var(--lay-icon-menu-h);
+}
+
+/* Chấm số lượng trên icon giỏ hàng – Figma: chấm đỏ 9px, số 6px trắng.
+   (Nếu cần dễ đọc hơn, nhóm có thể tăng lên 14px / 9px.) */
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 9px;
+  height: 9px;
+  padding-inline: 1.5px;
+  border-radius: 999px;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 6px;
+  line-height: 9px;
+  text-align: center;
+}
+
+/* Avatar thành viên – thay icon tài khoản khi đã đăng nhập */
+.avatar {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-white);
+  color: var(--color-bg-body);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+}
+
+.avatar::after {
+  /* chấm "đang online" */
+  content: "";
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--color-white);
+  border-radius: 50%;
+  background-color: var(--color-success);
+}
+
+/* ---- 2.3 Dải trạng thái ngay dưới header (Khách / Thành viên) ----
+   Figma: cao 52px · padding 0 16px 0 20px */
+.status-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-5);
+}
+
+.status-strip__title {
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  line-height: normal;
+}
+
+.status-strip__sub {
+  font-size: 11px;
+  line-height: normal;
+}
+
+.status-strip__btn {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+}
+
+.status-strip--guest {
+  background-color: var(--color-bg-body);
+}
+.status-strip--guest .status-strip__title {
+  color: var(--color-text-main);
+}
+.status-strip--guest .status-strip__sub {
+  color: var(--color-text-muted);
+}
+.status-strip--guest .status-strip__btn {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.status-strip--member {
+  background-color: var(--color-primary);
+}
+.status-strip--member .status-strip__title {
+  color: var(--color-white);
+  font-size: 13px;
+}
+.status-strip--member .status-strip__sub {
+  color: var(--color-gold);
+}
+.status-strip--member .status-strip__btn {
+  background-color: var(--color-bg-body);
+  color: var(--color-primary);
+  font-size: 11px;
+}
+
+/* =====================================================================
+   3. MENU ĐIỀU HƯỚNG MOBILE (DRAWER TRƯỢT TỪ PHẢI)
+   Figma: rộng 300px · nền #fffaf2 · bo trái 24px · bóng -6px 0 24px
+   Mặc định ẩn ngoài màn hình; thêm class .is-open để trượt vào.
+   ===================================================================== */
+.site-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  width: min(var(--lay-drawer-w), 85vw);
+  background-color: var(--color-bg-surface);
+  border-radius: var(--lay-drawer-radius) 0 0 var(--lay-drawer-radius);
+  box-shadow: var(--lay-drawer-shadow);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition:
+    transform 300ms ease-out,
+    visibility 0s linear 300ms;
+}
+
+.site-nav.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform 300ms ease-out,
+    visibility 0s;
+}
+
+/* Lớp phủ mờ phía sau – bấm để đóng */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background-color: var(--color-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 300ms ease-out,
+    visibility 0s linear 300ms;
+}
+
+.nav-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 300ms ease-out,
+    visibility 0s;
+}
+
+/* ---- 3.1 Thanh trên: chữ MENU + nút đóng ---- */
+.site-nav__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 56px var(--space-5) var(--space-3) var(--space-6);
+}
+
+.site-nav__label {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--color-text-muted);
+}
+
+.site-nav__close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: var(--fw-medium);
+}
+
+/* ---- 3.2 Danh sách liên kết ---- */
+.site-nav__list {
+  padding: var(--space-1) var(--space-6) 0;
+}
+
+.site-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 17px;
+  border-bottom: 1px solid var(--color-divider);
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: normal;
+  color: var(--color-text-main);
+}
+
+.site-nav__link::after {
+  /* mũi tên › bên phải */
+  content: "›";
+  font-family: var(--font-main);
+  font-size: 20px;
+  color: var(--color-text-muted);
+}
+
+.site-nav__link:hover,
+.site-nav__link[aria-current="page"] {
+  color: var(--color-secondary);
+}
+
+/* ---- 3.3 Khối liên hệ cuối menu ---- */
+.site-nav__contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: auto; /* đẩy xuống đáy menu */
+  padding: var(--space-5) var(--space-6) var(--space-10);
+  background-color: var(--color-white);
+}
+
+.site-nav__contact .brand__logo {
+  width: 46px;
+  height: 39px;
+}
+.site-nav__contact .brand__text {
+  margin-left: 6px;
+}
+.site-nav__contact .brand__name {
+  font-size: 23.4px;
+}
+.site-nav__contact .brand__tagline {
+  font-size: 9px;
+  line-height: normal;
+}
+
+.site-nav__hotline-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--color-text-muted);
+}
+
+.site-nav__hotline {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--color-text-main);
+}
+
+.social-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.social-dots a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 16px;
+  font-weight: var(--fw-medium);
+}
+
+/* =====================================================================
+   4. BOTTOM NAVIGATION
+   Figma: CHỈ có ở luồng "QR tại bàn" (Thực đơn · Đơn gọi · Gọi nhân viên).
+   Nền trắng · cao 72px · vạch trên 1px #ebe7de · mục đang chọn có nền
+   kem bo 12px (114 × 56) và chữ đỏ.
+   Dùng: thêm <nav class="bottom-nav"> và class "has-bottom-nav" cho <body>.
+   ===================================================================== */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-bottom-nav);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  height: calc(var(--lay-bottom-nav-h) + env(safe-area-inset-bottom, 0px));
+  padding: 0 var(--space-4) env(safe-area-inset-bottom, 0px);
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.bottom-nav__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-display);
+  font-size: 10px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--color-text-main);
+}
+
+.bottom-nav__item img {
+  width: 26px;
+  height: 26px;
+}
+
+.bottom-nav__item.is-active,
+.bottom-nav__item[aria-current="page"] {
+  background-color: var(--color-bg-body);
+  color: var(--color-secondary);
+}
+
+.bottom-nav__badge {
+  /* số món đã gọi trên icon */
+  position: absolute;
+  top: 2px;
+  left: calc(50% + 6px);
+  min-width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-size: 6px;
+  line-height: 9px;
+  text-align: center;
+}
+
+/* Chừa chỗ để thanh đáy không che nội dung / footer */
+body.has-bottom-nav {
+  padding-bottom: calc(
+    var(--lay-bottom-nav-h) + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+/* =====================================================================
+   5. FOOTER (MOBILE)
+   Figma: nền navy · bo 2 góc trên 44px · bóng 0 -4px 14px
+   · padding 34px 28px 37px · xếp dọc 1 cột.
+   Khoảng cách: logo → tên công ty 22px · nhóm → vạch kẻ 31px
+   · vạch → tiêu đề nhóm 24px · tiêu đề → link 17px · giữa các link 20px.
+   ===================================================================== */
+.site-footer {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--lay-footer-radius) var(--lay-footer-radius) 0 0;
+  box-shadow: var(--lay-footer-shadow);
+  overflow: hidden;
+}
+
+.site-footer__inner {
+  padding: 34px 28px 37px;
+}
+
+/* ---- 5.1 Thương hiệu ---- */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: -4px; /* vòng logo ở x = 24px */
+}
+
+.footer-brand__badge {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background-color: var(--color-bg-body);
+}
+
+.footer-brand__badge img {
+  width: 66px;
+  height: 55px;
+  object-fit: cover;
+}
+
+.footer-brand__name {
+  font-family: var(--font-logo);
+  font-size: 38px;
+  line-height: 1.2;
+  color: var(--color-white);
+}
+
+.footer-brand__tagline {
+  font-family: var(--font-price);
+  font-size: 14px;
+  color: var(--color-white);
+}
+
+.footer-company {
+  margin-top: 22px;
+}
+
+.footer-company__name {
+  font-size: 20px;
+  line-height: normal;
+}
+
+.footer-company__est {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: normal;
+}
+
+/* ---- 5.2 Nhóm liên kết ---- */
+.footer-col {
+  margin-top: 31px;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-line-on-dark);
+}
+
+.footer-col__title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: 17px;
+}
+
+.footer-links a {
+  font-size: 17px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.footer-links a:hover {
+  opacity: 0.7;
+}
+
+/* ---- 5.3 Mạng xã hội · hotline · bản quyền ---- */
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.footer-social a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+}
+
+.footer-social img {
+  width: 42px;
+  height: 42px;
+}
+
+.footer-hotline {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: 18px;
+  line-height: normal;
+  color: var(--color-white);
+}
+
+.footer-copy {
+  margin-top: 29px;
+  font-size: 13px;
+  line-height: normal;
+  opacity: 0.6;
+}
+
+/* =====================================================================
+   6. RESPONSIVE (TABLET & DESKTOP)  — [MỞ RỘNG], Figma chỉ có Mobile
+   ===================================================================== */
+
+/* ---- Tablet ≥ 768px ----
+   • Ẩn nút hamburger, menu thành thanh ngang (hàng thứ 2 của header,
+     cuộn ngang nếu thiếu chỗ).
+   • Footer: thương hiệu 1 hàng trên, 3 nhóm liên kết chia 3 cột. */
+@media (min-width: 768px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: calc(var(--lay-header-h) - 1px);
+    padding-inline: var(--container-padding);
+    row-gap: 0;
+  }
+
+  .nav-toggle,
+  .nav-overlay,
+  .site-nav__head,
+  .site-nav__contact {
+    display: none;
+  }
+
+  /* Drawer → thanh ngang */
+  .site-nav,
+  .site-nav.is-open {
+    position: static;
+    order: 3;
+    flex: 1 0 100%;
+    display: block;
+    width: auto;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow-x: auto;
+    transform: none;
+    visibility: visible;
+    transition: none;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav__list {
+    display: flex;
+    gap: var(--space-6);
+    padding: 0;
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .site-nav__link {
+    padding-block: var(--space-3);
+    border-bottom: 2px solid transparent;
+    font-size: var(--fs-body);
+    white-space: nowrap;
+  }
+
+  .site-nav__link::after {
+    content: none;
+  }
+
+  .site-nav__link[aria-current="page"] {
+    border-bottom-color: var(--color-secondary);
+  }
+
+  .header-actions {
+    gap: var(--space-3);
+  }
+
+  /* Footer lưới */
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: var(--space-8);
+    padding: var(--space-10) var(--container-padding);
+  }
+
+  .footer-top,
+  .footer-bottom {
+    grid-column: 1 / -1;
+  }
+
+  .footer-col {
+    margin-top: var(--space-8);
+  }
+
+  .footer-col__title {
+    font-size: var(--fs-h3);
+  }
+  .footer-links a {
+    font-size: 15px;
+  }
+}
+
+/* ---- Desktop ≥ 1024px ----
+   • Menu nằm cùng hàng với logo và icon, căn giữa.
+   • Footer 4 cột: thương hiệu | Giới thiệu | Chính sách | Liên hệ. */
+@media (min-width: 1024px) {
+  .site-header__inner {
+    flex-wrap: nowrap;
+    height: calc(
+      var(--lay-header-h) + var(--space-4)
+    ); /* 78px, thoáng hơn khi dùng chuột */
+  }
+
+  @media (min-width: 1024px) {
+    .site-nav,
+    .site-nav.is-open {
+      order: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .site-nav__list {
+      justify-content: center;
+      gap: var(--space-4); /* giảm từ 24px xuống 16px để vừa 9 mục */
+      border-top: 0;
+    }
+
+    .site-nav__link {
+      padding-block: var(--space-2);
+      font-size: 14px; /* gọn hơn trên thanh ngang Desktop */
+    }
+  }
+
+  .site-footer__inner {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    column-gap: var(--space-10);
+    max-width: var(--container-width-desktop);
+    margin-inline: auto;
+  }
+
+  .footer-top {
+    grid-column: 1;
+  }
+
+  .footer-col {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .footer-bottom {
+    grid-column: 1 / -1;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line-on-dark);
+  }
+
+  /* Thanh đáy QR: gom vào giữa để không quá dãn trên màn rộng */
+  .bottom-nav {
+    left: 50%;
+    right: auto;
+    width: min(100%, var(--container-width-tablet));
+    transform: translateX(-50%);
+    border-inline: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+}

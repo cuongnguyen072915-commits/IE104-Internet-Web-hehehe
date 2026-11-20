@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Layout — Fiabesco Palace</title>
+
+    <!-- Nạp đúng thứ tự: global.css trước -> layout.css sau -->
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+  </head>
+
+  <!-- Thêm class="has-bottom-nav" vào <body> nếu muốn test trang QR tại bàn -->
+  <body>
+    <!-- =================================================================
+       1. HEADER
+       ================================================================= -->
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="/">
+          <!-- 🖼️ CHÈN ẢNH #1: Logo đầu bếp (Kích thước CSS: 58×49px) -->
+          <img
+            class="brand__logo"
+            src="assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png"
+            alt="Logo Fiabesco Palace"
+          />
+          <span class="brand__text">
+            <span class="brand__name">FiabescoPalace</span>
+            <span class="brand__tagline">Italy on Every Plate</span>
+          </span>
+        </a>
+
+        <!-- Menu điều hướng (Drawer trên Mobile -> Thanh ngang trên Tablet/Desktop) -->
+        <nav class="site-nav" id="site-nav" aria-label="Điều hướng chính">
+          <div class="site-nav__head">
+            <span class="site-nav__label">MENU</span>
+            <button
+              class="site-nav__close"
+              type="button"
+              aria-label="Đóng menu"
+            >
+              ✕
+            </button>
+          </div>
+
+          <ul class="site-nav__list">
+            <li>
+              <a class="site-nav__link" href="#" aria-current="page"
+                >Trang chủ</a
+              >
+            </li>
+            <li><a class="site-nav__link" href="#">Thực đơn</a></li>
+            <li><a class="site-nav__link" href="#">Tra cứu đơn</a></li>
+            <li><a class="site-nav__link" href="#">Đặt bàn</a></li>
+            <li><a class="site-nav__link" href="#">Về chúng tôi</a></li>
+            <li><a class="site-nav__link" href="#">Tuyển dụng</a></li>
+            <li><a class="site-nav__link" href="#">Blog</a></li>
+            <li><a class="site-nav__link" href="#">Liên hệ</a></li>
+            <li><a class="site-nav__link" href="#">Ưu đãi</a></li>
+          </ul>
+
+          <!-- Khối liên hệ dưới đáy Drawer Mobile -->
+          <div class="site-nav__contact">
+            <a class="brand" href="/">
+              <!-- 🖼️ CHÈN ẢNH #1 (dùng lại logo trên, CSS tự co 46×39px) -->
+              <img
+                class="brand__logo"
+                src="assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png"
+                alt="Logo Fiabesco Palace"
+              />
+              <span class="brand__text">
+                <span class="brand__name">FiabescoPalace</span>
+                <span class="brand__tagline">Italy on Every Plate</span>
+              </span>
+            </a>
+            <div>
+              <p class="site-nav__hotline-label">HOTLINE</p>
+              <a class="site-nav__hotline" href="tel:0123456789"
+                >0123 456 789</a
+              >
+            </div>
+            <div class="social-dots">
+              <a href="#" aria-label="Facebook">f</a>
+              <a href="#" aria-label="Instagram">ig</a>
+              <a href="#" aria-label="TikTok">tt</a>
+              <a href="#" aria-label="Zalo">z</a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Cụm icon bên phải Header -->
+        <div class="header-actions">
+          <a class="header-action" href="#" aria-label="Giỏ hàng">
+            <!-- 🖼️ CHÈN ICON #2: Icon giỏ hàng (Kích thước CSS: 30×30px) -->
+            <img
+              src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/giohang.svg"
+              alt="Giỏ hàng"
+            />
+            <span class="cart-badge">2</span>
+          </a>
+
+          <a class="header-action" href="#" aria-label="Tài khoản">
+            <!-- 🖼️ CHÈN ICON #3: Icon tài khoản chưa đăng nhập (Kích thước CSS: 30×30px) -->
+            <img
+              src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/thanhvien.svg"
+              alt="Tài khoản"
+            />
+            <!-- Khi đã đăng nhập thì thay thẻ <img> trên bằng: <span class="avatar">PC</span> -->
+          </a>
+
+          <button
+            class="header-action nav-toggle"
+            type="button"
+            aria-controls="site-nav"
+            aria-expanded="false"
+            aria-label="Mở menu"
+          >
+            <!-- 🖼️ CHÈN ICON #4: Icon 3 gạch menu (Kích thước CSS: 30×22px) -->
+            <img
+              src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/thanhmenu.svg"
+              alt="Menu"
+            />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Lớp phủ mờ khi mở Drawer Mobile -->
+    <div class="nav-overlay" data-close-nav></div>
+
+    <!-- Dải trạng thái ngay dưới Header (Đổi thành status-strip--member để test bản Thành viên) -->
+    <div class="status-strip status-strip--guest">
+      <div>
+        <p class="status-strip__title">Chào mừng đến Fiabesco Palace</p>
+        <p class="status-strip__sub">Đăng nhập để tích điểm và nhận ưu đãi</p>
+      </div>
+      <a class="status-strip__btn" href="#">Đăng nhập</a>
+    </div>
+
+    <!-- =================================================================
+       2. NỘI DUNG TEST GLOBAL.CSS (Xóa khi code trang thật)
+       ================================================================= -->
+    <main class="site-main">
+      <section class="container py-section">
+        <h1>Cùng nấu nên hương vị Ý</h1>
+        <p class="text-muted mt-2 mb-6">
+          Khu vực này để kiểm tra Typography, Button, Form và lưới .auto-grid từ
+          global.css.
+        </p>
+
+        <!-- Test nút bấm -->
+        <div class="flex gap-2 mb-8" style="flex-wrap: wrap">
+          <button class="btn btn-primary" type="button">Đặt bàn ngay</button>
+          <button class="btn btn-outline" type="button">Xem thực đơn</button>
+          <button class="btn btn-danger" type="button">Hủy đặt bàn</button>
+          <button class="btn btn-primary" type="button" disabled>
+            Nút bị khóa
+          </button>
+        </div>
+
+        <!-- Test Form -->
+        <div class="mb-8" style="max-width: 420px">
+          <label class="form-label" for="test-input">Họ và tên</label>
+          <input
+            class="form-control"
+            id="test-input"
+            type="text"
+            placeholder="Nhập họ tên của bạn..."
+          />
+        </div>
+
+        <!-- Test Auto-Grid (Mobile 1 cột -> Tablet 2 cột -> Desktop 3-4 cột) -->
+        <h2 class="mb-4">Ưu đãi hôm nay</h2>
+        <div class="auto-grid">
+          <article
+            style="
+              background: var(--color-white);
+              padding: 16px;
+              border-radius: var(--radius-lg);
+              box-shadow: var(--shadow-md);
+            "
+          >
+            <!-- 🖼️ CHÈN ẢNH TEST #5 (Tùy chọn): Ảnh món ăn mẫu để test bo góc & tỷ lệ -->
+            <img
+              src="assets/template-20261120T115451Z-1-001 - Copy/template/Banner 3.png"
+              alt="Món ăn mẫu"
+              style="
+                width: 100%;
+                aspect-ratio: 16/10;
+                object-fit: cover;
+                border-radius: var(--radius-sm);
+                background: var(--color-border-light);
+              "
+            />
+            <h3 class="mt-4">Pizza Margherita</h3>
+            <p class="text-xs text-muted mt-2">
+              Phô mai Mozzarella tươi, sốt cà chua San Marzano.
+            </p>
+            <div class="flex items-center justify-between mt-4">
+              <span class="price">189.000 <small>VND</small></span>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="min-height: 40px; padding: 8px 16px; font-size: 13px"
+              >
+                Đặt món
+              </button>
+            </div>
+          </article>
+
+          <article
+            style="
+              background: var(--color-white);
+              padding: 16px;
+              border-radius: var(--radius-lg);
+              box-shadow: var(--shadow-md);
+            "
+          >
+            <img
+              src="assets/img/dish-sample.jpg"
+              alt="Món ăn mẫu"
+              style="
+                width: 100%;
+                aspect-ratio: 16/10;
+                object-fit: cover;
+                border-radius: var(--radius-sm);
+                background: var(--color-border-light);
+              "
+            />
+            <h3 class="mt-4">Spaghetti Carbonara</h3>
+            <p class="text-xs text-muted mt-2">
+              Thịt má heo muối Guanciale, phô mai Pecorino.
+            </p>
+            <div class="flex items-center justify-between mt-4">
+              <span class="price">215.000 <small>VND</small></span>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="min-height: 40px; padding: 8px 16px; font-size: 13px"
+              >
+                Đặt món
+              </button>
+            </div>
+          </article>
+
+          <article
+            style="
+              background: var(--color-white);
+              padding: 16px;
+              border-radius: var(--radius-lg);
+              box-shadow: var(--shadow-md);
+            "
+          >
+            <img
+              src="assets/img/dish-sample.jpg"
+              alt="Món ăn mẫu"
+              style="
+                width: 100%;
+                aspect-ratio: 16/10;
+                object-fit: cover;
+                border-radius: var(--radius-sm);
+                background: var(--color-border-light);
+              "
+            />
+            <h3 class="mt-4">Tiramisu Cổ Điển</h3>
+            <p class="text-xs text-muted mt-2">
+              Bánh Savoiardi thấm Espresso, kem Mascarpone.
+            </p>
+            <div class="flex items-center justify-between mt-4">
+              <span class="price">95.000 <small>VND</small></span>
+              <button
+                class="btn btn-primary"
+                type="button"
+                style="min-height: 40px; padding: 8px 16px; font-size: 13px"
+              >
+                Đặt món
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- =================================================================
+       3. FOOTER
+       ================================================================= -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="footer-top">
+          <a class="footer-brand" href="/">
+            <span class="footer-brand__badge">
+              <!-- 🖼️ CHÈN ẢNH #1 (dùng lại logo đầu bếp, CSS tự co 66×55px) -->
+              <img
+                src="assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png"
+                alt="Logo Fiabesco Palace"
+              />
+            </span>
+            <span>
+              <span class="footer-brand__name">FiabescoPalace</span><br />
+              <span class="footer-brand__tagline">Italy on Every Plate</span>
+            </span>
+          </a>
+          <div class="footer-company">
+            <p class="footer-company__name">Công ty TNHH Fiabesco</p>
+            <p class="footer-company__est">Est. 2014</p>
+          </div>
+        </div>
+
+        <section class="footer-col">
+          <h2 class="footer-col__title">Giới thiệu</h2>
+          <ul class="footer-links">
+            <li><a href="#">Về chúng tôi</a></li>
+            <li><a href="#">Thực đơn</a></li>
+            <li><a href="#">Tuyển dụng</a></li>
+            <li><a href="#">Blog ẩm thực</a></li>
+          </ul>
+        </section>
+
+        <section class="footer-col">
+          <h2 class="footer-col__title">Chính sách</h2>
+          <ul class="footer-links">
+            <li><a href="#">Chính sách bảo mật</a></li>
+            <li><a href="#">Điều khoản sử dụng</a></li>
+            <li><a href="#">Chính sách giao hàng</a></li>
+          </ul>
+        </section>
+
+        <section class="footer-col">
+          <h2 class="footer-col__title">Liên hệ với chúng tôi</h2>
+          <ul class="footer-social">
+            <!-- 🖼️ CHÈN ICON #6: 4 icon mạng xã hội (Kích thước CSS: 42×42px mỗi icon) -->
+            <li>
+              <a href="#" aria-label="Facebook"
+                ><img
+                  src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/fb.svg"
+                  alt="Facebook"
+              /></a>
+            </li>
+            <li>
+              <a href="#" aria-label="Instagram"
+                ><img
+                  src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/ig.svg"
+                  alt="Instagram"
+              /></a>
+            </li>
+            <li>
+              <a href="#" aria-label="TikTok"
+                ><img
+                  src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/tiktok.svg"
+                  alt="TikTok"
+              /></a>
+            </li>
+            <li>
+              <a href="#" aria-label="Zalo"
+                ><img
+                  src="assets/template-20261120T115451Z-1-001 - Copy/template/bộ icon/zalo.svg"
+                  alt="Zalo"
+              /></a>
+            </li>
+          </ul>
+          <a class="footer-hotline" href="tel:0123456789"
+            >Hotline: 0123 456 789</a
+          >
+        </section>
+
+        <div class="footer-bottom">
+          <p class="footer-copy">
+            © 2026 Fiabesco Palace. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- =================================================================
+       5. JS TỐI THIỂU ĐỂ BẬT/TẮT MENU MOBILE
+       ================================================================= -->
+    <script>
+      const nav = document.getElementById("site-nav");
+      const overlay = document.querySelector(".nav-overlay");
+      const toggleBtn = document.querySelector(".nav-toggle");
+      const closeBtn = document.querySelector(".site-nav__close");
+
+      function openNav() {
+        nav.classList.add("is-open");
+        overlay.classList.add("is-open");
+        document.body.classList.add("no-scroll");
+        toggleBtn.setAttribute("aria-expanded", "true");
+      }
+
+      function closeNav() {
+        nav.classList.remove("is-open");
+        overlay.classList.remove("is-open");
+        document.body.classList.remove("no-scroll");
+        toggleBtn.setAttribute("aria-expanded", "false");
+      }
+
+      toggleBtn.addEventListener("click", openNav);
+      closeBtn.addEventListener("click", closeNav);
+      overlay.addEventListener("click", closeNav);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeNav();
+      });
+    </script>
+  </body>
+</html>
