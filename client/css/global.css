@@ -17,7 +17,6 @@
    Thứ tự nạp:  global.css → layout.css → <trang>.css
    ===================================================================== */
 
-
 /* =====================================================================
    1. GOOGLE FONTS  (2 dòng @import ở đầu file)
    ---------------------------------------------------------------------
@@ -31,36 +30,42 @@
    hãy tự host file font và giữ nguyên tên font-family.
    ===================================================================== */
 
-
 /* =====================================================================
    2. BIẾN TOÀN CỤC (:root)
    ===================================================================== */
 :root {
   /* ---- 2.1 Màu chính (Color Tokens) ---- */
-  --color-primary: #002842;        /* Navy – nút chính, tiêu đề, nền tối */
-  --color-primary-hover: #173e52;  /* Navy nhạt hơn có sẵn trong Figma – dùng khi hover/nhấn */
-  --color-secondary: #a01e32;      /* Đỏ rượu – giá, nhãn Hot, link, lỗi, trạng thái nhấn */
-  --color-bg-body: #fef4e4;        /* Nền trang (117/182 màn) */
-  --color-bg-surface: #fffaf2;     /* Nền bề mặt: giỏ hàng, menu điều hướng (55 màn) */
-  --color-text-main: #002842;      /* Chữ chính */
-  --color-text-muted: #657582;     /* Chữ phụ, mô tả, placeholder */
-  --color-border: #dbcfba;         /* Viền ô nhập, nút viền phụ, thẻ */
+  --color-primary: #002842; /* Navy – nút chính, tiêu đề, nền tối */
+  --color-primary-hover: #173e52; /* Navy nhạt hơn có sẵn trong Figma – dùng khi hover/nhấn */
+  --color-secondary: #a01e32; /* Đỏ rượu – giá, nhãn Hot, link, lỗi, trạng thái nhấn */
+  --color-bg-body: #fef4e4; /* Nền trang (117/182 màn) */
+  --color-bg-surface: #fffaf2; /* Nền bề mặt: giỏ hàng, menu điều hướng (55 màn) */
+  --color-text-main: #002842; /* Chữ chính */
+  --color-text-muted: #657582; /* Chữ phụ, mô tả, placeholder */
+  --color-border: #dbcfba; /* Viền ô nhập, nút viền phụ, thẻ */
 
   /* ---- 2.2 Màu bổ trợ (đều có trong Figma) ---- */
   --color-white: #ffffff;
-  --color-border-light: #ebe7de;   /* đường kẻ mảnh trong thẻ */
-  --color-divider: #d1d9de;        /* đường kẻ menu điều hướng, bước chưa tới */
-  --color-label: #173e52;          /* nhãn ô nhập (form đăng nhập/đăng ký) */
-  --color-gold: #edc785;           /* hạng thành viên / điểm – chỉ đặt trên nền navy */
-  --color-success: #298052;        /* trạng thái thành công / online */
-  --color-disabled-bg: #dbcfba;    /* nút bị khoá ("THỬ LẠI SAU 14:52") */
+  --color-border-light: #ebe7de; /* đường kẻ mảnh trong thẻ */
+  --color-divider: #d1d9de; /* đường kẻ menu điều hướng, bước chưa tới */
+  --color-label: #173e52; /* nhãn ô nhập (form đăng nhập/đăng ký) */
+  --color-gold: #edc785; /* hạng thành viên / điểm – chỉ đặt trên nền navy */
+  --color-success: #298052; /* trạng thái thành công / online */
+  --color-disabled-bg: #dbcfba; /* nút bị khoá ("THỬ LẠI SAU 14:52") */
   --color-disabled-text: #657582;
-  --color-overlay: rgba(0, 26, 51, 0.45);         /* nền mờ sau popup / menu */
-  --color-line-on-dark: rgba(255, 255, 255, 0.3); /* vạch kẻ trên nền navy (footer) */
+  --color-overlay: rgba(0, 26, 51, 0.45); /* nền mờ sau popup / menu */
+  --color-line-on-dark: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* vạch kẻ trên nền navy (footer) */
 
   /* ---- 2.3 Font ---- */
-  --font-main: "Momo Trust Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Momo Trust Display", "Momo Trust Sans", system-ui, sans-serif;
+  --font-main:
+    "Momo Trust Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display:
+    "Momo Trust Display", "Momo Trust Sans", system-ui, sans-serif;
   --font-price: "Lusitana", Georgia, serif;
   --font-logo: "Carattere", cursive;
 
@@ -70,13 +75,13 @@
   --fw-bold: 700;
 
   /* Thang cỡ chữ Mobile (đo từ Figma) */
-  --fs-h1: 38px;        /* tiêu đề trang: "Ưu đãi dành cho bạn", "Cùng nấu nên hương vị Ý" – lh 108% */
-  --fs-h2: 22px;        /* tiêu đề mục: "Chúng tôi là ai?" – lh 30px */
-  --fs-h3: 18px;        /* tiêu đề thẻ: "Combo gia đình" – lh 110% */
-  --fs-body: 16px;      /* đoạn văn mô tả – lh 21px */
-  --fs-sm: 13px;        /* nhãn ô nhập, nút phụ */
-  --fs-xs: 12px;        /* chú thích, mô tả trong thẻ món (dùng nhiều nhất: 381 lần) */
-  --fs-btn: 16px;       /* chữ nút chuẩn (Button/…) */
+  --fs-h1: 38px; /* tiêu đề trang: "Ưu đãi dành cho bạn", "Cùng nấu nên hương vị Ý" – lh 108% */
+  --fs-h2: 22px; /* tiêu đề mục: "Chúng tôi là ai?" – lh 30px */
+  --fs-h3: 18px; /* tiêu đề thẻ: "Combo gia đình" – lh 110% */
+  --fs-body: 16px; /* đoạn văn mô tả – lh 21px */
+  --fs-sm: 13px; /* nhãn ô nhập, nút phụ */
+  --fs-xs: 12px; /* chú thích, mô tả trong thẻ món (dùng nhiều nhất: 381 lần) */
+  --fs-btn: 16px; /* chữ nút chuẩn (Button/…) */
 
   --lh-h1: 1.08;
   --lh-h2: 30px;
@@ -84,20 +89,20 @@
   --lh-body: 21px;
 
   /* ---- 2.4 Bo góc (theo tần suất trong Figma) ---- */
-  --radius-xs: 6px;     /* nhãn nhỏ */
-  --radius-sm: 8px;     /* ảnh món */
-  --radius-md: 10px;    /* ô nhập (Field), nút đặt món */
-  --radius-lg: 12px;    /* nút chuẩn (Button/…), thẻ món – dùng nhiều nhất */
-  --radius-xl: 14px;    /* thẻ thông tin */
-  --radius-2xl: 20px;   /* khối lớn, thẻ ưu đãi */
-  --radius-pill: 28px;  /* nút CTA hero cao 56px (bo tròn hai đầu) */
+  --radius-xs: 6px; /* nhãn nhỏ */
+  --radius-sm: 8px; /* ảnh món */
+  --radius-md: 10px; /* ô nhập (Field), nút đặt món */
+  --radius-lg: 12px; /* nút chuẩn (Button/…), thẻ món – dùng nhiều nhất */
+  --radius-xl: 14px; /* thẻ thông tin */
+  --radius-2xl: 20px; /* khối lớn, thẻ ưu đãi */
+  --radius-pill: 28px; /* nút CTA hero cao 56px (bo tròn hai đầu) */
 
   /* ---- 2.5 Đổ bóng (theo tần suất trong Figma) ---- */
   --shadow-sm: 0 4px 14px 0 rgba(0, 26, 43, 0.06);
-  --shadow-md: 0 6px 14px 0 rgba(0, 26, 43, 0.08);   /* thẻ món */
-  --shadow-lg: 0 8px 24px 0 rgba(0, 40, 66, 0.12);   /* thẻ nổi, popup */
+  --shadow-md: 0 6px 14px 0 rgba(0, 26, 43, 0.08); /* thẻ món */
+  --shadow-lg: 0 8px 24px 0 rgba(0, 40, 66, 0.12); /* thẻ nổi, popup */
   --shadow-xl: 0 10px 28px 0 rgba(0, 40, 66, 0.14);
-  --shadow-text: 0 4px 4px 0 rgba(0, 0, 0, 0.25);    /* bóng chữ logo */
+  --shadow-text: 0 4px 4px 0 rgba(0, 0, 0, 0.25); /* bóng chữ logo */
 
   /* ---- 2.6 Khoảng cách (bội số 4, các mức xuất hiện trong Figma) ---- */
   --space-1: 4px;
@@ -105,7 +110,7 @@
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 20px;
-  --space-6: 24px;      /* lề ngang chuẩn của màn Mobile (253 lần) */
+  --space-6: 24px; /* lề ngang chuẩn của màn Mobile (253 lần) */
   --space-8: 32px;
   --space-10: 40px;
 
@@ -119,7 +124,6 @@
   /* Hiệu ứng */
   --transition: 150ms ease-out;
 }
-
 
 /* =====================================================================
    3. CSS RESET
@@ -152,7 +156,9 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  transition: color var(--transition), opacity var(--transition);
+  transition:
+    color var(--transition),
+    opacity var(--transition);
 }
 
 ul,
@@ -198,7 +204,6 @@ button {
   }
 }
 
-
 /* =====================================================================
    4. TYPOGRAPHY  (thông số Mobile)
    ===================================================================== */
@@ -206,32 +211,32 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: var(--fw-regular);   /* Momo Trust Display chỉ có 1 độ đậm */
+  font-weight: var(--fw-regular); /* Momo Trust Display chỉ có 1 độ đậm */
   color: var(--color-text-main);
 }
 
 h1 {
-  font-size: var(--fs-h1);   /* 38px */
+  font-size: var(--fs-h1); /* 38px */
   line-height: var(--lh-h1); /* 108% */
 }
 
 h2 {
-  font-size: var(--fs-h2);   /* 22px */
+  font-size: var(--fs-h2); /* 22px */
   line-height: var(--lh-h2); /* 30px */
 }
 
 h3 {
-  font-size: var(--fs-h3);   /* 18px */
+  font-size: var(--fs-h3); /* 18px */
   line-height: var(--lh-h3); /* 110% */
 }
 
 p {
-  font-size: var(--fs-body);   /* 16px */
+  font-size: var(--fs-body); /* 16px */
   line-height: var(--lh-body); /* 21px */
 }
 
 small {
-  font-size: var(--fs-xs);     /* 12px */
+  font-size: var(--fs-xs); /* 12px */
 }
 
 /* Giá tiền: "189.000 VND" – Lusitana, đỏ, chữ VND nhỏ */
@@ -245,7 +250,6 @@ small {
 .price small {
   font-size: 10px;
 }
-
 
 /* =====================================================================
    5. LAYOUT HELPERS
@@ -266,7 +270,6 @@ small {
   grid-template-columns: 1fr;
   gap: var(--space-4);
 }
-
 
 /* =====================================================================
    6. UI COMPONENTS TÁI SỬ DỤNG
@@ -292,8 +295,19 @@ small {
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
-  transition: background-color var(--transition), border-color var(--transition),
-    color var(--transition), transform var(--transition);
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+
+.btn svg,
+.btn img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .btn:active {
@@ -360,7 +374,7 @@ small {
 .form-label {
   display: block;
   margin-bottom: var(--space-2);
-  font-size: var(--fs-sm);           /* 13px */
+  font-size: var(--fs-sm); /* 13px */
   font-weight: var(--fw-semibold);
   color: var(--color-label);
 }
@@ -374,9 +388,11 @@ small {
   border-radius: var(--radius-md);
   background-color: var(--color-white);
   font-family: var(--font-main);
-  font-size: var(--fs-body);         /* 16px – tránh iOS tự zoom */
+  font-size: var(--fs-body); /* 16px – tránh iOS tự zoom */
   color: var(--color-text-main);
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
 .form-control::placeholder {
@@ -405,41 +421,91 @@ textarea.form-control {
   resize: vertical;
 }
 
-
 /* =====================================================================
    7. UTILITIES & RESPONSIVE
    ===================================================================== */
 
 /* ---- 7.1 Chữ ---- */
-.text-center { text-align: center; }
-.text-muted { color: var(--color-text-muted); }
-.text-primary { color: var(--color-primary); }
-.text-secondary { color: var(--color-secondary); }
-.text-sm { font-size: var(--fs-sm); }
-.text-xs { font-size: var(--fs-xs); }
-.text-uppercase { text-transform: uppercase; }
+.text-center {
+  text-align: center;
+}
+.text-muted {
+  color: var(--color-text-muted);
+}
+.text-primary {
+  color: var(--color-primary);
+}
+.text-secondary {
+  color: var(--color-secondary);
+}
+.text-sm {
+  font-size: var(--fs-sm);
+}
+.text-xs {
+  font-size: var(--fs-xs);
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
 
 /* ---- 7.2 Khoảng cách (số khớp 1:1 với thang --space-*) ---- */
-.mt-0 { margin-top: 0; }
-.mt-2 { margin-top: var(--space-2); }   /* 8px  */
-.mt-4 { margin-top: var(--space-4); }   /* 16px */
-.mt-6 { margin-top: var(--space-6); }   /* 24px */
-.mt-8 { margin-top: var(--space-8); }   /* 32px */
-.mb-0 { margin-bottom: 0; }
-.mb-2 { margin-bottom: var(--space-2); }
-.mb-4 { margin-bottom: var(--space-4); }
-.mb-6 { margin-bottom: var(--space-6); }
-.mb-8 { margin-bottom: var(--space-8); }
-.py-section { padding-block: var(--space-8); }
-.gap-2 { gap: var(--space-2); }
-.gap-4 { gap: var(--space-4); }
+.mt-0 {
+  margin-top: 0;
+}
+.mt-2 {
+  margin-top: var(--space-2);
+} /* 8px  */
+.mt-4 {
+  margin-top: var(--space-4);
+} /* 16px */
+.mt-6 {
+  margin-top: var(--space-6);
+} /* 24px */
+.mt-8 {
+  margin-top: var(--space-8);
+} /* 32px */
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-2 {
+  margin-bottom: var(--space-2);
+}
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+.mb-6 {
+  margin-bottom: var(--space-6);
+}
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+.py-section {
+  padding-block: var(--space-8);
+}
+.gap-2 {
+  gap: var(--space-2);
+}
+.gap-4 {
+  gap: var(--space-4);
+}
 
 /* ---- 7.3 Hiển thị ---- */
-.flex { display: flex; }
-.flex-col { display: flex; flex-direction: column; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.w-full { width: 100%; }
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.w-full {
+  width: 100%;
+}
 .sr-only {
   position: absolute !important;
   width: 1px;
@@ -449,8 +515,12 @@ textarea.form-control {
   white-space: nowrap;
   border: 0;
 }
-.no-scroll { overflow: hidden; }       /* gắn vào <body> khi mở popup / menu */
-[hidden] { display: none !important; }
+.no-scroll {
+  overflow: hidden;
+} /* gắn vào <body> khi mở popup / menu */
+[hidden] {
+  display: none !important;
+}
 
 /* ---- 7.4 Responsive ----
    [MỞ RỘNG] Figma chỉ có Mobile. Các mức chữ lớn hơn lấy lại từ chính
@@ -460,11 +530,23 @@ textarea.form-control {
 /* Tablet ≥ 768px */
 @media (min-width: 768px) {
   :root {
-    --fs-h1: 46px;        /* = cỡ tiêu đề Hero trên Figma */
-    --fs-h2: 28px;        /* = "Chào mừng trở lại" */
+    --fs-h1: 46px; /* = cỡ tiêu đề Hero trên Figma */
+    --fs-h2: 28px; /* = "Chào mừng trở lại" */
     --lh-h2: 1.2;
-    --fs-h3: 22px;        /* = "Chúng tôi là ai?" */
+    --fs-h3: 22px; /* = "Chúng tôi là ai?" */
     --container-padding: var(--space-8);
+  }
+  @media (min-width: 1024px) {
+    .btn {
+      min-height: 54px; /* Giữ cao hơn hoặc bằng Mobile nếu muốn nút bự */
+      font-size: 17px;
+    }
+
+    .btn svg,
+    .btn img {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   .container {
@@ -476,14 +558,16 @@ textarea.form-control {
     gap: var(--space-6);
   }
 
-  .py-section { padding-block: var(--space-10); }
+  .py-section {
+    padding-block: var(--space-10);
+  }
 }
 
 /* Desktop ≥ 1024px */
 @media (min-width: 1024px) {
   :root {
-    --fs-h1: 56px;        /* [MỞ RỘNG] */
-    --fs-h2: 36px;        /* = tiêu đề mục trang chủ "Ưu đãi hôm nay" trên Figma */
+    --fs-h1: 56px; /* [MỞ RỘNG] */
+    --fs-h2: 36px; /* = tiêu đề mục trang chủ "Ưu đãi hôm nay" trên Figma */
     --fs-h3: 22px;
     --container-padding: var(--space-10);
   }
@@ -497,6 +581,6 @@ textarea.form-control {
   }
 
   .btn {
-    min-height: 48px;     /* = nút "ĐẶT HÀNG" (48px) trên Figma, gọn hơn khi dùng chuột */
+    min-height: 48px; /* = nút "ĐẶT HÀNG" (48px) trên Figma, gọn hơn khi dùng chuột */
   }
 }

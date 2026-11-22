@@ -790,35 +790,75 @@ body.has-bottom-nav {
 }
 
 /* ---- Desktop ≥ 1024px ----
-   • Menu nằm cùng hàng với logo và icon, căn giữa.
-   • Footer 4 cột: thương hiệu | Giới thiệu | Chính sách | Liên hệ. */
+- Menu nằm cùng hàng với logo và icon, căn giữa.
+- Footer 4 cột: thương hiệu | Giới thiệu | Chính sách | Liên hệ. */
+/* ---- Desktop ≥ 1024px ---- */
+/* ---- Desktop ≥ 1024px ---- */
+/* ---- Desktop ≥ 1024px ---- */
+/* Thay thế phần Header bên trong @media (min-width: 1024px) của layout.css */
 @media (min-width: 1024px) {
-  .site-header__inner {
-    flex-wrap: nowrap;
-    height: calc(
-      var(--lay-header-h) + var(--space-4)
-    ); /* 78px, thoáng hơn khi dùng chuột */
+  :root {
+    --lay-logo-w: 72px;
+    --lay-logo-h: 61px;
+    --lay-icon: 36px;
   }
 
-  @media (min-width: 1024px) {
-    .site-nav,
-    .site-nav.is-open {
-      order: 0;
-      flex: 1 1 auto;
-      min-width: 0;
-      overflow-x: auto;
-    }
+  /* Ép cứng chia 2 tầng bằng Grid */
+  .site-header__inner {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    padding-top: var(--space-3);
+    padding-bottom: 0;
+    row-gap: var(--space-3);
+  }
 
-    .site-nav__list {
-      justify-content: center;
-      gap: var(--space-4); /* giảm từ 24px xuống 16px để vừa 9 mục */
-      border-top: 0;
-    }
+  /* Tầng 1 - Trái: Logo */
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
 
-    .site-nav__link {
-      padding-block: var(--space-2);
-      font-size: 14px; /* gọn hơn trên thanh ngang Desktop */
-    }
+  .brand__name {
+    font-size: 36px;
+  }
+
+  .brand__tagline {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* Tầng 1 - Phải: Cụm icon Giỏ hàng & Tài khoản */
+  .header-actions {
+    grid-column: 2;
+    grid-row: 1;
+    gap: var(--space-4);
+  }
+
+  /* Tầng 2 - Chiếm trọn hàng dưới: Thanh Menu */
+  .site-nav,
+  .site-nav.is-open {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    border-top: 1px solid var(--color-border-light);
+    margin-top: 0;
+  }
+
+  .site-nav__list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-3);
+    border-top: 0;
+  }
+
+  .site-nav__link {
+    padding-block: var(--space-1);
+    font-size: 16px;
   }
 
   .site-footer__inner {
@@ -845,7 +885,6 @@ body.has-bottom-nav {
     border-top: 1px solid var(--color-line-on-dark);
   }
 
-  /* Thanh đáy QR: gom vào giữa để không quá dãn trên màn rộng */
   .bottom-nav {
     left: 50%;
     right: auto;
