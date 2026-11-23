@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Mì Lasagna đút lò – Fiabesco Palace</title>
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/logo-emblem.png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/chi_tiet_mon.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="chi_tiet_mon">
+  <!-- Frame: PC – 03 Chi tiết món (+ E06 Món tạm hết hàng) -->
+  <header data-header></header>
+  <main class="site-main container pd">
+    <nav class="crumb crumb--dark" id="crumb"><a href="trang_chu.html">Trang chủ</a><i data-icon="chevron-right"></i><a href="thuc_don.html">Thực đơn</a><i data-icon="chevron-right"></i><a href="thuc_don.html">Mì Ý</a><i data-icon="chevron-right"></i><span class="cur" data-bind="name">Mì Lasagna đút lò</span></nav>
+
+    <section class="pd__top">
+      <div class="pd__gallery">
+        <div class="pd__main"><img id="main-img" src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-baking-dish.jpg" alt="Mì Lasagna đút lò"><span class="pd__soldout" hidden>TẠM HẾT HÀNG</span></div>
+        <div class="pd__thumbs" id="thumbs">
+          <button class="is-active"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-baking-dish.jpg" alt=""></button>
+          <button><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-slice.jpg" alt=""></button>
+          <button><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-top-view.jpg" alt=""></button>
+          <button><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-with-wine.jpg" alt=""></button>
+        </div>
+      </div>
+
+      <div class="pd__info" id="info">
+        <div class="row" style="gap:8px"><span class="pill pill--wine" data-bind="tag">Chef’s Pick</span><span class="pill pill--soft">Bán chạy #2</span></div>
+        <div class="stack" style="gap:10px">
+          <h1 class="t-h1" data-bind="name">Mì Lasagna đút lò</h1>
+          <div class="row" style="gap:12px"><span class="stars-sm">★★★★★</span><span class="t-body-s c-gray">4.9 · 128 đánh giá · Đã bán 2,1k</span></div>
+        </div>
+        <div class="row" style="gap:14px"><span class="t-price-l c-wine" id="base-price">159.000 VND</span><span class="strike c-gray" style="font:400 18px/1.2 var(--f-price)" id="old-price">179.000 VND</span><span class="pill pill--wine" id="off">-11%</span></div>
+        <div class="alert" id="soldout-alert" hidden><i data-icon="alert-triangle"></i><div class="stack" style="gap:2px"><strong class="c-wine" style="font:600 15px/1.4 var(--f-sans)">Món này tạm hết trong hôm nay</strong><span class="t-body-s">Bếp sẽ chuẩn bị mẻ mới lúc 17:00. Bật thông báo để nhận tin ngay khi có lại, hoặc thử món tương tự bên dưới.</span></div></div>
+        <p class="t-body-l c-gray" data-bind="long">Lớp mì tươi cán tay xen kẽ sốt bò bằm Bolognese hầm 6 giờ, sốt béchamel mịn và phô mai Parmigiano Reggiano, nướng lò đá tới khi mặt vàng giòn.</p>
+        <hr class="divider">
+        <span class="t-title">Kích cỡ</span>
+        <div class="opts" id="sizes">
+          <button class="opt is-active" data-add="0"><span class="radio"></span><span class="stack"><strong>Phần tiêu chuẩn</strong><small>1 người · <span data-bind="price-short">159.000</span></small></span></button>
+          <button class="opt" data-add="60000"><span class="radio"></span><span class="stack"><strong>Phần lớn</strong><small>2 người · +60.000</small></span></button>
+        </div>
+        <span class="t-title">Thêm topping</span>
+        <div class="tops" id="tops">
+          <label class="top"><span class="checkbox"><input type="checkbox" data-price="25000" data-name="Phô mai Mozzarella" checked><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body">Phô mai Mozzarella thêm</span></span><span class="top__price">+25.000</span></label>
+          <label class="top"><span class="checkbox"><input type="checkbox" data-price="45000" data-name="Nấm truffle đen"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body">Nấm truffle đen</span></span><span class="top__price">+45.000</span></label>
+          <label class="top"><span class="checkbox"><input type="checkbox" data-price="20000" data-name="Bánh mì bơ tỏi"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body">Bánh mì bơ tỏi (2 lát)</span></span><span class="top__price">+20.000</span></label>
+        </div>
+        <div class="buy">
+          <div class="stepper" id="qty"><button aria-label="Giảm"><i data-icon="minus"></i></button><output>1</output><button aria-label="Tăng"><i data-icon="plus"></i></button></div>
+          <button class="btn btn--navy grow" id="add-btn">Thêm vào giỏ · <span id="total">184.000 VND</span></button>
+          <button class="btn btn--outline grow" id="notify-btn" hidden>Báo tôi khi có lại</button>
+          <button class="icon-btn pd__fav" id="fav" aria-label="Yêu thích"><i data-icon="heart"></i></button>
+        </div>
+        <div class="perks">
+          <span><b><i data-icon="delivery-truck"></i></b>Giao trong 30 phút</span>
+          <span><b><i data-icon="leaf"></i></b>Nguyên liệu nhập từ Ý</span>
+          <span><b><i data-icon="flame"></i></b>Lò đá 280°C</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="pd-tabs card" id="mo-ta">
+      <div class="tabs" role="tablist">
+        <button class="tab is-active" data-tab="desc">Mô tả</button>
+        <button class="tab" data-tab="ing">Thành phần &amp; dị ứng</button>
+        <button class="tab" data-tab="rev">Đánh giá (128)</button>
+      </div>
+      <div class="pd-tabs__body">
+        <div class="pd-tabs__panel" data-panel="desc">
+          <h3 class="t-h4">Công thức truyền thống vùng Emilia-Romagna</h3>
+          <p class="t-body c-gray">Mỗi khay lasagna được làm thủ công trong ngày với 7 lớp mì trứng tươi. Sốt Bolognese nấu từ bò Úc xay, cà chua San Marzano và rượu vang đỏ, hầm chậm trong 6 giờ để dậy vị ngọt tự nhiên.</p>
+          <p class="t-body c-gray">Gợi ý: dùng kèm salad rau rocket và một ly Chianti để cân bằng vị béo.</p>
+          <p class="t-body-s c-wine">Dị ứng: gluten, sữa, trứng, cần tây.</p>
+        </div>
+        <div class="pd-tabs__panel" data-panel="ing" hidden>
+          <h3 class="t-h4">Thành phần &amp; dị ứng</h3>
+          <p class="t-body c-gray">Mì trứng tươi cán tay, bò Úc xay, cà chua San Marzano, rượu vang đỏ, sốt béchamel, phô mai Parmigiano Reggiano, húng quế.</p>
+          <p class="t-body-s c-wine">Dị ứng: gluten, sữa, trứng, cần tây.</p>
+        </div>
+        <div class="pd-tabs__panel" data-panel="rev" hidden>
+          <h3 class="t-h4">4.9 <span class="stars-sm">★★★★★</span> · 128 đánh giá</h3>
+          <p class="t-body c-gray">“Mì Lasagna đút lò rất đậm vị, giao đến vẫn còn nóng. Đóng gói đẹp, shipper lịch sự.” — Nguyễn Minh Anh</p>
+        </div>
+        <aside class="nutri">
+          <span class="t-title" style="font-size:15px">Thông tin dinh dưỡng / phần</span>
+          <div class="between t-body-s"><span class="c-gray">Năng lượng</span><span>720 kcal</span></div>
+          <div class="between t-body-s"><span class="c-gray">Đạm</span><span>34 g</span></div>
+          <div class="between t-body-s"><span class="c-gray">Carb</span><span>62 g</span></div>
+          <div class="between t-body-s"><span class="c-gray">Chất béo</span><span>36 g</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="pd-suggest">
+      <div class="sec-head">
+        <div class="stack" style="gap:8px"><span class="t-eyebrow c-wine">Thường được gọi cùng</span><h2 class="t-h2">Gợi ý đặt kèm</h2></div>
+        <a class="btn btn--outline" href="thuc_don.html">Xem thực đơn <i data-icon="arrow-right"></i></a>
+      </div>
+      <div class="pd-suggest__row" id="suggest"></div>
+    </section>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/pages/chi_tiet_mon.js"></script>
+</body>
+</html>

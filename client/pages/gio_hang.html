@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Giỏ hàng – Fiabesco Palace</title>
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/logo-emblem.png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/gio_hang.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="gio_hang">
+  <!-- Frame: PC – 04 Giỏ hàng (+ E07 giỏ trống, E09 mã không hợp lệ, E12 chưa đạt đơn tối thiểu) -->
+  <header data-header></header>
+  <main class="site-main container order">
+    <div class="order__head" id="cart-head">
+      <div class="stack" style="gap:8px"><a class="back-link" href="thuc_don.html"><i data-icon="arrow-left"></i>Tiếp tục chọn món</a><h1 class="t-h1">Giỏ hàng của bạn</h1></div>
+      <div class="steps"><span class="steps__item is-current"><span class="steps__dot">1</span>Giỏ hàng</span><span class="steps__line"></span><span class="steps__item"><span class="steps__dot">2</span>Thanh toán</span><span class="steps__line"></span><span class="steps__item"><span class="steps__dot">3</span>Hoàn tất</span></div>
+    </div>
+
+    <div class="order__cols" id="cart-full">
+      <div class="order__left">
+        <div class="min-alert" id="min-alert" hidden>
+          <div class="row" style="gap:10px"><i data-icon="delivery-truck"></i><strong id="min-text">Thêm 61.000đ để đạt đơn giao hàng tối thiểu 150.000đ</strong></div>
+          <div class="bar"><span id="min-bar"></span></div>
+          <span class="t-caption c-gray">Hoặc chuyển sang “Tự đến lấy” để đặt ngay không cần mức tối thiểu.</span>
+        </div>
+        <div class="cart-list card">
+          <div class="cart-list__head">
+            <label class="checkbox"><input type="checkbox" id="all" checked><span class="checkbox__box"><i data-icon="check"></i></span><strong class="t-title" style="font-size:15px" id="all-label">Chọn tất cả (3 món)</strong></label>
+            <button class="row c-wine" style="gap:8px;font:600 14px/1.4 var(--f-sans)" id="del-sel"><i data-icon="trash" class="ic18"></i>Xóa đã chọn</button>
+          </div>
+          <div id="items"></div>
+        </div>
+        <h2 class="t-h3">Gợi ý đặt kèm</h2>
+        <div class="upsell" id="upsell"></div>
+        <label class="field"><span class="field__label" style="font-size:15px">Ghi chú cho nhà hàng</span><textarea class="textarea" id="note" placeholder="Ví dụ: không hành, giao ở sảnh tòa nhà…"></textarea></label>
+      </div>
+
+      <aside class="summary card">
+        <h2 class="t-h3">Tóm tắt đơn hàng</h2>
+        <div class="seg" id="mode"><button class="is-active" data-mode="ship">Giao hàng</button><button data-mode="pickup">Tự đến lấy</button></div>
+        <form class="coupon" id="coupon"><label class="coupon__input"><i data-icon="coupon-tag"></i><input name="code" placeholder="Nhập mã ưu đãi" autocomplete="off" aria-label="Mã ưu đãi"></label><button class="coupon__btn" type="submit">Áp dụng</button></form>
+        <div class="coupon-ok" id="coupon-ok" hidden><span class="row" style="gap:8px"><i data-icon="check"></i><b id="coupon-label">FREESHIP – Miễn phí giao hàng</b></span><button id="coupon-rm">Bỏ</button></div>
+        <div class="coupon-err" id="coupon-err" hidden><i data-icon="close-large"></i><span id="coupon-msg"></span></div>
+        <hr class="divider">
+        <div class="sum-row"><span id="sub-label">Tạm tính (4 phần)</span><span id="sub">509.000 VND</span></div>
+        <div class="sum-row"><span>Phí giao hàng</span><span id="fee">25.000 VND</span></div>
+        <div class="sum-row"><span>Giảm giá</span><span id="disc" class="c-green">−25.000 VND</span></div>
+        <hr class="divider">
+        <div class="between"><span class="t-title">Tổng thanh toán</span><span class="t-price-l c-wine" id="total">509.000 VND</span></div>
+        <a class="btn btn--navy btn--block" id="go" href="thanh_toan.html">Tiến hành thanh toán <i data-icon="arrow-right"></i></a>
+        <a class="btn btn--outline btn--block" href="thuc_don.html">Tiếp tục mua hàng</a>
+        <div class="points"><i data-icon="gift"></i><span id="points">Bạn sẽ nhận +51 điểm thành viên</span></div>
+        <div class="secure"><i data-icon="shield-check"></i>Thanh toán bảo mật · Hoàn tiền nếu đơn bị hủy</div>
+      </aside>
+    </div>
+
+    <!-- E07 – Giỏ hàng trống -->
+    <section class="cart-empty" id="cart-empty" hidden>
+      <div class="empty-card card">
+        <img src="../assets/template-20261120T115451Z-1-001 - Copy/template/empty-state-cat-box.png" alt="" width="360">
+        <h2 class="t-h2">Giỏ hàng của bạn đang trống</h2>
+        <p class="t-body-l c-gray">Chọn vài món ngon từ thực đơn — giao nóng hổi trong 30 phút.</p>
+        <div class="row" style="gap:12px;flex-wrap:wrap;justify-content:center"><a class="btn btn--navy" href="thuc_don.html">Khám phá thực đơn <i data-icon="arrow-right"></i></a><a class="btn btn--outline" href="thuc_don.html">Xem combo tiết kiệm</a></div>
+      </div>
+      <h2 class="t-h3">Món được yêu thích</h2>
+      <div class="row-cards" id="loved"></div>
+    </section>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/pages/gio_hang.js"></script>
+</body>
+</html>

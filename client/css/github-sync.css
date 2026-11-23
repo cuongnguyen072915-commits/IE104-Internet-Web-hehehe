@@ -1,0 +1,290 @@
+/* =====================================================================
+  FIABESCO PALACE — github-sync.css · Design System đồng bộ 10 trang
+  Nguồn tham chiếu: GitHub client/css/global.css, layout.css, trang_chu.html
+  + Figma: Design System PC, đặt món, trang thông tin, trạng thái.
+  Nạp SAU global.css + layout.css + pc-components.css + CSS trang.
+  Không tải CSS từ GitHub lúc runtime; font/icon dùng asset nội bộ.
+  ===================================================================== */
+:root {
+  /* Global values come only from global.css. The following aliases support
+     the unchanged Figma PC classes from the original ten-page project. */
+  --pad-x:120px; --container:1200px;
+  --navy:var(--color-primary); --navy-2:var(--color-primary-hover);
+  --wine:var(--color-secondary); --cream:var(--color-bg-body);
+  --cream-2:var(--color-bg-surface); --gray:var(--color-text-muted);
+  --line:var(--color-border-light); --green:var(--color-success);
+  --gold:#cca661; --gold-l:var(--color-gold);
+  --wine-bg:#fbeaec; --green-bg:#e8f2ec; --dis:#b8bec4;
+  --f-display:var(--font-display); --f-sans:var(--font-main);
+  --f-price:var(--font-price); --f-logo:var(--font-logo);
+  --sh-card:var(--shadow-md); --sh-float:var(--shadow-lg);
+}
+
+html {scroll-behavior:smooth;scroll-padding-top:100px}
+body[data-design-system] {display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;
+ background:var(--color-bg-body);color:var(--color-text-main);font-family:var(--font-main);}
+body[data-design-system] > main{flex:1 0 auto;width:100%;min-width:0}
+body[data-design-system] > footer{flex-shrink:0}
+body[data-design-system] :focus-visible{outline:2px solid var(--color-secondary);outline-offset:2px}
+body[data-design-system] :is(h1,h2,h3){font-family:var(--font-display);font-weight:400}
+body[data-design-system] :is(p,li,label,input,textarea,select){font-family:var(--font-main)}
+body[data-design-system] .c-gray{color:var(--color-text-muted)}
+body[data-design-system] .c-wine{color:var(--color-secondary)}
+body[data-design-system] .c-navy{color:var(--color-primary)}
+body[data-design-system] .c-goldl{color:var(--color-gold)}
+body[data-design-system] .dish__price,
+body[data-design-system] [class*="__price"]{font-family:var(--font-price);color:var(--color-secondary)}
+body[data-design-system] .dish__name{font-family:var(--font-main);font-weight:600}
+body[data-design-system] .dish__desc{color:var(--color-text-muted)}
+body[data-design-system] .dish{border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+body[data-design-system] .dish__media{overflow:hidden}
+body[data-design-system] :is(.field__box,.input,.textarea){border-color:var(--color-border);border-radius:var(--radius-md)}
+body[data-design-system] .btn{border-radius:var(--radius-lg);min-height:52px;height:auto;padding:13px 24px;
+ font:600 14px/1.3 var(--font-main);letter-spacing:.02em}
+body[data-design-system] .btn--navy{background:var(--color-primary);color:white}
+body[data-design-system] .btn--navy:hover{background:var(--color-primary-hover)}
+body[data-design-system] .btn--wine{background:var(--color-secondary);color:white}
+body[data-design-system] .btn--outline{border-color:var(--color-primary)}
+body[data-design-system] .btn--gold{background:var(--color-gold);color:var(--color-primary)}
+body[data-design-system] :is(.dish__add,.badge,.pill--wine){background-color:var(--color-secondary)}
+body[data-design-system] .dish__add{background:var(--color-primary)}
+body[data-design-system] .dish__add:hover{background:var(--color-secondary)}
+
+/* Typographic scale: giữ tỷ lệ Desktop như Figma, chuyển theo chuẩn Mobile GitHub. */
+@media(min-width:1024px){
+ body[data-design-system] .t-display{font-size:clamp(56px,5.1vw,80px)}
+ body[data-design-system] .t-h1{font-size:clamp(42px,3.55vw,56px)}
+ body[data-design-system] .t-h2{font-size:clamp(34px,3vw,44px)}
+ body[data-design-system] .btn{border-radius:var(--radius-pill)}
+}
+@media(max-width:1023px){
+ body[data-design-system] .t-display{font-size:clamp(38px,7vw,64px)}
+ body[data-design-system] .t-h1{font-size:clamp(38px,5vw,50px);line-height:1.08}
+ body[data-design-system] .t-h2{font-size:clamp(25px,4.4vw,38px);line-height:1.25}
+ body[data-design-system] .t-h3{font-size:clamp(20px,3.5vw,30px)}
+ /* Old footer wrapper removed; using site-footer__inner. */
+ body[data-design-system] .f-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ body[data-design-system] .t-h1{font-size:38px}
+ body[data-design-system] .t-h2{font-size:22px}
+ body[data-design-system] .t-h3{font-size:18px}
+ body[data-design-system] .t-body{font-size:16px;line-height:21px}
+ body[data-design-system] .t-body-s{font-size:13px;line-height:1.45}
+ body[data-design-system] .btn{font-size:14px}
+ body[data-design-system] .dish{border-radius:12px}
+ body[data-design-system] .site-footer{border-radius:44px 44px 0 0}
+ /* Old footer wrapper removed; using site-footer__inner. */
+ body[data-design-system] .newsletter{padding:20px;border-radius:14px}
+ body[data-design-system] .newsletter .t-h4{font-size:19px}
+ body[data-design-system] .newsletter__form{width:100%;flex-direction:column;align-items:stretch}
+ body[data-design-system] .newsletter__input{width:100%}
+ body[data-design-system] .f-cols{grid-template-columns:1fr;gap:28px}
+ body[data-design-system] .f-col--about{gap:12px}
+ body[data-design-system] .f-bottom{flex-direction:column;gap:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .github-header .gh-nav,.github-header .gh-nav-overlay{transition:none}
+}
+
+
+/* === Shared GitHub layout markup + Fiabesco PC appearance ===
+   Mobile inherits header, drawer, overlay and footer spacing from layout.css.
+   These additions only resolve the PC-specific Figma differences and the
+   existing 10-page PC content. Do not replace global.css/layout.css. */
+
+/* PC frame 1440px: 120px left/right gutters, except the source mobile layout. */
+@media (min-width: 1200px) {
+  body[data-design-system] .site-main .container {max-width:1440px; padding-inline:120px;}
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  body[data-design-system] .site-main .container {max-width:100%; padding-inline:clamp(24px,5vw,64px);}
+}
+
+/* Only the GitHub markup classes are used here: no gh-* alternate header. */
+.pc-header {width:100%;}
+.pc-header .brand__logo {object-fit:contain;}
+.pc-header .pc-topbar {display:none;}
+.pc-header .pc-search,
+.pc-header .pc-book {display:none;}
+.pc-header .cart-badge[data-count="0"] {display:none;}
+.pc-header .header-actions {flex-shrink:0;}
+.pc-header .header-action {flex-shrink:0;}
+.pc-header .header-action img {display:block;object-fit:contain;}
+.pc-header .pc-search img {width:22px;height:22px;}
+.pc-header .pc-book {font-size:12px;}
+.pc-header .site-nav__contact .social-dots a {font-family:var(--font-main);}
+.pc-header .site-nav__contact .social-dots .ic {width:18px;height:18px;}
+.pc-header .site-nav__link[aria-disabled="true"] {opacity:.5;cursor:not-allowed;}
+.pc-header .site-nav__link[aria-disabled="true"]:hover {color:var(--color-text-main);}
+.pc-header .cart-badge {left:auto;right:0;top:0;}
+.pc-header .nav-toggle .pc-hamburger {display:flex;flex-direction:column;gap:5px;width:30px;}
+.pc-header .nav-toggle .pc-hamburger i {height:2px;width:100%;border-radius:2px;background:var(--color-primary);}
+.pc-header .site-nav__close {cursor:pointer;}
+.pc-header .site-nav__head {flex-shrink:0;}
+.pc-header .site-nav__link {text-decoration:none;}
+.pc-header .site-header__inner {max-width:1440px;}
+.pc-header .brand__name {color:var(--color-primary);}
+.pc-header .site-nav__contact .brand__text {margin-left:-3px;}
+
+@media(min-width:1024px) {
+  /* Figma PC: slim information bar + logo/menu/actions on one row. */
+  .pc-header .pc-topbar {display:block;background:var(--color-primary);color:var(--color-white);}
+  .pc-header .pc-topbar__inner {height:30px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .pc-header .pc-topbar__group {display:flex;align-items:center;gap:20px;}
+  .pc-header .pc-topbar__group a,.pc-header .pc-topbar__group span {
+    font:400 10px/1.3 var(--font-main);white-space:nowrap;
+  }
+  .pc-header .pc-topbar__group a:hover {color:var(--color-gold);}
+  .pc-header .site-header__inner {display:flex;flex-wrap:nowrap;justify-content:space-between;
+    align-items:center;gap:16px;min-height:84px;padding-block:8px;}
+  .pc-header .brand {order:0;grid-column:auto;grid-row:auto;flex-shrink:0;}
+  .pc-header .brand__logo {width:64px;height:54px;}
+  .pc-header .brand__name {font-size:34px;}
+  .pc-header .brand__tagline {font-size:11px;line-height:15px;}
+  .pc-header .site-nav,.pc-header .site-nav.is-open {order:1;grid-column:auto;grid-row:auto;
+    flex:1 1 auto;min-width:0;width:auto;position:static;display:block;
+    border:0;margin:0;transform:none;visibility:visible;overflow:visible;}
+  .pc-header .site-nav__list {display:flex;align-items:center;justify-content:center;
+    gap:clamp(8px,1vw,18px);padding:0;border:0;flex-wrap:nowrap;}
+  .pc-header .site-nav__link {padding:8px 0;min-height:38px;white-space:nowrap;
+    font:600 clamp(10px,.86vw,13px)/1.3 var(--font-main);border:0;}
+  .pc-header .site-nav__link[aria-current="page"] {border-bottom:2px solid var(--color-secondary);}
+  .pc-header .header-actions {order:2;grid-column:auto;grid-row:auto;gap:8px;}
+  .pc-header .header-action {width:32px;height:34px;}
+  .pc-header .header-action img {width:24px;height:24px;}
+  .pc-header .pc-search {display:inline-grid;}
+  .pc-header .pc-book {display:inline-flex;align-items:center;justify-content:center;
+    min-height:38px;height:38px;padding:0 16px;white-space:nowrap;border-radius:999px;
+    font:600 11px/1 var(--font-main);}
+}
+@media (min-width:1024px) and (max-width:1279px) {
+  .pc-header .site-header__inner {padding-inline:24px;gap:8px;}
+  .pc-header .site-nav__list {gap:8px;}
+  .pc-header .site-nav__link {font-size:10px;}
+  .pc-header .pc-book {padding-inline:10px;}
+  .pc-header .brand__name {font-size:27px;}
+  .pc-header .brand__logo {width:48px;height:44px;}
+  .pc-header .header-actions {gap:5px;}
+}
+@media (min-width:1280px) {
+  .pc-header .site-header__inner,.pc-header .pc-topbar__inner {padding-inline:clamp(40px,6vw,100px);}
+}
+@media(max-width:767px) {
+  .pc-header .site-header__inner {padding-left:0;padding-right:11px;}
+  .pc-header .brand__logo {width:var(--lay-logo-w);height:var(--lay-logo-h);}
+  .pc-header .brand__name {font-size:30px;}
+  .pc-header .nav-toggle {display:inline-grid;}
+  .pc-header .pc-book,.pc-header .pc-search {display:none;}
+  .pc-header .header-actions {gap:5px;}
+  .pc-header .header-action {width:30px;height:30px;}
+  .pc-header .header-action img {width:30px;height:30px;}
+}
+@media(max-width:380px) {
+  .pc-header .brand__logo {width:46px;height:42px;}
+  .pc-header .brand__name {font-size:24px;}
+  .pc-header .brand__tagline {font-size:9px;}
+  .pc-header .header-actions {gap:3px;}
+}
+
+/* Keep the Figma PC footer's newsletter while using the official layout's
+   footer-top/footer-col/footer-links/footer-bottom structure. */
+.fiabesco-footer {padding:0;}
+.fiabesco-footer .site-footer__inner {max-width:1440px;margin-inline:auto;}
+.fiabesco-footer .newsletter {grid-column:1/-1;}
+.fiabesco-footer .footer-top {display:flex;flex-direction:column;align-items:flex-start;gap:14px;}
+.fiabesco-footer .footer-brand {margin-left:0;}
+.fiabesco-footer .footer-company__name {font-size:14px;}
+.fiabesco-footer .footer-company__est {font-size:12px;}
+.fiabesco-footer .footer-col__title {font:400 22px/1.2 var(--font-display);color:var(--color-white);}
+.fiabesco-footer .footer-links {gap:14px;}
+.fiabesco-footer .footer-links a {font:400 13px/1.55 var(--font-main);text-transform:none;}
+.fiabesco-footer .footer-social {margin-top:14px;}
+.fiabesco-footer .footer-social a {border:1px solid var(--color-gold);border-radius:50%;width:38px;height:38px;}
+.fiabesco-footer .footer-social svg {color:var(--color-gold);width:18px;height:18px;}
+.fiabesco-footer .footer-hotline {font-size:14px;}
+.fiabesco-footer .footer-copy {font-size:12px;}
+.fiabesco-footer .footer-bottom {display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.fiabesco-footer .footer-brand__badge {width:68px;height:68px;}
+.fiabesco-footer .footer-brand__badge img {width:54px;height:54px;object-fit:contain;}
+.fiabesco-footer .footer-brand__name {font-size:32px;}
+.fiabesco-footer .footer-brand__tagline {font-size:11px;}
+.fiabesco-footer .footer-col {min-width:0;}
+.fiabesco-footer .newsletter {display:flex;align-items:center;justify-content:space-between;
+    gap:20px;padding:24px 30px;border:1px solid rgba(237,199,133,.35);border-radius:14px;}
+.fiabesco-footer .newsletter h3 {font:400 21px/1.3 var(--font-display);color:#fff;}
+.fiabesco-footer .newsletter__kicker {font:400 12px/1.2 var(--font-price);color:var(--color-gold);}
+.fiabesco-footer .newsletter__form {display:flex;gap:10px;align-items:center;}
+.fiabesco-footer .newsletter__input {height:44px;padding:0 17px;border-radius:999px;
+    font:400 13px/1.3 var(--font-main);border-color:rgba(255,255,255,.32);color:#fff;}
+.fiabesco-footer .newsletter__form .btn {height:44px;min-height:44px;padding:0 20px;
+    border-radius:999px;font-size:12px;}
+@media(min-width:1024px) {
+  .fiabesco-footer .site-footer__inner {grid-template-columns:1.4fr 1fr 1fr 1fr;
+    column-gap:40px;padding:56px 48px 36px;}
+  .fiabesco-footer .footer-top {grid-column:1;}
+  .fiabesco-footer .footer-bottom {grid-column:1/-1;}
+}
+@media(min-width:768px) and (max-width:1023px) {
+  .fiabesco-footer .site-footer__inner {grid-template-columns:repeat(3,1fr);}
+  .fiabesco-footer .newsletter {flex-direction:column;align-items:stretch;}
+}
+@media(max-width:767px) {
+  .fiabesco-footer .site-footer__inner {display:block;padding:34px 28px 37px;}
+  .fiabesco-footer .newsletter {flex-direction:column;align-items:stretch;padding:20px;margin-bottom:26px;}
+  .fiabesco-footer .newsletter h3 {font-size:18px;}
+  .fiabesco-footer .newsletter__form {flex-direction:column;align-items:stretch;}
+  .fiabesco-footer .newsletter__input {width:100%;}
+  .fiabesco-footer .footer-col {margin-top:27px;}
+  .fiabesco-footer .footer-bottom {flex-direction:column;align-items:flex-start;margin-top:32px;}
+}
+
+/* Open menu must be above the sibling overlay; source layout.css sets
+   .site-header z=100 and .nav-overlay z=190, creating a stacking-context
+   problem without this bridge rule. */
+@media(max-width:767px) {
+  .pc-header:has(.site-nav.is-open) {z-index:var(--z-drawer);}
+  .pc-header .site-nav:focus-within {outline:none;}
+}
+
+
+/* Icon header của template có SVG nét trắng: đổi hiển thị thành navy
+   trên header trắng mà không chỉnh sửa file giohang.svg gốc. */
+.pc-header .header-actions .header-action img {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(47%) saturate(925%) hue-rotate(164deg) brightness(94%) contrast(107%);
+}
+/* Nhất quán kích thước ở header, tránh icon trắng trùng nền. */
+.pc-header .pc-cart img,
+.pc-header .pc-account img { width: 30px; height: 30px; }
+
+/* === Sửa footer PC theo bố cục Figma; không sửa layout chung của nhóm === */
+.fiabesco-footer .footer-brand__badge {position:relative;overflow:hidden;flex:none;}
+.fiabesco-footer .footer-brand__fallback {display:none;font:400 25px/1 var(--font-logo);color:var(--color-primary);}
+.fiabesco-footer .footer-brand__badge.is-missing-logo img {display:none;}
+.fiabesco-footer .footer-brand__badge.is-missing-logo .footer-brand__fallback {display:block;}
+.fiabesco-footer .footer-links span {display:inline-block;font:400 13px/1.55 var(--font-main);color:rgba(255,255,255,.78);}
+.fiabesco-footer .footer-social {align-items:center;}
+.fiabesco-footer .footer-social a {display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;}
+.fiabesco-footer .footer-social .ic {display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;color:var(--color-gold);}
+.fiabesco-footer .footer-social .ic svg {width:18px;height:18px;display:block;}
+@media(min-width:1024px) {
+  /* Khung Buon Appetito nhích lên 20px; cách cột bên dưới thêm 20px. */
+  .fiabesco-footer .newsletter {
+    transform: translateY(-20px);
+    padding-block: 28px;
+    margin-bottom: 20px;
+  }
+  .fiabesco-footer .footer-col {min-width:0;}
+}
+@media(min-width:768px) and (max-width:1023px) {
+  .fiabesco-footer .newsletter {margin-bottom:20px;}
+}
+@media(max-width:767px) {
+  .fiabesco-footer .footer-links span {font-size:15px;}
+}
+
+/* HTML inline icon có kích thước theo chính thẻ .ic, không cần tải SVG ảnh. */
+body[data-design-system] .ic {display:inline-flex;align-items:center;justify-content:center;vertical-align:-.125em;}
+body[data-design-system] .ic > svg {display:block;width:100%;height:100%;max-width:none;flex:none;}
+.pc-header .header-action .ic {width:24px;height:24px;color:var(--color-primary);}
+.pc-header .header-action .ic > svg {width:100%;height:100%;}

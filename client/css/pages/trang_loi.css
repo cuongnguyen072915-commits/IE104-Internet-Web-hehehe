@@ -1,0 +1,9 @@
+/* Trang lỗi – Frame "PC – E01 · Lỗi 404", "PC – E03 · Lỗi hệ thống (500)" */
+.err{display:flex;align-items:center;gap:96px;padding-top:100px;padding-bottom:120px}
+.err__art{width:520px;height:520px;flex:none;border-radius:50%;background:#F3EADA;display:flex;align-items:center;justify-content:center}
+.err__plate{width:340px;height:340px;border-radius:50%;background:#fff;box-shadow:0 30px 60px rgba(0,40,66,.16);display:flex;align-items:center;justify-content:center}
+.err__plate span{width:280px;height:280px;border-radius:50%;border:1px solid rgba(204,166,97,.55);display:flex;align-items:center;justify-content:center;font:400 110px/1 var(--f-display);color:var(--navy);letter-spacing:-.02em}
+.err__body{display:flex;flex-direction:column;gap:18px;max-width:540px}
+.err__links{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+@media (max-width:1100px){.err{flex-direction:column;text-align:center;gap:48px}.err__body{align-items:center}}
+@media (max-width:768px){.err{padding-top:48px}.err__art{width:300px;height:300px}.err__plate{width:210px;height:210px}.err__plate span{width:172px;height:172px;font-size:68px}}

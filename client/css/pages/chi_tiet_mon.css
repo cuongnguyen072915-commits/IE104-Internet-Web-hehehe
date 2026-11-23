@@ -1,0 +1,43 @@
+/* Chi tiết món – Frame "PC – 03 Chi tiết món" */
+.pd{display:flex;flex-direction:column;gap:40px;padding-top:32px;padding-bottom:120px}
+.pd__top{display:flex;gap:56px;align-items:flex-start}
+.pd__gallery{width:600px;flex:none;display:flex;flex-direction:column;gap:20px}
+.pd__main{position:relative;height:540px;border-radius:24px;overflow:hidden}
+.pd__main img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+.pd__soldout{position:absolute;left:24px;top:24px;padding:10px 20px;border-radius:999px;background:var(--navy);color:#fff;font:600 14px/1.4 var(--f-sans);letter-spacing:.1em}
+.is-soldout .pd__main img{opacity:.55}
+.pd__thumbs{display:flex;gap:20px}
+.pd__thumbs button{width:135px;height:100px;border-radius:14px;overflow:hidden;opacity:.7;outline:2px solid transparent;outline-offset:-2px;transition:opacity .2s,outline-color .2s}
+.pd__thumbs button img{width:100%;height:100%;object-fit:cover}
+.pd__thumbs button:hover{opacity:1}
+.pd__thumbs .is-active{opacity:1;outline-color:var(--wine)}
+.pd__info{width:544px;display:flex;flex-direction:column;gap:22px}
+.stars-sm{font-size:16px;letter-spacing:.08em;color:var(--gold)}
+.opts{display:flex;gap:20px}
+.opt{width:262px;display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:14px;background:#fff;border:1px solid var(--line);text-align:left;transition:.2s}
+.opt strong{font:600 15px/1.4 var(--f-sans)}
+.opt small{font:400 13px/1.5 var(--f-sans);color:var(--gray)}
+.opt.is-active{background:var(--cream-2);border:1.5px solid var(--navy)}
+.tops{display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:center;padding:12px 0;cursor:pointer}
+.top .checkbox__box{width:22px;height:22px}
+.top__price{font:400 16px/1.2 var(--f-price);color:var(--wine)}
+.buy{display:flex;gap:12px;align-items:center}
+.pd__fav{width:52px;height:52px;border:1.5px solid var(--wine);color:var(--wine)}
+.pd__fav .ic{width:22px;height:22px}
+.pd__fav.is-active svg path{fill:var(--wine)}
+.perks{display:flex;gap:18px;flex-wrap:wrap}
+.perks span{display:flex;align-items:center;gap:10px;font:400 14px/1.55 var(--f-sans)}
+.perks b{width:36px;height:36px;border-radius:10px;background:var(--navy);color:var(--gold-l);display:flex;align-items:center;justify-content:center}
+.perks .ic{width:18px;height:18px}
+.is-soldout .opt,.is-soldout .top{opacity:.45;pointer-events:none}
+.is-soldout #qty{opacity:.35;pointer-events:none}
+.pd-tabs{padding:40px;display:flex;flex-direction:column;gap:32px;scroll-margin-top:120px}
+.pd-tabs__body{display:flex;justify-content:space-between;align-items:flex-start;gap:40px}
+.pd-tabs__panel{width:760px;display:flex;flex-direction:column;gap:14px}
+.nutri{width:360px;flex:none;background:var(--cream-2);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.pd-suggest{display:flex;flex-direction:column;gap:40px;padding-top:24px}
+.pd-suggest__row{display:flex;gap:24px}
+@media (max-width:1280px){.pd__gallery{width:50%}.pd__info{width:auto;flex:1}.pd__main{height:auto;aspect-ratio:600/540}.pd__thumbs button{flex:1;width:auto;height:auto;aspect-ratio:135/100}.pd-suggest__row{flex-wrap:wrap}.pd-suggest__row .dish{width:calc(50% - 12px)}}
+@media (max-width:1100px){.pd__top{flex-direction:column}.pd__gallery{width:100%}.pd-tabs__body{flex-direction:column}.pd-tabs__panel,.nutri{width:100%}}
+@media (max-width:768px){.opts{flex-direction:column}.opt{width:100%}.buy{flex-wrap:wrap}.buy .grow{flex-basis:100%;order:3}.pd-tabs{padding:24px}.pd-suggest__row .dish{width:100%}}
