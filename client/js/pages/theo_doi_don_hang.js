@@ -8,7 +8,15 @@ document.addEventListener('fb:ready', () => {
     const first = (o.name || 'Minh Anh').split(' ').slice(-2).join(' ');
     $('#thanks').textContent = `Cảm ơn bạn, ${first}!`;
     $('#order-meta').textContent = `Mã đơn #FB2611-0248 · ${o.pay === 'Tiền mặt' ? 'Thanh toán khi nhận hàng' : 'Đã thanh toán qua ' + o.pay} · ${money(o.total)}`;
-    $('#to').textContent = (o.addr || '68 Lê Lợi, Q.1') + (o.apt ? ' · ' + o.apt : '');
+    // o.addr: "Số nhà và tên đường, Phường/Xã, Tỉnh/Thành phố"; khu vực cũ (nếu có) hiển thị tách riêng.
+    const to = $('#to');
+    to.textContent = (o.addr || '68 Lê Lợi, Q.1') + (o.apt ? ' · ' + o.apt : '');
+    if (o.deliveryArea && o.deliveryArea.name) {
+      const area = document.createElement('small');
+      area.className = 't-caption c-gray'; area.style.display = 'block';
+      area.textContent = 'Khu vực giao hàng: ' + o.deliveryArea.name;
+      to.appendChild(area);
+    }
     $('#who').textContent = `${first} · ${o.phone}`;
     $('#sub').textContent = money(o.sub); $('#fee').textContent = money(o.fee); $('#disc').textContent = '−' + money(Math.max(0, o.disc)); $('#total').textContent = money(o.total);
   }

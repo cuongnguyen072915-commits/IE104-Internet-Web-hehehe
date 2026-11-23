@@ -34,7 +34,34 @@
             <label class="field" data-f="email"><span class="field__label" data-l="Email">Email</span><span class="field__box"><input name="email" type="email" placeholder="minhanh@gmail.com" autocomplete="email"></span></label>
             <label class="field"><span class="field__label">Tòa nhà / Căn hộ</span><span class="field__box"><input name="apt" placeholder="Lầu 5, phòng 502"></span></label>
           </div>
-          <label class="field" data-f="addr"><span class="field__label" data-l="Địa chỉ giao hàng *">Địa chỉ giao hàng *</span><span class="field__box"><input name="addr" placeholder="68 Lê Lợi, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh" autocomplete="street-address"></span></label>
+          <!-- Địa chỉ giao hàng: số nhà/đường + tỉnh/thành + khu vực cũ (gợi ý) + phường/xã hiện hành -->
+          <fieldset class="addr" id="addr-block">
+            <legend class="field__label addr__legend">Địa chỉ giao hàng *</legend>
+            <div class="field" data-f="street">
+              <label class="field__label" for="co-street">Số nhà, tên đường *</label>
+              <span class="field__box"><input id="co-street" name="street" placeholder="Ví dụ: 123 Nguyễn Huệ" autocomplete="address-line1" required aria-required="true" aria-describedby="err-street"></span>
+              <span class="field__error" id="err-street" role="alert"></span>
+            </div>
+            <div class="co-grid">
+              <div class="field" data-f="province">
+                <label class="field__label" for="co-province">Tỉnh/Thành phố *</label>
+                <span class="field__box addr__select"><select id="co-province" name="province" required aria-required="true" aria-describedby="err-province"><option value="HCM">TP. Hồ Chí Minh</option></select></span>
+                <span class="field__error" id="err-province" role="alert"></span>
+              </div>
+              <div class="field" data-f="area">
+                <label class="field__label" for="co-area">Quận/Huyện cũ (khu vực giao hàng)</label>
+                <span class="field__box addr__select"><select id="co-area" name="area" aria-describedby="hint-area"><option value="">Tất cả khu vực</option></select></span>
+                <span class="field__hint" id="hint-area">Chỉ để lọc nhanh và hỗ trợ giao hàng, không phải đơn vị hành chính hiện hành.</span>
+              </div>
+            </div>
+            <div class="field" data-f="ward">
+              <label class="field__label" for="co-ward">Phường/Xã *</label>
+              <span class="field__box addr__select"><select id="co-ward" name="ward" required aria-required="true" aria-describedby="hint-ward err-ward"><option value="">Chọn phường/xã</option></select></span>
+              <span class="field__hint" id="hint-ward">Tên theo đơn vị hành chính hiện hành. Một phường mới có thể gồm nhiều khu vực cũ — nếu không thấy, hãy chọn “Tất cả khu vực”.</span>
+              <span class="field__error" id="err-ward" role="alert"></span>
+            </div>
+          </fieldset>
+          <div class="alert alert--gold pickup-note" id="pickup-note" hidden><i data-icon="location-pin"></i><span class="t-body-s">Bạn chọn <strong>tự đến lấy</strong> tại chi nhánh 102 Tôn Dật Tiên (khu vực Quận 7 cũ) — không cần địa chỉ giao hàng.</span><button type="button" class="pickup-note__undo" id="pickup-undo">Giao tận nơi</button></div>
           <a class="map-link" href="lien_he.html"><i data-icon="location-pin"></i>Chọn vị trí trên bản đồ · Cách nhà hàng 2,4 km</a>
         </section>
 
@@ -69,6 +96,7 @@
         <div class="sum-row" id="row-bonus"><span>Ưu đãi ZaloPay</span><span class="c-green">−10.000 VND</span></div>
         <hr class="divider">
         <div class="between"><span class="t-title">Tổng thanh toán</span><span class="t-price-l c-wine" id="total"></span></div>
+        <div class="ship-to" id="ship-to" hidden><span class="t-caption c-gray">Giao đến</span><span class="t-body-s" id="ship-to-text"></span><span class="t-caption c-gray" id="ship-to-area" hidden></span></div>
         <div class="terms" id="terms"><label class="checkbox"><input type="checkbox" name="terms" checked><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-caption c-gray">Tôi đồng ý với Điều khoản dịch vụ và Chính sách đổi trả của Fiabesco Palace.</span></label></div>
         <button class="btn btn--wine btn--block" type="submit" id="pay-btn">Xác nhận &amp; thanh toán</button>
         <div class="secure"><i data-icon="lock"></i>Mã hóa SSL 256-bit · Không lưu thông tin thẻ</div>
@@ -78,6 +106,7 @@
   <footer data-footer></footer>
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
+  <script src="../js/data/dia_chi_tphcm.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/pages/thanh_toan.js"></script>
 </body>

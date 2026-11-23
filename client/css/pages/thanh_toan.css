@@ -2,3 +2,38 @@
 @import url("./don_hang.css");
 
 /* Bổ sung các quy tắc chỉ dành cho trang Thanh toán ở bên dưới. */
+
+/* ---- Địa chỉ giao hàng: số nhà/đường + tỉnh/thành + khu vực cũ + phường/xã ---- */
+/* Khoảng cách giữa các hàng = khoảng cách giữa hàng "Họ và tên" và "Email" (.co-card gap 22px). */
+.addr{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;border:0;min-width:0}
+.addr__legend{padding:0;margin-bottom:22px;color:var(--navy)}
+.addr[hidden]{display:none}
+
+/* Dropdown cùng kích thước, viền, bo góc với ô input hiện có; thêm mũi tên navy. */
+.addr__select{position:relative;padding-right:14px}
+.addr__select select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:28px;text-overflow:ellipsis;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23002842' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0 center/16px}
+.addr__select select:invalid,.addr__select select.is-placeholder{color:var(--gray)}
+.addr__select select option{color:var(--navy)}
+
+.field__hint{font:400 13px/1.5 var(--f-sans);color:var(--gray)}
+.field.is-error .field__error{display:block}
+
+/* Thông báo "tự đến lấy" (thay cho khối địa chỉ) */
+.pickup-note{align-items:center;gap:10px;width:100%}
+.pickup-note[hidden]{display:none}
+.pickup-note .t-body-s{flex:1;min-width:0}
+.pickup-note__undo{flex:none;padding:8px 14px;border-radius:999px;border:1.5px solid var(--navy);background:transparent;
+  color:var(--navy);font:600 13px/1.2 var(--f-sans);cursor:pointer}
+.pickup-note__undo:hover{background:var(--navy);color:#fff}
+.pickup-note__undo:focus-visible,.addr__select select:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+
+/* Tóm tắt đơn: hiển thị lại địa chỉ đã ghép */
+.ship-to{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-radius:12px;background:var(--cream);border:1px solid var(--line)}
+.ship-to[hidden],.ship-to [hidden]{display:none}
+.ship-to #ship-to-text{color:var(--navy);font-weight:600;overflow-wrap:anywhere}
+
+@media (max-width: 768px){
+  .addr .co-grid{grid-template-columns:1fr}
+  .pickup-note{flex-wrap:wrap}
+}
