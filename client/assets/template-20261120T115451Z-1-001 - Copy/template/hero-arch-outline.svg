@@ -1,0 +1,6 @@
+<svg width="440" height="580" viewBox="0 0 440 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="stroke0_3115_6531" fill="white">
+<path d="M0 220C0 98.4974 98.4974 0 220 0V0C341.503 0 440 98.4974 440 220V580H0V220Z"/>
+</mask>
+<path d="M440 580V220C440 98.4974 341.503 0 220 0V0C98.4974 0 0 98.4974 0 220V580H440Z" stroke-width="3" stroke="#CCA661" mask="url(#stroke0_3115_6531)"/>
+</svg>
