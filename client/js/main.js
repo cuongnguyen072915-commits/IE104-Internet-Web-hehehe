@@ -83,7 +83,7 @@
   }
   function brand(light = false) {
     return `<a class="brand" href="trang_chu.html" aria-label="Fiabesco Palace – Trang chủ">
-      <img class="brand__logo" src="../assets/template-20261120T115451Z-1-001 - Copy/template/logo-emblem.png" alt="Logo Fiabesco Palace">
+      <img class="brand__logo" src="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png" alt="Logo Fiabesco Palace">
       <span class="brand__text"><span class="brand__name">FiabescoPalace</span>
       <span class="brand__tagline">Italy on Every Plate</span></span></a>`;
   }
@@ -183,7 +183,7 @@
       </form>
       <div class="footer-top">
         <a class="footer-brand" href="trang_chu.html" aria-label="Fiabesco Palace – Trang chủ">
-          <span class="footer-brand__badge"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/logo-emblem.png" alt="Logo Fiabesco Palace"><span class="footer-brand__fallback" aria-hidden="true">FP</span></span>
+          <span class="footer-brand__badge"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png" alt="Logo Fiabesco Palace"><span class="footer-brand__fallback" aria-hidden="true">FP</span></span>
           <span><span class="footer-brand__name">FiabescoPalace</span><br>
             <span class="footer-brand__tagline">Italy on Every Plate</span></span>
         </a>
@@ -210,7 +210,7 @@
       <div class="footer-bottom"><p class="footer-copy">© 2026 Fiabesco Palace · Est. 2014</p>
         <p class="footer-copy">MoMo · ZaloPay · VISA · Mastercard · Tiền mặt</p></div>
     </div>`;
-    // Nếu GitHub chưa có đúng logo-emblem.png, không hiện biểu tượng ảnh lỗi.
+    // Nếu GitHub chưa có đúng Logo (remove backround).png, không hiện biểu tượng ảnh lỗi.
     // Khi file có mặt, logo thật được giữ nguyên theo Figma.
     const footerLogo = $('.footer-brand__badge img', el);
     const logoFallback = () => footerLogo.closest('.footer-brand__badge').classList.add('is-missing-logo');
