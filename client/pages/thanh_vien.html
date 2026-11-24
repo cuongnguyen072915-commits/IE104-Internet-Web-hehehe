@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Thành viên – Fiabesco Palace</title>
+  <meta name="description" content="Đăng nhập, đăng ký thành viên Fiabesco Palace: tích điểm, đổi ưu đãi, xem lịch sử đặt bàn & giao hàng và món yêu thích.">
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/thanh_vien.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="thanh_vien">
+  <!-- Luồng Thành viên (Lam) – Figma "★ TỔNG HỢP LUỒNG" mục 07 A–E2 + "PC – 09 Thành viên – Đăng nhập".
+       Mỗi màn là một view, chuyển bằng hash: #dang-nhap, #dang-ky, #otp, #quen-mat-khau, #ho-so, #the-thanh-vien,
+       #lich-su, #yeu-thich, #cap-nhat … (xem js/pages/thanh_vien.js). -->
+  <header data-header></header>
+  <main class="site-main mb" id="noi-dung-chinh">
+
+    <!-- ============ A. ĐĂNG NHẬP / ĐĂNG KÝ / OTP / QUÊN MẬT KHẨU (khung PC – 09) ============ -->
+    <div class="container mb-shell" data-group="auth" hidden>
+      <div class="mb-auth card">
+        <aside class="mb-side" style="background-image:url('../assets/template-20261120T115451Z-1-001 - Copy/template/restaurant-dining-hall.jpg')">
+          <div class="mb-side__inner">
+            <span class="mb-side__hello">Benvenuto!</span>
+            <h2 class="t-h2">Thành viên<br>Fiabesco Palace</h2>
+            <p class="t-body">Đăng nhập để tích điểm, nhận ưu đãi riêng và quản lý lịch sử đặt bàn, giao hàng.</p>
+            <ul class="mb-perks">
+              <li><span><i data-icon="star"></i></span><div><strong>Tích 5% điểm mỗi đơn</strong><small>Đổi điểm lấy món &amp; voucher</small></div></li>
+              <li><span><i data-icon="gift"></i></span><div><strong>Quà sinh nhật</strong><small>Tráng miệng miễn phí trong tháng sinh nhật</small></div></li>
+              <li><span><i data-icon="calendar"></i></span><div><strong>Ưu tiên đặt bàn</strong><small>Giữ bàn đẹp vào cuối tuần &amp; dịp lễ</small></div></li>
+            </ul>
+            <div class="mb-tiers"><span>Bạc</span><span>Vàng</span><span>Bạch Kim</span></div>
+          </div>
+        </aside>
+
+        <div class="mb-panel">
+          <!-- M01 Đăng nhập + E01–E09 -->
+          <section data-view="dang-nhap" aria-labelledby="t-login" hidden>
+            <h1 class="t-h1" id="t-login">Chào mừng trở lại</h1>
+            <p class="t-body c-gray">Đăng nhập để tích điểm, đặt bàn nhanh và nhận ưu đãi dành riêng cho thành viên.</p>
+            <div class="seg mb-seg"><button type="button" class="is-active">Đăng nhập</button><button type="button" data-mb-go="dang-ky">Đăng ký</button></div>
+            <div class="mb-alert" data-alert role="alert" hidden></div>
+            <form class="mb-form" id="f-login" novalidate>
+              <label class="field" data-f="id"><span class="field__label">Email hoặc số điện thoại</span>
+                <span class="field__box"><i data-icon="email"></i><input name="id" placeholder="nguyenvanan@gmail.com" autocomplete="username"></span>
+                <span class="field__error"></span></label>
+              <label class="field" data-f="pw"><span class="field__label">Mật khẩu</span>
+                <span class="field__box"><i data-icon="lock"></i><input name="pw" type="password" placeholder="••••••••" autocomplete="current-password"><button type="button" class="mb-eye" data-eye>Hiện</button></span>
+                <span class="field__error"></span></label>
+              <div class="between">
+                <label class="checkbox"><input type="checkbox" name="remember" checked><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s">Ghi nhớ đăng nhập</span></label>
+                <a class="mb-link" href="#quen-mat-khau">Quên mật khẩu?</a>
+              </div>
+              <button class="btn btn--navy btn--block" type="submit">Đăng nhập</button>
+            </form>
+            <div class="mb-or">hoặc tiếp tục với</div>
+            <div class="mb-social">
+              <button type="button" class="btn btn--outline" data-mb-social="Google"><svg class="mb-social__logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Google</button>
+              <button type="button" class="btn btn--outline" data-mb-social="Facebook"><svg class="mb-social__logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path fill="#fff" d="M15.1 7.5h-1.6c-.9 0-1.1.4-1.1 1v1.4h2.6l-.3 2.6h-2.3v7h-2.7v-7H7.5V9.9h2.3V8.3c0-2.2 1.4-3.5 3.4-3.5 1 0 1.8.1 2 .1v2.6z"/></svg>Facebook</button>
+            </div>
+            <p class="mb-foot">Chưa có tài khoản? <a class="mb-link" href="#dang-ky">Đăng ký ngay</a></p>
+            <a class="mb-lookup" href="theo_doi_don_hang.html"><i data-icon="search"></i>Đặt hàng không cần tài khoản? Tra cứu đơn</a>
+            <p class="mb-demo t-caption c-gray">Bản demo – tài khoản mẫu: <b>nguyenvanan@gmail.com</b> · mật khẩu <b>Fiabesco1</b></p>
+          </section>
+
+          <!-- M02 Đăng ký + E10–E12 -->
+          <section data-view="dang-ky" aria-labelledby="t-reg" hidden>
+            <h1 class="t-h1" id="t-reg">Tạo tài khoản thành viên</h1>
+            <p class="t-body c-gray">Trở thành thành viên Fiabesco Palace – nhận ngay 100 điểm chào mừng.</p>
+            <div class="seg mb-seg"><button type="button" data-mb-go="dang-nhap">Đăng nhập</button><button type="button" class="is-active">Đăng ký</button></div>
+            <div class="mb-alert" data-alert role="alert" hidden></div>
+            <form class="mb-form" id="f-reg" novalidate>
+              <label class="field" data-f="name"><span class="field__label">Họ và tên</span>
+                <span class="field__box"><i data-icon="user"></i><input name="name" placeholder="Nguyễn Văn An" autocomplete="name"></span><span class="field__error"></span></label>
+              <label class="field" data-f="email"><span class="field__label">Email</span>
+                <span class="field__box"><i data-icon="email"></i><input name="email" type="email" placeholder="nguyenvanan@gmail.com" autocomplete="email"></span><span class="field__error"></span></label>
+              <label class="field" data-f="phone"><span class="field__label">Số điện thoại</span>
+                <span class="field__box"><i data-icon="phone"></i><input name="phone" type="tel" placeholder="0901 234 678" autocomplete="tel"></span><span class="field__error"></span></label>
+              <label class="field" data-f="pw"><span class="field__label">Mật khẩu</span>
+                <span class="field__box"><i data-icon="lock"></i><input name="pw" type="password" placeholder="Tối thiểu 8 ký tự" autocomplete="new-password"><button type="button" class="mb-eye" data-eye>Hiện</button></span>
+                <span class="mb-strength" data-strength hidden><i></i><i></i><i></i><i></i><b></b></span>
+                <span class="field__error"></span></label>
+              <label class="field" data-f="pw2"><span class="field__label">Nhập lại mật khẩu</span>
+                <span class="field__box"><i data-icon="lock"></i><input name="pw2" type="password" placeholder="••••••••" autocomplete="new-password"></span><span class="field__error"></span></label>
+              <label class="checkbox" data-f="terms"><input type="checkbox" name="terms"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s">Tôi đồng ý với Điều khoản &amp; Chính sách bảo mật</span></label>
+              <span class="field__error mb-terms-error">Vui lòng đồng ý với Điều khoản &amp; Chính sách bảo mật</span>
+              <button class="btn btn--navy btn--block" type="submit">Tạo tài khoản</button>
+            </form>
+            <p class="t-caption c-gray mb-center">Mã OTP sẽ được gửi tới số điện thoại của bạn để xác nhận tài khoản.</p>
+            <p class="mb-foot">Đã có tài khoản? <a class="mb-link" href="#dang-nhap">Đăng nhập</a></p>
+          </section>
+
+          <!-- M03 / M06 Xác thực OTP + E15–E20 -->
+          <section data-view="otp" class="mb-center-view" aria-labelledby="t-otp" hidden>
+            <a class="back-link" href="#dang-nhap" data-otp-back><i data-icon="arrow-left"></i>Quay lại</a>
+            <span class="mb-round"><i data-icon="shield-check"></i></span>
+            <h1 class="t-h2" id="t-otp">Nhập mã xác nhận</h1>
+            <p class="t-body c-gray" data-otp-desc></p>
+            <div class="mb-alert" data-alert role="alert" hidden></div>
+            <form id="f-otp" novalidate>
+              <div class="mb-otp" data-otp-boxes>
+                <input inputmode="numeric" maxlength="1" aria-label="Chữ số 1" autocomplete="one-time-code"><input inputmode="numeric" maxlength="1" aria-label="Chữ số 2"><input inputmode="numeric" maxlength="1" aria-label="Chữ số 3"><input inputmode="numeric" maxlength="1" aria-label="Chữ số 4"><input inputmode="numeric" maxlength="1" aria-label="Chữ số 5"><input inputmode="numeric" maxlength="1" aria-label="Chữ số 6">
+              </div>
+              <p class="t-body-s mb-resend">Chưa nhận được mã? <button type="button" data-resend disabled>Gửi lại sau <span data-timer>01:00</span></button></p>
+              <button class="btn btn--navy btn--block" type="submit">Xác nhận</button>
+              <button class="btn btn--outline btn--block" type="button" data-otp-change>Đổi số điện thoại</button>
+            </form>
+            <p class="t-caption c-gray">Mã OTP có hiệu lực trong 5 phút. Không chia sẻ mã này cho bất kỳ ai.</p>
+          </section>
+
+          <!-- M04 Đăng ký thành công -->
+          <section data-view="dang-ky-thanh-cong" class="mb-center-view" aria-labelledby="t-regok" hidden>
+            <span class="mb-round mb-round--ok"><i data-icon="check"></i></span>
+            <h1 class="t-h2" id="t-regok">Đăng ký thành công!</h1>
+            <p class="t-body c-gray">Chào mừng <b data-user-name></b> đến với gia đình Fiabesco Palace.</p>
+            <div class="mb-gift"><i data-icon="gift"></i><div><strong>Quà chào mừng: +100 điểm</strong><small>Điểm đã được cộng vào thẻ thành viên của bạn.</small></div></div>
+            <a class="btn btn--navy btn--block" href="#the-thanh-vien">Xem thẻ thành viên</a>
+            <a class="btn btn--outline btn--block" href="trang_chu.html">Về trang chủ</a>
+          </section>
+
+          <!-- M05 Quên mật khẩu + E21 -->
+          <section data-view="quen-mat-khau" aria-labelledby="t-forgot" hidden>
+            <a class="back-link" href="#dang-nhap"><i data-icon="arrow-left"></i>Quay lại đăng nhập</a>
+            <span class="mb-round"><i data-icon="lock"></i></span>
+            <h1 class="t-h2" id="t-forgot">Quên mật khẩu?</h1>
+            <p class="t-body c-gray">Nhập email hoặc số điện thoại đã đăng ký. Chúng tôi sẽ gửi mã OTP để bạn đặt lại mật khẩu.</p>
+            <div class="mb-alert" data-alert role="alert" hidden></div>
+            <form class="mb-form" id="f-forgot" novalidate>
+              <label class="field" data-f="id"><span class="field__label">Email hoặc số điện thoại</span>
+                <span class="field__box"><i data-icon="email"></i><input name="id" placeholder="nguyenvanan@gmail.com" autocomplete="username"></span><span class="field__error"></span></label>
+              <button class="btn btn--navy btn--block" type="submit">Gửi mã OTP</button>
+            </form>
+            <p class="mb-foot">Nhớ ra mật khẩu? <a class="mb-link" href="#dang-nhap">Đăng nhập</a></p>
+          </section>
+
+          <!-- M07 Đặt lại mật khẩu + E22 (cũng dùng cho "Đổi mật khẩu" khi đã đăng nhập) -->
+          <section data-view="dat-lai-mat-khau" aria-labelledby="t-reset" hidden>
+            <a class="back-link" href="#dang-nhap" data-reset-back><i data-icon="arrow-left"></i>Quay lại</a>
+            <span class="mb-round"><i data-icon="shield-check"></i></span>
+            <h1 class="t-h2" id="t-reset">Tạo mật khẩu mới</h1>
+            <p class="t-body c-gray">Mật khẩu mới phải khác mật khẩu bạn đã dùng trước đây.</p>
+            <div class="mb-alert" data-alert role="alert" hidden></div>
+            <form class="mb-form" id="f-reset" novalidate>
+              <label class="field" data-f="pw"><span class="field__label">Mật khẩu mới</span>
+                <span class="field__box"><i data-icon="lock"></i><input name="pw" type="password" placeholder="Tối thiểu 8 ký tự" autocomplete="new-password"><button type="button" class="mb-eye" data-eye>Hiện</button></span><span class="field__error"></span></label>
+              <ul class="mb-rules" data-rules>
+                <li data-rule="len">Tối thiểu 8 ký tự</li>
+                <li data-rule="case">Có chữ hoa và chữ thường</li>
+                <li data-rule="num">Có ít nhất 1 chữ số</li>
+                <li data-rule="special">Có ký tự đặc biệt (khuyến nghị)</li>
+              </ul>
+              <label class="field" data-f="pw2"><span class="field__label">Nhập lại mật khẩu mới</span>
+                <span class="field__box"><i data-icon="lock"></i><input name="pw2" type="password" placeholder="••••••••" autocomplete="new-password"></span><span class="field__error"></span></label>
+              <button class="btn btn--navy btn--block" type="submit">Đặt lại mật khẩu</button>
+            </form>
+          </section>
+
+          <!-- M08 Đổi mật khẩu thành công -->
+          <section data-view="doi-mat-khau-thanh-cong" class="mb-center-view" aria-labelledby="t-pwok" hidden>
+            <span class="mb-round mb-round--ok"><i data-icon="check"></i></span>
+            <h1 class="t-h2" id="t-pwok">Đổi mật khẩu thành công!</h1>
+            <p class="t-body c-gray">Bạn có thể đăng nhập bằng mật khẩu mới ngay bây giờ. Vì lý do bảo mật, các thiết bị khác đã được đăng xuất.</p>
+            <a class="btn btn--navy btn--block" href="#dang-nhap" data-pwok-next>Đăng nhập</a>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ E13 Khách chưa đăng nhập vào trang Thành viên ============ -->
+    <div class="container mb-narrow" data-group="guest" hidden>
+      <section data-view="can-dang-nhap" class="mb-center-view mb-guest" aria-labelledby="t-guest" hidden>
+        <span class="mb-round"><i data-icon="arrow-right"></i></span>
+        <h1 class="t-h2" id="t-guest">Đăng nhập để tiếp tục</h1>
+        <p class="t-body c-gray">Bạn cần đăng nhập để xem hồ sơ, điểm thành viên, lịch sử đặt bàn &amp; giao hàng và món yêu thích.</p>
+        <a class="btn btn--navy btn--block" href="#dang-nhap">Đăng nhập</a>
+        <a class="btn btn--outline btn--block" href="#dang-ky">Tạo tài khoản mới</a>
+        <div class="mb-box mb-benefits">
+          <strong>Quyền lợi thành viên</strong>
+          <ul><li><i data-icon="check"></i>Tích điểm mỗi lần đặt bàn &amp; giao hàng</li>
+            <li><i data-icon="check"></i>Đổi điểm lấy món miễn phí và voucher</li>
+            <li><i data-icon="check"></i>Lưu món yêu thích, đặt lại chỉ với 1 chạm</li></ul>
+        </div>
+        <p class="mb-foot">Đặt hàng không cần tài khoản? <a class="mb-link" href="theo_doi_don_hang.html">Tra cứu đơn</a></p>
+      </section>
+    </div>
+
+    <!-- ============ B. TRANG CÁ NHÂN – THÀNH VIÊN ============ -->
+    <div class="container mb-narrow" data-group="account" hidden>
+      <!-- M10 Hồ sơ thành viên + E23–E26 -->
+      <section data-view="ho-so" aria-label="Hồ sơ thành viên" hidden>
+        <div data-profile></div>
+      </section>
+
+      <!-- M11 Thẻ thành viên & đổi điểm + E27–E29 -->
+      <section data-view="the-thanh-vien" aria-labelledby="t-card" hidden>
+        <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-card">Thẻ thành viên</h1></div>
+        <div data-card></div>
+      </section>
+
+      <!-- M12a/M12b Lịch sử + E30–E34 -->
+      <section data-view="lich-su" aria-labelledby="t-hist" hidden>
+        <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-hist">Lịch sử</h1></div>
+        <div class="seg mb-seg mb-seg--icons" role="tablist">
+          <button type="button" role="tab" data-tab="dat-ban"><i data-icon="calendar"></i>Đặt bàn</button>
+          <button type="button" role="tab" data-tab="giao-hang"><i data-icon="delivery-truck"></i>Giao hàng</button>
+        </div>
+        <div data-history></div>
+      </section>
+
+      <!-- M13 Món yêu thích + E35–E36 -->
+      <section data-view="yeu-thich" aria-labelledby="t-fav" hidden>
+        <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-fav">Món yêu thích</h1></div>
+        <div data-favs></div>
+      </section>
+
+      <!-- M14 Cập nhật thông tin + E37–E40 -->
+      <section data-view="cap-nhat" aria-labelledby="t-edit" hidden>
+        <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-edit">Cập nhật thông tin</h1></div>
+        <form class="mb-form" id="f-edit" novalidate>
+          <div class="mb-avatar-edit">
+            <span class="mb-avatar mb-avatar--lg" data-edit-avatar></span>
+            <label class="mb-link mb-avatar-btn"><i data-icon="edit"></i>Đổi ảnh đại diện<input type="file" name="avatar" accept="image/png,image/jpeg,image/webp" hidden></label>
+            <span class="mb-avatar-error" data-avatar-error role="alert"></span>
+          </div>
+          <label class="field" data-f="name"><span class="field__label">Họ và tên</span>
+            <span class="field__box"><i data-icon="user"></i><input name="name" autocomplete="name"></span><span class="field__error"></span></label>
+          <label class="field" data-f="dob"><span class="field__label">Ngày sinh</span>
+            <span class="field__box"><i data-icon="calendar"></i><input name="dob" type="date"></span><span class="field__error"></span></label>
+          <label class="field" data-f="email"><span class="field__label">Email</span>
+            <span class="field__box"><i data-icon="email"></i><input name="email" type="email" autocomplete="email"></span><span class="field__error"></span></label>
+          <label class="field" data-f="phone"><span class="field__label">Số điện thoại</span>
+            <span class="field__box"><i data-icon="phone"></i><input name="phone" type="tel" autocomplete="tel"></span><span class="field__error"></span></label>
+          <a class="mb-item" href="#dat-lai-mat-khau">
+            <span class="mb-item__ic"><i data-icon="lock"></i></span>
+            <span class="mb-item__txt"><strong>Đổi mật khẩu</strong><small>Cập nhật mật khẩu đăng nhập của bạn</small></span><i data-icon="chevron-right"></i></a>
+          <button class="btn btn--navy btn--block" type="submit">Lưu thay đổi</button>
+          <a class="btn btn--outline btn--block" href="#ho-so">Hủy</a>
+        </form>
+      </section>
+    </div>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/data/mon_an.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/pages/thanh_vien.js"></script>
+</body>
+</html>

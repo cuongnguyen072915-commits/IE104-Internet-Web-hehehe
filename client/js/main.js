@@ -69,8 +69,8 @@
     ['Đặt bàn','dat_ban.html'],
     ['Về chúng tôi','gioi_thieu.html'],
     ['Bộ sưu tập','bo_suu_tap.html'],
-    ['Tuyển dụng','lien_he.html#tuyen-dung'],
-    ['Blog',null],
+    ['Tuyển dụng','tuyen_dung.html'],
+    ['Blog','blog.html'],
     ['Liên hệ','lien_he.html'],
     ['Ưu đãi','khuyen_mai.html']
   ];
@@ -189,6 +189,7 @@
       <section class="footer-col"><h2 class="footer-col__title">Giới thiệu</h2>
         <ul class="footer-links"><li><a href="trang_chu.html">Trang chủ</a></li>
           <li><a href="gioi_thieu.html">Về chúng tôi</a></li>
+          <li><a href="thuong_hieu.html">Câu chuyện thương hiệu</a></li>
           <li><a href="thuc_don.html">Thực đơn</a></li>
           <li><a href="bo_suu_tap.html">Bộ sưu tập</a></li>
           <li><a href="mon_yeu_thich.html">Món yêu thích</a></li>
