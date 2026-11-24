@@ -12,7 +12,7 @@ document.addEventListener('fb:ready', () => {
     <div class="between"><span class="t-price c-wine">${money(c.price)}</span><button class="combo__more" data-combo="${c.id}">Chi tiết ${icon('chevron-right')}</button></div></div></article>`).join('');
 
   function render() {
-    let list = (state.cat === 'all' && !state.q && !state.filtered) ? MENU_IDS.map(D.byId) : D.dishes.slice();
+    let list = D.dishes.slice();
     if (state.cat !== 'all') list = list.filter(d => d.cat === state.cat);
     if (state.q) list = list.filter(d => norm(d.name + ' ' + d.desc).includes(norm(state.q)));
     if (state.filtered && state.price) { const [a, b] = state.price; list = list.filter(d => d.price >= a && d.price <= b); }
@@ -21,8 +21,8 @@ document.addEventListener('fb:ready', () => {
     if (state.sort === 'desc') list.sort((a, b) => b.price - a.price);
     const searching = !!state.q;
     $('#combo-block').hidden = searching;
-    $('#list-title').textContent = searching ? `Kết quả cho “${state.q}”` : (state.cat === 'all' ? 'Bán chạy' : D.categories.find(c => c.id === state.cat).name);
-    const f = filterLabel();
+    $('#list-title').textContent = searching ? `Kết quả cho “${state.q}”` : (state.cat === 'all' ? 'Tất cả món' : D.categories.find(c => c.id === state.cat).name);
+    const f = state.filtered ? filterLabel() : '';
     $('#list-meta').textContent = `Hiển thị ${list.length} / ${D.categories.find(c => c.id === state.cat).count} món` + (f ? ' · Bộ lọc: ' + f : '');
     $('#grid').innerHTML = list.map(d => dishCard(d)).join('');
     const empty = list.length === 0;
