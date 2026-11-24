@@ -66,7 +66,7 @@
     ['Trang chủ','trang_chu.html'],
     ['Thực đơn','thuc_don.html'],
     ['Tra cứu đơn','theo_doi_don_hang.html'],
-    ['Đặt bàn','lien_he.html#tuyen-dung'],
+    ['Đặt bàn','dat_ban.html'],
     ['Về chúng tôi','gioi_thieu.html'],
     ['Bộ sưu tập','bo_suu_tap.html'],
     ['Tuyển dụng','lien_he.html#tuyen-dung'],
@@ -123,7 +123,7 @@
             ${assetIcon('giohang')}<span class="cart-badge" data-cart>0</span></a>
           <button class="header-action pc-account" type="button" aria-label="Tài khoản" data-account-info>
             ${assetIcon('user')}</button>
-          <a class="pc-book btn btn--navy" href="lien_he.html#tuyen-dung">Đặt bàn</a>
+          <a class="pc-book btn btn--navy" href="dat_ban.html">Đặt bàn</a>
           <button class="header-action nav-toggle" type="button" aria-controls="site-nav"
              aria-expanded="false" aria-label="Mở menu">
             <span class="pc-hamburger" aria-hidden="true"><i></i><i></i><i></i></span>

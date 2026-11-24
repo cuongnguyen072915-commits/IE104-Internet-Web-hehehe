@@ -95,6 +95,6 @@ document.addEventListener('fb:ready', () => {
     f.classList.toggle('is-error', raw !== '' && !FB.isPhone(raw));
     if (f.classList.contains('is-error')) return;
     const q = new URLSearchParams({ date: form.date.value, time: form.time.value, guests: form.guests.value || '', phone: FB.normPhone(raw) });
-    location.href = 'lien_he.html?' + q.toString() + '#contact-form';
+    location.href = 'dat_ban.html?' + q.toString();
   });
 });
