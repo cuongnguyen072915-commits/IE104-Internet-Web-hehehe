@@ -54,12 +54,12 @@ document.addEventListener('fb:ready', () => {
   $('#reset').addEventListener('click', () => { state.q = ''; state.filtered = false; state.cat = 'all'; $('#search input').value = ''; $$('#cats li').forEach((li, i) => li.classList.toggle('is-active', i === 0)); render(); });
   $('#suggest').addEventListener('click', e => { const c = e.target.closest('[data-q]'); if (!c) return; state.q = c.dataset.q; $('#search input').value = c.dataset.q; render(); });
   $$('#pager button').forEach(b => b.addEventListener('click', () => { if (b.disabled || b.querySelector('.ic')) return; $$('#pager button').forEach(x => x.classList.toggle('is-active', x === b)); $('#grid').scrollIntoView({ behavior: 'smooth' }); }));
-  $$('.combo__more').forEach(b => b.addEventListener('click', () => { location.href = 'khuyen_mai.html'; }));
+  $$('.combo__more').forEach(b => b.addEventListener('click', () => FB.openCombo(b.dataset.combo)));
 
   // Dropdown "Giao đến" & "Sắp xếp"
   $$('.dd').forEach(dd => {
     const btn = $('[data-dd]', dd), menu = $('.dd__menu', dd);
-    btn.addEventListener('click', e => { e.stopPropagation(); $$('.dd').forEach(x => x !== dd && x.classList.remove('is-open')); dd.classList.toggle('is-open'); });
+    btn.addEventListener('click', e => { if (btn.dataset.dd === 'area' && FB.openAddress) { FB.openAddress(); return; } e.stopPropagation(); $$('.dd').forEach(x => x !== dd && x.classList.remove('is-open')); dd.classList.toggle('is-open'); });
     menu.addEventListener('click', e => {
       const o = e.target.closest('button'); if (!o) return;
       $$('button', menu).forEach(x => x.classList.toggle('is-active', x === o)); dd.classList.remove('is-open');

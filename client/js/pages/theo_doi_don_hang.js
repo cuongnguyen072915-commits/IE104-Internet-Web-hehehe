@@ -1,5 +1,6 @@
 /* Theo dõi đơn: dữ liệu đơn vừa đặt, đếm ngược, tài xế di chuyển trên bản đồ */
 document.addEventListener('fb:ready', () => {
+  if (FB.demo === 'delivered') { location.href = 'danh_gia_don_hang.html'; return; }
   const { $, money, vnd } = FB;
   let o; try { o = JSON.parse(sessionStorage.getItem('fb_order')); } catch (e) {}
   const items = o ? o.items : [{ id: 'lasagna', qty: 1, unit: 184000 }, { id: 'burrata', qty: 2, unit: 118000 }, { id: 'risotto-kem', qty: 1, unit: 89000 }];
@@ -7,7 +8,7 @@ document.addEventListener('fb:ready', () => {
   if (o) {
     const first = (o.name || 'Minh Anh').split(' ').slice(-2).join(' ');
     $('#thanks').textContent = `Cảm ơn bạn, ${first}!`;
-    $('#order-meta').textContent = `Mã đơn #FB2611-0248 · ${o.pay === 'Tiền mặt' ? 'Thanh toán khi nhận hàng' : 'Đã thanh toán qua ' + o.pay} · ${money(o.total)}`;
+    $('#order-meta').textContent = `Mã đơn #${o.code || 'FB2611-0248'} · ${o.pay === 'Tiền mặt' ? 'Thanh toán khi nhận hàng' : 'Đã thanh toán qua ' + o.pay} · ${money(o.total)}`;
     // o.addr: "Số nhà và tên đường, Phường/Xã, Tỉnh/Thành phố"; khu vực cũ (nếu có) hiển thị tách riêng.
     const to = $('#to');
     to.textContent = (o.addr || '68 Lê Lợi, Q.1') + (o.apt ? ' · ' + o.apt : '');
@@ -24,7 +25,9 @@ document.addEventListener('fb:ready', () => {
   const etaAt = new Date(Date.now() + 14 * 60000);
   const hm = d => String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   $('#eta').textContent = hm(etaAt); $('#t4').textContent = 'Dự kiến ' + hm(etaAt);
-  const tick = () => { const m = Math.max(0, Math.ceil((etaAt - Date.now()) / 60000)); $('#eta-left').textContent = m ? `còn khoảng ${m} phút` : 'tài xế đang tới cửa'; };
+  const tick = () => { const m = Math.max(0, Math.ceil((etaAt - Date.now()) / 60000)); $('#eta-left').textContent = m ? `còn khoảng ${m} phút` : 'tài xế đang tới cửa';
+    if (!m) { try { const cur = JSON.parse(sessionStorage.getItem('fb_order') || '{}'); cur.deliveredAt = Date.now(); sessionStorage.setItem('fb_order', JSON.stringify(cur)); } catch (e) {} location.href = 'danh_gia_don_hang.html'; }
+  };
   tick(); setInterval(tick, 15000);
 
   // Tài xế chạy theo tuyến trên bản đồ (toạ độ theo delivery-route-map.svg 776×380)

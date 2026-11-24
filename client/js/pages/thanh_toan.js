@@ -188,11 +188,13 @@ document.addEventListener('fb:ready', () => {
       pickup, apt: form.apt.value.trim(), pay: $('.pay.is-active').dataset.pay,
       total, items: data.items, sub: data.sub, fee, disc: data.sub + fee - total
     };
+    order.code = 'FB2611-0248'; order.placedAt = Date.now();
     try { sessionStorage.setItem('fb_order', JSON.stringify(order)); } catch (e) {}
     if (address) {
       try { localStorage.setItem(SAVE_KEY, JSON.stringify({ street: address.street, provinceId: address.provinceId, areaId: address.deliveryArea ? address.deliveryArea.id : '', wardId: address.wardId, apt: order.apt })); } catch (e) {}
     }
-    Cart.set([]); location.href = 'theo_doi_don_hang.html';
+    Cart.set([]);
+    FB.payProcessing(order.pay, order.total, () => { location.href = 'dat_hang_thanh_cong.html'; });
   }
 
   form.addEventListener('submit', e => {

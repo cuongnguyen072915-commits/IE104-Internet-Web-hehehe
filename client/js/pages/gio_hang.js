@@ -34,7 +34,7 @@ document.addEventListener('fb:ready', () => {
         <label class="checkbox"><input type="checkbox" ${off.has(i) ? '' : 'checked'} data-sel="${i}"><span class="checkbox__box">${icon('check')}</span></label>
         <img class="cart-item__img" src="${d.img}" alt="">
         <div class="cart-item__info"><strong class="t-title">${d.name}</strong><span class="t-body-s c-gray">${it.opt}</span>
-          <a class="cart-item__edit" href="chi_tiet_mon.html?id=${it.id}">${icon('edit')}Sửa lựa chọn</a></div>
+          ${it.combo ? '' : `<a class="cart-item__edit" href="chi_tiet_mon.html?id=${it.id}">${icon('edit')}Sửa lựa chọn</a>`}</div>
         <div class="stepper stepper--sm"><button data-dec="${i}" aria-label="Giảm">${icon('minus')}</button><output>${it.qty}</output><button data-inc="${i}" aria-label="Tăng">${icon('plus')}</button></div>
         <div class="cart-item__price"><span class="t-price c-wine">${money(it.qty * it.unit)}</span>${it.qty > 1 ? `<span class="t-caption c-gray">${vnd(it.unit)} / phần</span>` : ''}</div>
         <button class="cart-item__del" data-del="${i}" aria-label="Xóa món">${icon('trash')}</button></div>`;
@@ -54,6 +54,8 @@ document.addEventListener('fb:ready', () => {
     $('#go').classList.toggle('is-disabled', lack || r.sel.length === 0);
     try { sessionStorage.setItem('fb_checkout', JSON.stringify({ items: r.sel, sub: r.sub, fee: r.fee, disc: r.disc, total: r.total, mode, coupon, note: $('#note').value })); } catch (e) {}
   }
+  window.FB_CART_RENDER = render;
+  document.addEventListener('cart:change', () => render());
 
   $('#items').addEventListener('click', e => {
     const items = Cart.get(); const t = e.target.closest('[data-inc],[data-dec],[data-del]'); if (!t) return;

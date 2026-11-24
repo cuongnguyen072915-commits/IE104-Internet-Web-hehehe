@@ -67,7 +67,8 @@
     ['Thực đơn','thuc_don.html'],
     ['Tra cứu đơn','theo_doi_don_hang.html'],
     ['Đặt bàn','lien_he.html#tuyen-dung'],
-    ['Về chúng tôi','trang_chu.html#gioi-thieu'],
+    ['Về chúng tôi','gioi_thieu.html'],
+    ['Bộ sưu tập','bo_suu_tap.html'],
     ['Tuyển dụng','lien_he.html#tuyen-dung'],
     ['Blog',null],
     ['Liên hệ','lien_he.html'],
@@ -162,12 +163,7 @@
     document.addEventListener('keydown',e=>{if(e.key==='Escape' && nav.classList.contains('is-open')){close();toggle.focus();}});
     window.addEventListener('resize',syncViewport);
     syncViewport();
-    $('.pc-account',el).addEventListener('click',()=>{
-      modal({id:'m-account',icon:'user',title:'Tài khoản thành viên',
-        desc:'Trang đăng nhập chưa nằm trong 10 trang được bàn giao. Bạn có thể tra cứu đơn hàng hoặc liên hệ với Fiabesco.',
-        actions:[{label:'Đóng',style:'outline'},{label:'Tra cứu đơn',style:'navy',href:'theo_doi_don_hang.html'}]});
-      openModal('m-account');
-    });
+    // Tài khoản: popup Đăng nhập/Đăng ký & menu tài khoản do popups.js xử lý (Luồng 1)
   }
 
   function renderFooter(el) {
@@ -192,8 +188,10 @@
       </div>
       <section class="footer-col"><h2 class="footer-col__title">Giới thiệu</h2>
         <ul class="footer-links"><li><a href="trang_chu.html">Trang chủ</a></li>
-          <li><a href="trang_chu.html#gioi-thieu">Về chúng tôi</a></li>
+          <li><a href="gioi_thieu.html">Về chúng tôi</a></li>
           <li><a href="thuc_don.html">Thực đơn</a></li>
+          <li><a href="bo_suu_tap.html">Bộ sưu tập</a></li>
+          <li><a href="mon_yeu_thich.html">Món yêu thích</a></li>
           <li><a href="khuyen_mai.html">Ưu đãi</a></li></ul></section>
       <section class="footer-col"><h2 class="footer-col__title">Chính sách</h2>
         <ul class="footer-links"><li><span>Chính sách khách hàng (đang cập nhật)</span></li>
@@ -230,7 +228,7 @@
     return `<article class="dish reveal" data-id="${d.id}">
       <a class="dish__media" href="chi_tiet_mon.html?id=${d.id}"><img src="${d.img}" alt="${d.name}" loading="lazy">
         ${tag ? `<span class="dish__tag">${tag}</span>` : ''}</a>
-      <button class="dish__fav" aria-label="Yêu thích">${icon('heart')}</button>
+      <button class="dish__fav" aria-label="Yêu thích" aria-pressed="false">${icon('heart')}</button>
       <div class="dish__body"><a class="dish__name" href="chi_tiet_mon.html?id=${d.id}">${d.name}</a>
         <p class="dish__desc">${opts.desc || d.desc}</p>
         <div class="dish__foot"><span class="dish__price">${money(d.price)}</span>
@@ -238,8 +236,7 @@
   }
   document.addEventListener('click', e => {
     const add = e.target.closest('.dish__add');
-    if (add) { const id = add.closest('.dish').dataset.id; Cart.add(id); toast('Đã thêm vào giỏ hàng', FB_DATA.byId(id).name, 'Xem giỏ', 'gio_hang.html', 'navy'); }
-    const fav = e.target.closest('.dish__fav'); if (fav) fav.classList.toggle('is-active');
+    if (add) { const id = add.closest('.dish').dataset.id; Cart.add(id); }
   });
 
   /* ---------- Modal ---------- */
@@ -306,7 +303,7 @@
     if (demo === 'session-expired') {
       modal({ id: 'm-session', icon: 'lock', title: 'Phiên đăng nhập đã hết hạn',
         desc: 'Vì lý do bảo mật, bạn đã được đăng xuất sau 30 phút không hoạt động. Đăng nhập lại để tiếp tục — giỏ hàng của bạn vẫn được giữ nguyên.',
-        actions: [{ label: 'Để sau', style: 'outline' }, { label: 'Đăng nhập lại', style: 'navy', href: 'theo_doi_don_hang.html' }] });
+        actions: [{ label: 'Để sau', style: 'outline' }, { label: 'Đăng nhập lại', style: 'navy', attr: 'data-close data-pp="login"' }] });
       openModal('m-session');
     }
     document.dispatchEvent(new Event('fb:ready'));
