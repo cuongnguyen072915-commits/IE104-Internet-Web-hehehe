@@ -204,3 +204,11 @@
   .pp-pad,.pp-split__body{padding:28px 22px}.pp-actions,.pp-social,.pp-buy{flex-direction:column}.pp-sizes{flex-direction:column}
   .pp-bulk{flex-wrap:wrap}.pp-menu{position:fixed;left:16px;right:16px;top:96px;width:auto}
 }
+/* Mobile ≤640px: hàng "Thêm vào giỏ · giá" xếp dọc — nút chiếm hết bề rộng, cho phép xuống dòng
+   (trước: nút nowrap 270px trong hàng 211px → tràn khỏi popup Xem nhanh / Combo ở 320px) */
+@media (max-width:640px){
+  .pp-buy{align-items:stretch}
+  .pp-buy .stepper{align-self:flex-start}
+  .pp-buy .btn{flex:none;width:100%;height:auto;min-height:52px;white-space:normal;text-align:center;justify-content:center}
+}
+

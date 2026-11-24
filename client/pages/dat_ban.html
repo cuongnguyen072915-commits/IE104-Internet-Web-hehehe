@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Đặt bàn – Fiabesco Palace</title>
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/dat_ban.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="dat_ban">
+  <!-- Trang Đặt bàn: chọn chi nhánh, ngày, giờ, số khách và để lại thông tin liên hệ -->
+  <header data-header></header>
+  <main class="site-main" id="noi-dung-chinh">
+    <section class="banner" style="background-image:url('../assets/template-20261120T115451Z-1-001 - Copy/template/restaurant-dining-hall.jpg')">
+      <div class="container">
+        <nav class="crumb" aria-label="Breadcrumb"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Đặt bàn</span></nav>
+        <h1 class="t-h1" style="color:#FFFFFF">Đặt bàn</h1>
+        <p class="t-body-l">Đặt trước bàn ăn tại Fiabesco Palace để tận hưởng trọn vẹn không gian và hương vị ẩm thực Ý.</p>
+      </div>
+    </section>
+
+    <div class="container booking">
+      <form class="bk-form" id="bk-form" novalidate>
+        <!-- 1. Chi nhánh -->
+        <section class="bk-card card" aria-labelledby="bk-h1">
+          <h2 class="num-title t-h4" id="bk-h1"><b>1</b>Chọn chi nhánh</h2>
+          <div class="bk-branches" id="bk-branches" role="radiogroup" aria-label="Chi nhánh"></div>
+        </section>
+
+        <!-- 2. Thời gian & số khách -->
+        <section class="bk-card card" aria-labelledby="bk-h2">
+          <h2 class="num-title t-h4" id="bk-h2"><b>2</b>Thời gian &amp; số khách</h2>
+          <div class="bk-grid">
+            <div class="field" data-f="date">
+              <label class="field__label" for="bk-date">Ngày *</label>
+              <span class="field__box"><i data-icon="calendar"></i><input id="bk-date" name="date" type="date" required aria-describedby="bk-err-date"></span>
+              <span class="field__error" id="bk-err-date" role="alert">Vui lòng chọn ngày từ hôm nay trở đi.</span>
+            </div>
+            <div class="field">
+              <span class="field__label" id="bk-guests-label">Số khách *</span>
+              <div class="bk-guests">
+                <div class="stepper" role="group" aria-labelledby="bk-guests-label">
+                  <button type="button" data-g="-1" aria-label="Giảm số khách"><i data-icon="minus"></i></button>
+                  <output id="bk-guests" aria-live="polite">2</output>
+                  <button type="button" data-g="1" aria-label="Tăng số khách"><i data-icon="plus"></i></button>
+                </div>
+                <span class="t-body-s c-gray">người</span>
+              </div>
+              <span class="field__hint t-caption c-gray" id="bk-guests-hint">Tối đa 15 khách. Nhóm đông hơn vui lòng gọi hotline để đặt tiệc riêng.</span>
+            </div>
+          </div>
+          <div class="field" data-f="time">
+            <span class="field__label" id="bk-time-label">Giờ đến *</span>
+            <div class="bk-slots" id="bk-slots" role="radiogroup" aria-labelledby="bk-time-label" aria-describedby="bk-err-time"></div>
+            <span class="field__error" id="bk-err-time" role="alert">Vui lòng chọn giờ đến.</span>
+          </div>
+          <div class="field">
+            <span class="field__label" id="bk-occ-label">Dịp đặc biệt</span>
+            <div class="bk-chips" id="bk-occasion" role="radiogroup" aria-labelledby="bk-occ-label">
+              <button type="button" class="chip is-active" role="radio" aria-checked="true" data-v="">Không</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Sinh nhật">Sinh nhật</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Cầu hôn">Cầu hôn</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Gia đình">Gia đình</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Công việc">Công việc</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Thông tin liên hệ -->
+        <section class="bk-card card" aria-labelledby="bk-h3">
+          <h2 class="num-title t-h4" id="bk-h3"><b>3</b>Thông tin liên hệ</h2>
+          <div class="bk-grid">
+            <div class="field" data-f="name">
+              <label class="field__label" for="bk-name">Họ và tên *</label>
+              <span class="field__box"><input id="bk-name" name="name" placeholder="Nguyễn Minh Anh" autocomplete="name" required aria-describedby="bk-err-name"></span>
+              <span class="field__error" id="bk-err-name" role="alert">Vui lòng nhập họ tên.</span>
+            </div>
+            <div class="field" data-f="phone">
+              <label class="field__label" for="bk-phone">Số điện thoại *</label>
+              <span class="field__box"><input id="bk-phone" name="phone" type="tel" placeholder="0901 234 567" autocomplete="tel" required aria-describedby="bk-err-phone"></span>
+              <span class="field__error" id="bk-err-phone" role="alert">Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.</span>
+            </div>
+          </div>
+          <div class="field" data-f="email">
+            <label class="field__label" for="bk-email">Email</label>
+            <span class="field__box"><input id="bk-email" name="email" type="email" placeholder="minhanh@gmail.com" autocomplete="email" aria-describedby="bk-err-email"></span>
+            <span class="field__error" id="bk-err-email" role="alert">Email chưa đúng định dạng.</span>
+          </div>
+          <div class="field">
+            <label class="field__label" for="bk-note">Ghi chú cho nhà hàng</label>
+            <textarea class="textarea" id="bk-note" name="note" rows="3" placeholder="Ví dụ: bàn gần cửa sổ, có trẻ nhỏ, mang bánh kem…"></textarea>
+          </div>
+          <button class="btn btn--wine btn--block" type="submit">Xác nhận đặt bàn <i data-icon="arrow-right"></i></button>
+          <p class="t-caption c-gray bk-foot">Yêu cầu cần được nhân viên xác nhận qua điện thoại.</p>
+        </section>
+      </form>
+
+      <aside class="bk-summary" aria-label="Tóm tắt đặt bàn">
+        <span class="bk-summary__kicker">PRENOTA UN TAVOLO</span>
+        <h2 class="t-h3 c-white">Thông tin đặt bàn</h2>
+        <dl class="bk-sum" aria-live="polite">
+          <div><dt><i data-icon="location-pin"></i>Chi nhánh</dt><dd id="sum-branch">—</dd></div>
+          <div><dt><i data-icon="calendar"></i>Ngày</dt><dd id="sum-date">Chưa chọn</dd></div>
+          <div><dt><i data-icon="clock"></i>Giờ đến</dt><dd id="sum-time">Chưa chọn</dd></div>
+          <div><dt><i data-icon="users"></i>Số khách</dt><dd id="sum-guests">2 người</dd></div>
+          <div><dt><i data-icon="sparkle"></i>Dịp đặc biệt</dt><dd id="sum-occ">Không</dd></div>
+        </dl>
+        <ul class="checks">
+          <li><span><i data-icon="check"></i></span>Giữ bàn miễn phí đến 15 phút</li>
+          <li><span><i data-icon="check"></i></span>Gói trang trí Sinh nhật · Cầu hôn · Gia đình</li>
+          <li><span><i data-icon="check"></i></span>Tích điểm đổi quà cho thành viên</li>
+        </ul>
+        <a class="bk-hotline" href="tel:0123456789"><span><i data-icon="phone"></i></span><div><small>Hotline đặt bàn</small><strong>0123 456 789</strong></div></a>
+      </aside>
+    </div>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/data/mon_an.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/pages/dat_ban.js"></script>
+</body>
+</html>

@@ -41,3 +41,8 @@
 @media (max-width:1280px){.pd__gallery{width:50%}.pd__info{width:auto;flex:1}.pd__main{height:auto;aspect-ratio:600/540}.pd__thumbs button{flex:1;width:auto;height:auto;aspect-ratio:135/100}.pd-suggest__row{flex-wrap:wrap}.pd-suggest__row .dish{width:calc(50% - 12px)}}
 @media (max-width:1100px){.pd__top{flex-direction:column}.pd__gallery{width:100%}.pd-tabs__body{flex-direction:column}.pd-tabs__panel,.nutri{width:100%}}
 @media (max-width:768px){.opts{flex-direction:column}.opt{width:100%}.buy{flex-wrap:wrap}.buy .grow{flex-basis:100%;order:3}.pd-tabs{padding:24px}.pd-suggest__row .dish{width:100%}}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.pd{padding-bottom:64px}}
+/* Mobile ≤600px: breadcrumb xuống dòng theo từng mục, không bóp chữ thành 2 dòng */
+@media (max-width:600px){#crumb{flex-wrap:wrap;row-gap:4px}#crumb>a,#crumb>span{white-space:nowrap}}
+

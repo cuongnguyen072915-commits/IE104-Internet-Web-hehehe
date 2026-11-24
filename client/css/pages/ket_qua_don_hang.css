@@ -17,3 +17,5 @@
 .result__link{font:600 14px/1.4 var(--f-sans);color:var(--wine);text-decoration:underline;text-underline-offset:3px}
 .result__link:disabled{color:var(--dis);text-decoration:none;cursor:not-allowed}
 @media (max-width:640px){.result__card{padding:36px 20px}.result__actions{flex-direction:column}}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.result{padding-top:40px;padding-bottom:64px}}

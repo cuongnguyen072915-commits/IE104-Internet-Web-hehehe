@@ -132,3 +132,18 @@
   .track{flex-direction:column;align-items:flex-start;gap:12px;padding:24px}.track__line{width:3px;min-width:0;height:24px;flex:none;margin-left:42px}.track__step{flex-direction:row;text-align:left}
   .row-cards .dish{width:100%}.ok-banner{padding:28px 24px}.empty-card{padding:40px 20px}
 }
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.order{padding-top:32px;padding-bottom:64px}}
+/* Mobile ≤600px (Giỏ hàng + Thanh toán): thanh bước gọn 1 dòng, nhãn không gãy chữ;
+   hàng "Chọn tất cả / Sửa nhiều món / Xóa đã chọn" xuống dòng thay vì bóp thành cột hẹp */
+@media (max-width:600px){
+  .steps{gap:6px;flex-wrap:nowrap}
+  .steps__item{flex:none;gap:6px;font-size:12.5px;white-space:nowrap}
+  .steps__dot{width:28px;height:28px;font-size:15px}
+  .steps__line{flex:1 1 0;width:auto;min-width:6px}
+  .cart-list__head{flex-wrap:wrap;gap:12px 20px;justify-content:flex-start}
+  .cart-list__head>.checkbox{flex:1 0 100%}
+  .cart-list__head>button{white-space:nowrap}
+}
+/* Màn rất hẹp (≤360px): 3 bước không đủ chỗ trên 1 dòng → cho xuống dòng gọn */
+@media (max-width:360px){.steps{flex-wrap:wrap;row-gap:10px}.steps__line{flex:0 0 16px}}

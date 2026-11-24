@@ -1,0 +1,63 @@
+/* Đặt bàn – bố cục theo trang Liên hệ/Thanh toán: banner + form (trái) + khung navy tóm tắt (phải).
+   Dùng lại .banner/.crumb/.card/.num-title/.field/.chip/.stepper/.btn của Design System. */
+.booking{display:flex;gap:24px;align-items:flex-start;padding-top:48px;padding-bottom:120px}
+.bk-form{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+.bk-card{padding:32px;display:flex;flex-direction:column;gap:22px}
+.bk-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* Chi nhánh: thẻ chọn như .choice ở trang Thanh toán */
+.bk-branches{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.bk-branch{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:20px;border-radius:16px;background:#fff;
+  border:1px solid var(--line);text-align:left;cursor:pointer;transition:border-color .2s,background .2s}
+.bk-branch:hover{border-color:var(--navy)}
+.bk-branch.is-active{background:var(--cream-2);border:1.5px solid var(--navy)}
+.bk-branch__top{display:flex;align-items:center;gap:10px;width:100%}
+.bk-branch strong{font:600 16px/1.4 var(--f-sans);color:var(--navy)}
+.bk-branch__tag{margin-left:auto;padding:3px 10px;border-radius:999px;background:var(--cream);font:600 11px/1.4 var(--f-sans);color:var(--gray);white-space:nowrap}
+.bk-branch.is-active .bk-branch__tag{background:var(--wine);color:#fff}
+.bk-branch small{font:400 13px/1.5 var(--f-sans);color:var(--gray)}
+
+/* Số khách */
+.bk-guests{display:flex;align-items:center;gap:12px;min-height:52px}
+.stepper button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+/* Khung giờ */
+.bk-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.bk-slots .chip{justify-content:center}
+.bk-slots .chip:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.bk-slots .chip:disabled:hover{border-color:var(--line)}
+.bk-slot-group{grid-column:1/-1;font:600 12px/1.4 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-top:4px}
+.bk-chips{display:flex;flex-wrap:wrap;gap:10px}
+.field[data-f="time"].is-error .bk-slots .chip:not(:disabled){border-color:var(--wine)}
+.bk-foot{text-align:center}
+
+/* Tóm tắt (khung navy giống .quick-info trang Liên hệ) */
+.bk-summary{width:400px;flex:none;background:var(--navy);color:#fff;border-radius:24px;padding:40px;display:flex;flex-direction:column;gap:24px}
+.bk-summary__kicker{font:400 14px/1.4 var(--f-price);letter-spacing:.3em;color:var(--gold)}
+.bk-sum{display:flex;flex-direction:column;margin:0}
+.bk-sum>div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,.15)}
+.bk-sum>div:last-child{border-bottom:1px solid rgba(255,255,255,.15)}
+.bk-sum dt{display:flex;align-items:center;gap:10px;font:400 14px/1.55 var(--f-sans);color:var(--gold-l)}
+.bk-sum dt .ic{width:18px;height:18px}
+.bk-sum dd{margin:0;font:600 15px/1.4 var(--f-sans);text-align:right}
+.checks{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
+.checks li{display:flex;align-items:center;gap:12px;font:400 15px/1.6 var(--f-sans)}
+.checks span{width:28px;height:28px;flex:none;border-radius:50%;border:1px solid var(--gold);color:var(--gold-l);display:flex;align-items:center;justify-content:center}
+.checks .ic{width:16px;height:16px}
+.bk-hotline{display:flex;align-items:center;gap:16px}
+.bk-hotline>span{width:52px;height:52px;border-radius:14px;background:var(--navy-2);color:var(--gold-l);display:flex;align-items:center;justify-content:center;flex:none}
+.bk-hotline>span .ic{width:22px;height:22px}
+.bk-hotline small{display:block;font:400 13px/1.5 var(--f-sans);color:var(--gold-l)}
+.bk-hotline strong{display:block;font:600 17px/1.4 var(--f-sans)}
+
+@media (max-width:1100px){
+  .booking{flex-direction:column;align-items:stretch}
+  .bk-summary{width:100%}
+}
+@media (max-width:768px){
+  .booking{padding-top:32px;padding-bottom:80px}
+  .bk-card,.bk-summary{padding:24px}
+  .bk-grid,.bk-branches{grid-template-columns:1fr}
+}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.booking{padding-bottom:64px}}

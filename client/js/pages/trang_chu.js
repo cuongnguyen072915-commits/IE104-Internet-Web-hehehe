@@ -86,15 +86,5 @@ document.addEventListener('fb:ready', () => {
 
   const relayout = () => { layout(); go(page, false); };
   window.addEventListener('resize', relayout); relayout();
-
-  // Đặt bàn nhanh → chuyển sang trang Đặt bàn kèm thông tin
-  const form = $('.quick-book');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const f = form.phone.closest('.field'); const raw = form.phone.value.trim();
-    f.classList.toggle('is-error', raw !== '' && !FB.isPhone(raw));
-    if (f.classList.contains('is-error')) return;
-    const q = new URLSearchParams({ date: form.date.value, time: form.time.value, guests: form.guests.value || '', phone: FB.normPhone(raw) });
-    location.href = 'lien_he.html?' + q.toString() + '#contact-form';
-  });
+  // Khung "Đặt bàn" chỉ còn nút liên kết tới dat_ban.html — không còn form cần xử lý.
 });

@@ -71,3 +71,5 @@
 
 /* Tiêu đề trên nền tối (như banner các trang hiện có) */
 .banner h1,.values h2,.about-cta h2{color:#FFFFFF}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.story,.values,.journey,.kitchen{padding-block:64px}}

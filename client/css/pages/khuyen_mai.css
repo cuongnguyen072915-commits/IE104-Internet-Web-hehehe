@@ -33,3 +33,7 @@
 .tier--on li .ic{color:var(--gold-l)}
 @media (max-width:1100px){.deals,.tiers{grid-template-columns:repeat(2,1fr)}.hero-offer__img{width:100%;opacity:.35}.hero-offer::after{display:none}}
 @media (max-width:768px){.deals,.tiers{grid-template-columns:1fr}.hero-offer__body{width:auto;margin:0 24px}}
+/* Mobile: 3 chip lọc được xuống dòng thay vì tràn khỏi màn hình 320px */
+@media (max-width:768px){#deal-filter{flex-wrap:wrap}}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.promo{padding-top:32px;padding-bottom:64px}}

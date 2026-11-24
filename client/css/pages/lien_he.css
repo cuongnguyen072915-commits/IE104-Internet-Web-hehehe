@@ -46,3 +46,5 @@
 .faq p{padding:0 0 14px;font:400 14px/1.55 var(--f-sans);opacity:.75}
 @media (max-width:1100px){.branches,.contact__row{flex-direction:column;align-items:stretch}.branch-list,.quick-info{width:100%}}
 @media (max-width:768px){.grid2{grid-template-columns:1fr}.contact-form,.quick-info{padding:28px}.pin__label{display:none}}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.contact{padding-top:32px;padding-bottom:64px}}

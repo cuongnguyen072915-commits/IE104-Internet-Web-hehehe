@@ -43,4 +43,9 @@
 .empty .t-body{max-width:600px}
 @media (max-width:1280px){.dish-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dish-grid .dish{width:100%}}
 @media (max-width:1100px){.toolbar{flex-direction:column;align-items:stretch}.search{width:100%}.menu-cols{flex-direction:column}.side{width:100%;position:static;flex-direction:row;flex-wrap:wrap}.side-card{flex:1 1 300px}.combos{flex-direction:column}}
-@media (max-width:768px){.dish-grid{grid-template-columns:1fr}.empty{padding:40px 24px}.empty img{width:240px}}
+@media (max-width:768px){.dish-grid{grid-template-columns:minmax(0,1fr)}.empty{padding:40px 24px}.empty img{width:240px}}
+/* Mobile: .menu-cols dùng align-items:flex-start nên cột món co theo min-content của thẻ món (314px)
+   → tràn ở 320px. Cho cột kéo giãn đúng bề rộng khung. Không đổi cơ chế cuộn chung. */
+@media (max-width:1100px){.menu-main{align-self:stretch;width:100%}}
+/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
+@media (max-width:600px){.menu-page{padding-top:32px;padding-bottom:64px}}
