@@ -15,10 +15,10 @@ document.addEventListener('fb:ready', () => {
   if (!D) { console.error('Thiếu js/data/dat_ban.js'); return; }
   const API = D.BookingAPI;
 
-  /* TODO(BE): trang PC – 07b "Thanh toán đặt cọc" chưa có. Khi có, đặt tên file
-     vào đây (vd. 'thanh_toan_dat_coc.html'); dữ liệu đơn được lưu ở
-     sessionStorage['fb_dat_ban_pending'] trước khi chuyển trang. */
-  const NEXT_PAGE = null;
+  /* Bước tiếp theo: PC – 07b "Thanh toán đặt cọc". Dữ liệu đơn được lưu ở
+     sessionStorage['fb_dat_ban_pending'] trước khi chuyển trang.
+     TODO(BE): khi có API, trang 07b đọc đơn theo ?ma=<bookingId> từ máy chủ. */
+  const NEXT_PAGE = 'thanh_toan_dat_coc.html';
 
   const DRAFT_KEY = 'fb_dat_ban_draft_v1';
   const GUIDE_KEY = 'fb_dat_ban_guide_seen_v1';
