@@ -14,116 +14,151 @@
   <link rel="stylesheet" href="../css/popups.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="dat_ban">
-  <!-- Trang Đặt bàn: chọn chi nhánh, ngày, giờ, số khách và để lại thông tin liên hệ -->
+  <!-- Frame: PC – 07 Đặt bàn (bản 1 cột · sơ đồ navy · hướng dẫn 6 bước) -->
   <header data-header></header>
   <main class="site-main" id="noi-dung-chinh">
     <section class="banner" style="background-image:url('../assets/template-20261120T115451Z-1-001 - Copy/template/restaurant-dining-hall.jpg')">
       <div class="container">
-        <nav class="crumb" aria-label="Breadcrumb"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Đặt bàn</span></nav>
+        <nav class="crumb" aria-label="Đường dẫn"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Đặt bàn</span></nav>
         <h1 class="t-h1" style="color:#FFFFFF">Đặt bàn</h1>
-        <p class="t-body-l">Đặt trước bàn ăn tại Fiabesco Palace để tận hưởng trọn vẹn không gian và hương vị ẩm thực Ý.</p>
+        <p class="t-body-l">Giữ chỗ cho bữa tối lãng mạn, tiệc sinh nhật hay buổi họp mặt gia đình — xác nhận ngay trong 5 phút.</p>
       </div>
     </section>
 
-    <div class="container booking">
-      <form class="bk-form" id="bk-form" novalidate>
-        <!-- 1. Chi nhánh -->
-        <section class="bk-card card" aria-labelledby="bk-h1">
-          <h2 class="num-title t-h4" id="bk-h1"><b>1</b>Chọn chi nhánh</h2>
-          <div class="bk-branches" id="bk-branches" role="radiogroup" aria-label="Chi nhánh"></div>
-        </section>
+    <div class="container db">
+      <!-- ===== Hướng dẫn tổng quan ===== -->
+      <section class="db-card db-guide" aria-labelledby="db-guide-title">
+        <div class="db-guide__head">
+          <div class="stack" style="gap:6px">
+            <span class="db-eyebrow">Hướng dẫn đặt bàn</span>
+            <h2 class="db-serif db-guide__title" id="db-guide-title">Giữ bàn tại Fiabesco Palace trong 6 bước</h2>
+          </div>
+          <button type="button" class="db-btn-outline" id="db-guide-start"><i data-icon="sparkle"></i>Xem hướng dẫn từng bước</button>
+        </div>
+        <ol class="db-guide__steps" id="db-guide-steps"></ol>
+      </section>
 
-        <!-- 2. Thời gian & số khách -->
-        <section class="bk-card card" aria-labelledby="bk-h2">
-          <h2 class="num-title t-h4" id="bk-h2"><b>2</b>Thời gian &amp; số khách</h2>
-          <div class="bk-grid">
-            <div class="field" data-f="date">
-              <label class="field__label" for="bk-date">Ngày *</label>
-              <span class="field__box"><i data-icon="calendar"></i><input id="bk-date" name="date" type="date" required aria-describedby="bk-err-date"></span>
-              <span class="field__error" id="bk-err-date" role="alert">Vui lòng chọn ngày từ hôm nay trở đi.</span>
+      <!-- ===== 01 · Ngày, giờ & số khách ===== -->
+      <section class="db-sec" aria-labelledby="db-s1">
+        <h2 class="num-title db-sec__title" id="db-s1"><b>1</b><span class="db-serif">Ngày, giờ &amp; số khách</span></h2>
+        <div class="db-card db-quick" id="db-quick">
+          <div class="db-quick__cell">
+            <span class="db-label" id="db-date-label">Ngày đặt bàn</span>
+            <button type="button" class="db-quick__btn" id="db-date-btn" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="db-date-label db-date-value">
+              <i data-icon="calendar"></i><span id="db-date-value" class="db-quick__value is-empty">Chọn ngày</span><i data-icon="chevron-down" class="db-quick__chev"></i>
+            </button>
+            <div class="db-cal" id="db-cal" role="dialog" aria-label="Chọn ngày đặt bàn" hidden></div>
+          </div>
+          <div class="db-quick__cell">
+            <span class="db-label" id="db-slot-label">Thời gian · suất 90 phút</span>
+            <button type="button" class="db-quick__btn" id="db-slot-btn" aria-haspopup="dialog" aria-labelledby="db-slot-label db-slot-value">
+              <i data-icon="clock"></i><span id="db-slot-value" class="db-quick__value is-empty">Chọn suất</span><i data-icon="chevron-down" class="db-quick__chev"></i>
+            </button>
+          </div>
+          <div class="db-quick__cell">
+            <span class="db-label" id="db-guests-label">Số khách · người lớn</span>
+            <div class="db-stepper" role="group" aria-labelledby="db-guests-label">
+              <button type="button" id="db-guests-minus" aria-label="Giảm số khách"><i data-icon="minus"></i></button>
+              <input type="number" id="db-guests" class="db-stepper__input" value="2" min="1" max="15" step="1" inputmode="numeric" aria-label="Số người lớn (1 – 15)">
+              <button type="button" id="db-guests-plus" aria-label="Tăng số khách"><i data-icon="plus"></i></button>
             </div>
-            <div class="field">
-              <span class="field__label" id="bk-guests-label">Số khách *</span>
-              <div class="bk-guests">
-                <div class="stepper" role="group" aria-labelledby="bk-guests-label">
-                  <button type="button" data-g="-1" aria-label="Giảm số khách"><i data-icon="minus"></i></button>
-                  <output id="bk-guests" aria-live="polite">2</output>
-                  <button type="button" data-g="1" aria-label="Tăng số khách"><i data-icon="plus"></i></button>
-                </div>
-                <span class="t-body-s c-gray">người</span>
+          </div>
+        </div>
+        <p class="db-hint">Mỗi suất dùng bữa kéo dài 90 phút · Tối đa 15 người lớn (từ đủ 12 tuổi) cho mỗi lượt đặt trực tuyến.</p>
+      </section>
+
+      <!-- ===== 02 · Sơ đồ bàn ===== -->
+      <section class="db-sec" aria-labelledby="db-s2">
+        <h2 class="num-title db-sec__title" id="db-s2"><b>2</b><span class="db-serif">Chọn bàn trên sơ đồ</span></h2>
+        <div class="db-card db-mapcard">
+          <div class="db-mapcard__bar">
+            <div class="db-tabs" role="tablist" aria-label="Chọn tầng" id="db-tabs">
+              <button type="button" role="tab" class="db-tab is-active" data-floor="1" aria-selected="true" aria-controls="db-map">Tầng 1</button>
+              <button type="button" role="tab" class="db-tab" data-floor="2" aria-selected="false" aria-controls="db-map">Tầng 2</button>
+            </div>
+            <ul class="db-legend" aria-label="Chú thích trạng thái bàn">
+              <li class="db-legend__title">Chú thích</li>
+              <li><span class="db-dot db-dot--free"></span>Còn trống</li>
+              <li><span class="db-dot db-dot--sel"></span>Đang chọn</li>
+              <li><span class="db-dot db-dot--busy"></span>Đã được đặt</li>
+            </ul>
+          </div>
+          <div class="db-mapcard__body">
+            <div class="db-mapwrap">
+              <div class="db-map" id="db-map" role="tabpanel" aria-label="Sơ đồ Tầng 1">
+                <img class="db-map__bg" id="db-map-bg" src="../assets/template-20261120T115451Z-1-001 - Copy/template/seat-map-tang-1.png" alt="" aria-hidden="true">
+                <div class="db-map__tables" id="db-map-tables"></div>
+                <div class="db-map__loading" id="db-map-loading" hidden><span class="pp-spin" aria-hidden="true"></span><span>Đang kiểm tra bàn trống…</span></div>
+                <div class="db-map__empty" id="db-map-empty" hidden>Chọn <strong>ngày</strong> và <strong>suất giờ</strong> để xem bàn còn trống.</div>
               </div>
-              <span class="field__hint t-caption c-gray" id="bk-guests-hint">Tối đa 15 khách. Nhóm đông hơn vui lòng gọi hotline để đặt tiệc riêng.</span>
+              <p class="db-hint" id="db-map-hint">Chạm vào bàn màu trắng để chọn — danh sách “chọn nhanh” sẽ tự cuộn tới bàn tương ứng. Bàn mờ là bàn không đủ chỗ cho số khách đã chọn.</p>
             </div>
+            <aside class="db-qlist" id="db-qlist" aria-labelledby="db-qlist-title">
+              <h3 class="db-serif db-qlist__title" id="db-qlist-title">Hoặc chọn nhanh bàn còn trống</h3>
+              <p class="db-qlist__sub" id="db-qlist-sub">Danh sách theo tầng đang xem</p>
+              <div class="db-qlist__scroll" id="db-qlist-items" tabindex="0"></div>
+            </aside>
           </div>
-          <div class="field" data-f="time">
-            <span class="field__label" id="bk-time-label">Giờ đến *</span>
-            <div class="bk-slots" id="bk-slots" role="radiogroup" aria-labelledby="bk-time-label" aria-describedby="bk-err-time"></div>
-            <span class="field__error" id="bk-err-time" role="alert">Vui lòng chọn giờ đến.</span>
-          </div>
-          <div class="field">
-            <span class="field__label" id="bk-occ-label">Dịp đặc biệt</span>
-            <div class="bk-chips" id="bk-occasion" role="radiogroup" aria-labelledby="bk-occ-label">
-              <button type="button" class="chip is-active" role="radio" aria-checked="true" data-v="">Không</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Sinh nhật">Sinh nhật</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Cầu hôn">Cầu hôn</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Gia đình">Gia đình</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-v="Công việc">Công việc</button>
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- 3. Thông tin liên hệ -->
-        <section class="bk-card card" aria-labelledby="bk-h3">
-          <h2 class="num-title t-h4" id="bk-h3"><b>3</b>Thông tin liên hệ</h2>
-          <div class="bk-grid">
-            <div class="field" data-f="name">
-              <label class="field__label" for="bk-name">Họ và tên *</label>
-              <span class="field__box"><input id="bk-name" name="name" placeholder="Nguyễn Minh Anh" autocomplete="name" required aria-describedby="bk-err-name"></span>
-              <span class="field__error" id="bk-err-name" role="alert">Vui lòng nhập họ tên.</span>
-            </div>
-            <div class="field" data-f="phone">
-              <label class="field__label" for="bk-phone">Số điện thoại *</label>
-              <span class="field__box"><input id="bk-phone" name="phone" type="tel" placeholder="0901 234 567" autocomplete="tel" required aria-describedby="bk-err-phone"></span>
-              <span class="field__error" id="bk-err-phone" role="alert">Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.</span>
-            </div>
-          </div>
-          <div class="field" data-f="email">
-            <label class="field__label" for="bk-email">Email</label>
-            <span class="field__box"><input id="bk-email" name="email" type="email" placeholder="minhanh@gmail.com" autocomplete="email" aria-describedby="bk-err-email"></span>
-            <span class="field__error" id="bk-err-email" role="alert">Email chưa đúng định dạng.</span>
-          </div>
-          <div class="field">
-            <label class="field__label" for="bk-note">Ghi chú cho nhà hàng</label>
-            <textarea class="textarea" id="bk-note" name="note" rows="3" placeholder="Ví dụ: bàn gần cửa sổ, có trẻ nhỏ, mang bánh kem…"></textarea>
-          </div>
-          <button class="btn btn--wine btn--block" type="submit">Xác nhận đặt bàn <i data-icon="arrow-right"></i></button>
-          <p class="t-caption c-gray bk-foot">Yêu cầu cần được nhân viên xác nhận qua điện thoại.</p>
-        </section>
-      </form>
+      <!-- ===== 03 · Gói trang trí ===== -->
+      <section class="db-sec" aria-labelledby="db-s3">
+        <h2 class="num-title db-sec__title" id="db-s3"><b>3</b><span class="db-serif">Tùy chọn gói trang trí</span></h2>
+        <div class="db-decor" id="db-decor" role="radiogroup" aria-labelledby="db-s3"></div>
+      </section>
 
-      <aside class="bk-summary" aria-label="Tóm tắt đặt bàn">
-        <span class="bk-summary__kicker">PRENOTA UN TAVOLO</span>
-        <h2 class="t-h3 c-white">Thông tin đặt bàn</h2>
-        <dl class="bk-sum" aria-live="polite">
-          <div><dt><i data-icon="location-pin"></i>Chi nhánh</dt><dd id="sum-branch">—</dd></div>
-          <div><dt><i data-icon="calendar"></i>Ngày</dt><dd id="sum-date">Chưa chọn</dd></div>
-          <div><dt><i data-icon="clock"></i>Giờ đến</dt><dd id="sum-time">Chưa chọn</dd></div>
-          <div><dt><i data-icon="users"></i>Số khách</dt><dd id="sum-guests">2 người</dd></div>
-          <div><dt><i data-icon="sparkle"></i>Dịp đặc biệt</dt><dd id="sum-occ">Không</dd></div>
-        </dl>
-        <ul class="checks">
-          <li><span><i data-icon="check"></i></span>Giữ bàn miễn phí đến 15 phút</li>
-          <li><span><i data-icon="check"></i></span>Gói trang trí Sinh nhật · Cầu hôn · Gia đình</li>
-          <li><span><i data-icon="check"></i></span>Tích điểm đổi quà cho thành viên</li>
-        </ul>
-        <a class="bk-hotline" href="tel:0123456789"><span><i data-icon="phone"></i></span><div><small>Hotline đặt bàn</small><strong>0123 456 789</strong></div></a>
-      </aside>
+      <!-- ===== 04 · Thông tin người đặt ===== -->
+      <section class="db-sec" aria-labelledby="db-s4">
+        <h2 class="num-title db-sec__title" id="db-s4"><b>4</b><span class="db-serif">Thông tin người đặt &amp; ghi chú</span></h2>
+        <form class="db-card db-form" id="db-form" novalidate>
+          <div class="db-form__row">
+            <label class="field" data-req="name"><span class="field__label">Họ và tên *</span><span class="field__box"><input name="name" autocomplete="name" placeholder="Nguyễn Minh Anh"></span><span class="field__error">Vui lòng nhập họ tên</span></label>
+            <label class="field" data-req="phone"><span class="field__label">Số điện thoại *</span><span class="field__box"><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="0901 234 567"></span><span class="field__error">Số điện thoại gồm 10 chữ số, bắt đầu bằng 0</span></label>
+          </div>
+          <label class="field"><span class="field__label">Ghi chú cho Quản lý bàn</span><textarea class="textarea" name="note" rows="3" maxlength="500" placeholder="Ví dụ: thêm 1 bánh hình VF3 ghi “Happy Birthday Mai”"></textarea></label>
+        </form>
+      </section>
+
+      <!-- ===== 05 · Tạm tính & đặt cọc ===== -->
+      <section class="db-sec" aria-labelledby="db-s5">
+        <h2 class="num-title db-sec__title" id="db-s5"><b>5</b><span class="db-serif">Tạm tính &amp; đặt cọc</span></h2>
+        <div class="db-sum" id="db-sum">
+          <div class="db-sum__detail">
+            <span class="db-eyebrow db-eyebrow--gold">Riepilogo</span>
+            <h3 class="db-serif db-sum__title">Tạm tính</h3>
+            <dl class="db-sum__rows">
+              <div><dt>Bàn đã chọn</dt><dd id="sum-table">Chưa chọn</dd></div>
+              <div><dt>Ngày giờ</dt><dd id="sum-time">Chưa chọn</dd></div>
+              <div><dt>Số khách</dt><dd id="sum-guests">2 người lớn</dd></div>
+              <div><dt>Phí giữ bàn</dt><dd id="sum-fee">0 VND</dd></div>
+              <div><dt>Gói trang trí</dt><dd id="sum-pkg">Mặc định · Miễn phí</dd></div>
+            </dl>
+          </div>
+          <div class="db-sum__pay">
+            <div class="db-sum__total"><span>Tổng tiền</span><strong id="sum-total">0 VND</strong></div>
+            <div class="db-sum__deposit"><span>Đặt cọc trước (50%)</span><strong id="sum-deposit">0 VND</strong></div>
+            <div class="db-sum__missing" id="db-missing" role="alert" hidden></div>
+            <button type="button" class="btn btn--wine btn--block db-pay" id="db-pay">Thanh toán cọc</button>
+            <p class="db-sum__note">Phần còn lại thanh toán tại nhà hàng. Phí giữ bàn được trừ vào hoá đơn.</p>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
+
+  <!-- Nút hướng dẫn nổi (thu nhỏ từ popup hướng dẫn) -->
+  <button type="button" class="db-fab" id="db-fab" aria-label="Mở hướng dẫn đặt bàn"><span class="db-fab__q" aria-hidden="true">?</span><span class="db-fab__txt">Hướng dẫn đặt bàn</span></button>
+  <!-- Lớp hướng dẫn từng bước (mũi tên chỉ trực tiếp vào nút) -->
+  <div class="db-coach" id="db-coach" hidden>
+    <div class="db-coach__ring" id="db-coach-ring" aria-hidden="true"></div>
+    <div class="db-coach__tip" id="db-coach-tip" role="dialog" aria-modal="false" aria-labelledby="db-coach-title"></div>
+  </div>
+
   <footer data-footer></footer>
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
-  <script src="../js/data/mon_an.js"></script>
+  <script src="../js/data/dat_ban.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/popups.js"></script>
   <script src="../js/pages/dat_ban.js"></script>

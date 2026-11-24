@@ -1,14 +1,6 @@
 /* Styles for the existing PC Figma pages; after global.css + layout.css.
    Does not redefine color/font tokens or reset the shared header/footer. */
-/* ---------- Fonts (client/assets/fonts) ---------- */
-@font-face{font-family:"Momo Trust Display";src:url("../assets/fonts/MomoTrustDisplay-Regular.woff") format("woff"),url("../assets/fonts/MomoTrustDisplay-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
-@font-face{font-family:"Momo Trust Sans";src:url("../assets/fonts/MomoTrustSans-Regular.woff") format("woff");font-weight:400;font-display:swap}
-@font-face{font-family:"Momo Trust Sans";src:url("../assets/fonts/MomoTrustSans-Medium.woff") format("woff");font-weight:500;font-display:swap}
-@font-face{font-family:"Momo Trust Sans";src:url("../assets/fonts/MomoTrustSans-SemiBold.woff") format("woff");font-weight:600;font-display:swap}
-@font-face{font-family:"Momo Trust Sans";src:url("../assets/fonts/MomoTrustSans-Bold.woff") format("woff");font-weight:700;font-display:swap}
-@font-face{font-family:"Lusitana";src:url("../assets/fonts/Lusitana-Regular.woff") format("woff");font-weight:400;font-display:swap}
-@font-face{font-family:"Lusitana";src:url("../assets/fonts/Lusitana-Bold.woff") format("woff");font-weight:700;font-display:swap}
-@font-face{font-family:"Carattere";src:url("../assets/fonts/Carattere-Regular.woff") format("woff");font-weight:400;font-display:swap}
+/* Fonts are loaded from Google Fonts in global.css (no local font files in assets). */
 
 
 /* ---------- Typography (text styles PC/…) ---------- */

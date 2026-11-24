@@ -60,7 +60,7 @@
         <button class="btn btn--navy btn--block" type="submit">${reg ? 'Tạo tài khoản' : 'Đăng nhập'}</button>
       </form>
       ${reg ? `<p class="t-body-s c-gray" style="text-align:center">Đã có tài khoản? <button type="button" class="c-wine" style="font-weight:600" data-auth-tab="login">Đăng nhập</button></p>`
-            : `<div class="pp-or">hoặc tiếp tục với</div><div class="pp-social"><button type="button" class="btn btn--outline" data-social="Google"><b style="background:#4285F4">G</b>Google</button><button type="button" class="btn btn--outline" data-social="Facebook"><b style="background:#1877F2">f</b>Facebook</button></div>`}
+            : `<div class="pp-or">hoặc tiếp tục với</div><div class="pp-social"><button type="button" class="btn btn--outline" data-social="Google"><svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true" focusable="false"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Google</button><button type="button" class="btn btn--outline" data-social="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path fill="#fff" d="M15.1 7.5h-1.6c-.9 0-1.1.4-1.1 1v1.4h2.6l-.3 2.6h-2.3v7h-2.7v-7H7.5V9.9h2.3V8.3c0-2.2 1.4-3.5 3.4-3.5 1 0 1.8.1 2 .1v2.6z"/></svg>Facebook</button></div>`}
     </div>`, 'pp-box--500');
     const form = $('form', el);
     const err = (k, bad) => { const f = $(`[data-f="${k}"]`, form); if (f) f.classList.toggle('is-error', bad); return bad; };
@@ -84,7 +84,7 @@
       <h3 class="t-h3">Chào mừng đến Fiabesco!</h3>
       <span class="pp-tag">${I('gift')}Tài khoản đã sẵn sàng · tặng 50 điểm</span>
       <p class="t-body c-gray">Điểm thưởng dùng được cho cả giao hàng và đặt bàn. Xem hồ sơ thành viên của bạn bất cứ lúc nào.</p>
-      <div class="pp-actions"><button type="button" class="btn btn--outline" data-close>Tiếp tục</button><a class="btn btn--navy" href="khuyen_mai.html">Trang cá nhân</a></div>
+      <div class="pp-actions"><button type="button" class="btn btn--outline" data-close>Tiếp tục</button><a class="btn btn--navy" href="thanh_vien.html#ho-so">Trang cá nhân</a></div>
     </div>`, 'pp-box--480');
   }
 
@@ -105,9 +105,9 @@
     wrap.insertAdjacentHTML('beforeend', `<div class="pp-menu" role="menu">
       <div class="pp-menu__head"><span class="pp-avatar">${esc(initials(u.name))}</span><div><strong>Xin chào, ${esc(u.name.split(' ').pop())}!</strong><small>Thành viên ${u.tier} · ${vnd(u.points)} điểm</small></div></div>
       <div class="pp-points"><div class="pp-row"><span>Còn ${vnd(next - u.points)} điểm để lên ${u.tier === 'Vàng' ? 'Kim cương' : 'Vàng'}</span><a href="khuyen_mai.html">Ưu đãi của tôi →</a></div><i></i></div>
-      <a class="pp-menu__item" href="#" data-soon="Hồ sơ cá nhân">${I('user')}<span>Hồ sơ cá nhân</span>${I('chevron-right')}</a>
+      <a class="pp-menu__item" href="thanh_vien.html#ho-so">${I('user')}<span>Hồ sơ cá nhân</span>${I('chevron-right')}</a>
       <a class="pp-menu__item" href="theo_doi_don_hang.html">${I('receipt')}<span>Đơn hàng của tôi</span>${I('chevron-right')}</a>
-      <a class="pp-menu__item" href="#" data-soon="Đặt bàn của tôi">${I('calendar')}<span>Đặt bàn của tôi</span>${I('chevron-right')}</a>
+      <a class="pp-menu__item" href="thanh_vien.html#lich-su/dat-ban">${I('calendar')}<span>Đặt bàn của tôi</span>${I('chevron-right')}</a>
       <a class="pp-menu__item" href="mon_yeu_thich.html">${I('heart')}<span>Món yêu thích</span>${I('chevron-right')}</a>
       <a class="pp-menu__item" href="khuyen_mai.html">${I('gift')}<span>Ưu đãi của tôi</span>${I('chevron-right')}</a>
       <button type="button" class="pp-menu__item pp-menu__out" data-logout>${I('arrow-left')}<span>Đăng xuất</span></button></div>`);
@@ -503,17 +503,13 @@
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-auth-tab]'); if (t) { openAuth(t.dataset.authTab); return; }
     const eye = e.target.closest('[data-eye]'); if (eye) { const i = eye.parentElement.querySelector('input'); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; eye.textContent = show ? 'Ẩn' : 'Hiện'; return; }
-    if (e.target.closest('[data-forgot]')) { FB.toast('Đã gửi mã OTP', 'Kiểm tra tin nhắn để đặt lại mật khẩu (mã có hiệu lực 5 phút).', '', '', 'navy'); return; }
+    if (e.target.closest('[data-forgot]')) { location.href = 'thanh_vien.html#quen-mat-khau'; return; } // Luồng Thành viên – M05 Quên mật khẩu
     const so = e.target.closest('[data-social]'); if (so) { store.set(USER_KEY, { name: 'Nguyễn Minh Anh', id: so.dataset.social, tier: 'Vàng', points: 1250 }); close('pp-auth'); renderAccount(); FB.toast('Đăng nhập thành công', 'Đã liên kết tài khoản ' + so.dataset.social, '', '', 'navy'); return; }
     if (e.target.closest('[data-logout]')) { store.set(USER_KEY, null); renderAccount(); FB.toast('Đã đăng xuất', 'Hẹn gặp lại bạn tại Fiabesco Palace.', '', '', 'navy'); return; }
     const soon = e.target.closest('[data-soon]'); if (soon) { e.preventDefault(); FB.toast(soon.dataset.soon, 'Tính năng sẽ sớm ra mắt.', '', '', 'navy'); return; }
     const op = e.target.closest('[data-pp]'); if (op) { e.preventDefault(); const k = op.dataset.pp; ({ login: () => openAuth('login'), register: () => openAuth('register'), location: () => openLocation(op.dataset.next), address: openAddress, recruit: openRecruit })[k]?.(); }
   });
-  // "Tuyển dụng" (topbar/footer/menu) → popup sắp ra mắt
-  document.addEventListener('click', e => {
-    const a = e.target.closest('a'); if (!a) return;
-    if (/^tuyển dụng$/i.test(a.textContent.trim())) { e.preventDefault(); e.stopImmediatePropagation(); openRecruit(); }
-  }, true);
+  // "Tuyển dụng" giờ dẫn tới trang tuyen_dung.html (Luồng Tuyển dụng); popup "sắp ra mắt" vẫn mở được bằng ?popup=recruit hoặc data-pp="recruit".
 
   document.addEventListener('fb:ready', () => {
     renderAccount(); paintFav(); syncAreaLabel();
@@ -533,5 +529,5 @@
     ({ login: () => openAuth('login'), register: () => openAuth('register'), welcome: openWelcome, location: () => openLocation(), recruit: openRecruit, quick: () => openQuickView(FB.params.get('id') || 'burrata'), combo: () => openCombo(FB.params.get('id') || 'combo-an-y'), address: openAddress, thanks: openThanks, processing: () => payProcessing('ZaloPay', 499000) })[p]?.();
   });
 
-  Object.assign(FB, { Fav, openAuth, openWelcome, openQuickView, openLocation, openRecruit, openAdded, openCombo, openAddress, openRemove, payProcessing, openCancelOrder, openThanks, store, getUser });
+  Object.assign(FB, { Fav, openAuth, openWelcome, openQuickView, openLocation, openRecruit, openAdded, openCombo, openAddress, openRemove, payProcessing, openCancelOrder, openThanks, store, getUser, renderAccount });
 })();

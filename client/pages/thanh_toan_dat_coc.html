@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <meta name="robots" content="noindex">
+  <title>Thanh toán đặt cọc – Fiabesco Palace</title>
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/thanh_toan_dat_coc.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="thanh_toan_dat_coc">
+  <!-- Frame: PC – 07b Thanh toán đặt cọc (không header/footer, chỉ thanh trên rút gọn) -->
+  <header class="tc-top">
+    <div class="tc-wrap tc-top__inner">
+      <a class="tc-back" href="dat_ban.html" id="tc-back"><i data-icon="arrow-left"></i><span>Quay lại chọn bàn</span></a>
+      <a class="logo tc-logo" href="trang_chu.html" aria-label="Fiabesco Palace – Trang chủ">
+        <span class="logo__emblem"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png" alt=""></span>
+        <span><span class="logo__name">FiabescoPalace</span><span class="logo__tag" style="display:block">Italy on Every Plate</span></span>
+      </a>
+      <span class="tc-ssl"><i data-icon="lock"></i>Thanh toán bảo mật SSL</span>
+    </div>
+  </header>
+
+  <main class="tc-wrap tc" id="noi-dung-chinh">
+    <!-- ================= CỘT TRÁI · phương thức ================= -->
+    <div class="tc-left" id="tc-left">
+      <div class="tc-head">
+        <span class="tc-eyebrow">Bước 2 / 3 · Đặt cọc giữ bàn</span>
+        <h1 class="tc-serif tc-h1">Thanh toán đặt cọc</h1>
+        <ol class="tc-progress" aria-label="Tiến trình đặt bàn">
+          <li class="is-done"><b><i data-icon="check"></i></b><span>Chọn bàn</span></li>
+          <li class="is-current" aria-current="step"><b>2</b><span>Thanh toán cọc</span></li>
+          <li><b>3</b><span>Hoàn tất</span></li>
+        </ol>
+      </div>
+
+      <section class="tc-card tc-methods" aria-labelledby="tc-m-title">
+        <h2 class="tc-serif tc-h2" id="tc-m-title">Chọn phương thức thanh toán</h2>
+        <p class="tc-sub">Chọn 1 trong 2 cách — hướng dẫn chi tiết sẽ hiện ngay bên dưới.</p>
+        <div class="tc-methods__grid" role="radiogroup" aria-labelledby="tc-m-title" id="tc-methods">
+          <button type="button" class="tc-method" role="radio" aria-checked="false" data-method="vietqr">
+            <span class="tc-method__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg></span>
+            <span class="tc-method__body">
+              <span class="tc-tag tc-tag--green">Khuyên dùng</span>
+              <strong>Chuyển khoản nhanh VietQR</strong>
+              <span class="tc-method__sub">Mọi app ngân hàng</span>
+              <span class="tc-method__perk">Xác nhận tức thì · Miễn phí</span>
+            </span>
+            <span class="tc-radio" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="tc-method" role="radio" aria-checked="false" data-method="wallet">
+            <span class="tc-method__ic" aria-hidden="true"><i data-icon="wallet"></i></span>
+            <span class="tc-method__body">
+              <strong>Ví điện tử</strong>
+              <span class="tc-method__sub">MoMo · ZaloPay · VNPAY</span>
+              <span class="tc-method__perk">Quét mã ngay trong ví · Miễn phí</span>
+            </span>
+            <span class="tc-radio" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Lưu ý về tiền cọc — nằm ở cột trái khi chưa chọn, chuyển sang cột phải khi đã chọn (JS) -->
+      <section class="tc-card tc-notes" id="tc-notes" aria-labelledby="tc-notes-title">
+        <h2 class="tc-serif tc-h3" id="tc-notes-title">Lưu ý về tiền cọc</h2>
+        <ul class="tc-notes__list">
+          <li><span class="tc-notes__ic">$</span><div><strong>Cọc 50%</strong><span>Phần còn lại thanh toán tại nhà hàng.</span></div></li>
+          <li><span class="tc-notes__ic"><i data-icon="receipt"></i></span><div><strong>Trừ vào hoá đơn</strong><span>Phí giữ bàn được trừ khi bạn dùng bữa.</span></div></li>
+          <li><span class="tc-notes__ic"><i data-icon="refresh"></i></span><div><strong>Huỷ trước 24 giờ</strong><span>Được hoàn 100% tiền cọc.</span></div></li>
+        </ul>
+      </section>
+
+      <!-- ===== Nhánh · VietQR ===== -->
+      <section class="tc-card tc-branch" id="tc-branch-vietqr" aria-labelledby="tc-bq-title" hidden>
+        <div class="tc-branch__head"><h2 class="tc-serif tc-h2" id="tc-bq-title">Quét mã VietQR</h2><span class="tc-tag tc-tag--green">Nhận tiền 24/7</span></div>
+        <p class="tc-sub">Mở app ngân hàng hoặc ví bất kỳ có tính năng quét VietQR — số tiền và nội dung đã được điền sẵn.</p>
+        <div class="tc-qrrow">
+          <div class="tc-qrbox">
+            <div class="tc-qr" data-qr aria-label="Mã VietQR chuyển khoản đặt cọc" role="img"></div>
+            <span class="tc-expiry"><i data-icon="clock"></i>Mã hết hạn sau <b data-countdown>05:00</b></span>
+            <button type="button" class="tc-btn-ghost" data-save-qr><i data-icon="download"></i>Lưu ảnh mã QR</button>
+          </div>
+          <dl class="tc-transfer">
+            <div><dt>Ngân hàng</dt><dd id="tc-bank">—</dd></div>
+            <div><dt>Chủ tài khoản</dt><dd id="tc-acc-name">—</dd></div>
+            <div class="tc-transfer__copy"><div><dt>Số tài khoản</dt><dd class="tc-num" id="tc-acc-no">—</dd></div><button type="button" class="tc-copy" data-copy="acc"><i data-icon="copy"></i>Sao chép</button></div>
+            <div class="tc-transfer__copy"><div><dt>Số tiền</dt><dd class="tc-num c-wine" id="tc-amount">—</dd></div><button type="button" class="tc-copy" data-copy="amount"><i data-icon="copy"></i>Sao chép</button></div>
+            <div class="tc-transfer__copy"><div><dt>Nội dung chuyển khoản</dt><dd class="c-wine" id="tc-content">—</dd></div><button type="button" class="tc-copy" data-copy="content"><i data-icon="copy"></i>Sao chép</button></div>
+            <p class="tc-warn">Vui lòng giữ nguyên nội dung chuyển khoản để nhà hàng đối chiếu đúng đơn đặt cọc của bạn.</p>
+          </dl>
+        </div>
+        <div class="tc-steps">
+          <span class="tc-steps__title">4 bước để hoàn tất</span>
+          <ol>
+            <li><b>1</b><strong>Mở app ngân hàng</strong><span>Chọn tính năng Quét mã QR</span></li>
+            <li><b>2</b><strong>Quét mã QR</strong><span>Số tiền &amp; nội dung tự điền sẵn</span></li>
+            <li><b>3</b><strong>Kiểm tra người nhận</strong><span data-acc-name>—</span></li>
+            <li><b>4</b><strong>Xác nhận chuyển</strong><span>Rồi bấm “Tôi đã chuyển khoản” bên phải</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ===== Nhánh · Ví điện tử ===== -->
+      <section class="tc-card tc-branch" id="tc-branch-wallet" aria-labelledby="tc-bw-title" hidden>
+        <div class="tc-branch__head"><h2 class="tc-serif tc-h2" id="tc-bw-title">Thanh toán bằng ví điện tử</h2></div>
+        <div class="tc-seg" role="tablist" aria-label="Chọn ví" id="tc-wallets"></div>
+        <div class="tc-qrrow">
+          <div class="tc-qrbox">
+            <div class="tc-qr" data-qr aria-label="Mã VietQR – quét bằng ví điện tử" role="img"></div>
+            <span class="tc-qrbox__cap" id="tc-wallet-cap">Quét bằng ứng dụng MoMo</span>
+            <span class="tc-expiry"><i data-icon="clock"></i>Mã hết hạn sau <b data-countdown>05:00</b></span>
+          </div>
+          <div class="tc-wsteps">
+            <ol id="tc-wallet-steps"></ol>
+            <p class="tc-wnote"><i data-icon="shield-check"></i><span>Ví chuyển khoản qua mạng NAPAS 247 vào tài khoản <b data-acc-name>—</b>. Không cần liên kết hay đăng nhập ví trên trang này.</span></p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================= CỘT PHẢI · tóm tắt ================= -->
+    <aside class="tc-right" id="tc-right" aria-label="Tóm tắt đặt bàn">
+      <div class="tc-card tc-hold" id="tc-hold">
+        <div class="tc-hold__row">
+          <span class="tc-hold__ic"><i data-icon="clock"></i></span>
+          <div class="tc-hold__txt"><strong>Bàn đang được giữ cho bạn</strong><span>Hoàn tất đặt cọc trước khi hết giờ</span></div>
+          <b class="tc-serif tc-hold__time" data-countdown aria-live="off">05:00</b>
+        </div>
+        <div class="tc-hold__bar" role="progressbar" aria-label="Thời gian giữ bàn còn lại" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i id="tc-hold-bar"></i></div>
+      </div>
+
+      <div class="tc-card tc-sum">
+        <div class="tc-seat" id="tc-seat">
+          <span class="tc-seat__bg" id="tc-seat-bg" aria-hidden="true"></span>
+          <span class="tc-seat__eyebrow">Bàn đã chọn</span>
+          <strong class="tc-serif tc-seat__id" id="tc-seat-id">—</strong>
+          <div class="tc-seat__stats">
+            <div><span>Vị trí</span><b id="tc-seat-floor">—</b></div>
+            <div><span>Sức chứa</span><b id="tc-seat-seats">—</b></div>
+          </div>
+          <p class="tc-seat__desc" id="tc-seat-desc"></p>
+        </div>
+        <div class="tc-sum__body">
+          <dl class="tc-rows">
+            <div><dt>Ngày</dt><dd id="tc-date">—</dd></div>
+            <div><dt>Giờ</dt><dd id="tc-slot">—</dd></div>
+            <div><dt>Số khách</dt><dd id="tc-guests">—</dd></div>
+            <div><dt>Gói trang trí</dt><dd id="tc-pkg">—</dd></div>
+          </dl>
+          <div class="tc-person">
+            <div><span class="tc-eyebrow">Người đặt</span><strong id="tc-person">—</strong></div>
+            <button type="button" class="tc-edit" id="tc-edit"><i data-icon="edit"></i>Sửa</button>
+          </div>
+          <dl class="tc-rows tc-rows--money">
+            <div><dt>Phí giữ bàn</dt><dd id="tc-fee-table">—</dd></div>
+            <div><dt>Gói trang trí</dt><dd id="tc-fee-pkg">—</dd></div>
+            <div class="tc-total"><dt>Tổng tiền</dt><dd id="tc-total">—</dd></div>
+          </dl>
+          <div class="tc-deposit"><div><strong>Đặt cọc trước (50%)</strong><span>Phần còn lại thanh toán tại nhà hàng</span></div><b id="tc-deposit">—</b></div>
+          <button type="button" class="tc-pay" id="tc-pay" disabled>Chọn phương thức để tiếp tục</button>
+          <p class="tc-secure"><i data-icon="shield-check"></i>Trang này không thu thập thông tin thẻ hay tài khoản ngân hàng của bạn.</p>
+        </div>
+      </div>
+
+      <a class="tc-help" href="tel:19006868" id="tc-help"><i data-icon="phone"></i><span><strong>Cần hỗ trợ thanh toán?</strong><span id="tc-help-line">Hotline 1900 6868 · 9:00 – 22:00 mỗi ngày</span></span></a>
+    </aside>
+  </main>
+
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/data/dat_ban.js"></script>
+  <script src="../js/data/thanh_toan_dat_coc.js"></script>
+  <script src="../js/vendor/qrcode.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/pages/thanh_toan_dat_coc.js"></script>
+</body>
+</html>

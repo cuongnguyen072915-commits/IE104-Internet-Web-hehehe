@@ -1,0 +1,171 @@
+/* =====================================================================
+   Thương hiệu – Luồng Thương hiệu (Lam)
+   Figma "★ TỔNG HỢP LUỒNG" › 08 · VỀ CHÚNG TÔI (4 màn Mobile 402px).
+   Mobile giữ bố cục Figma (thẻ trắng viền #ebe7de bo 14–18px, gạch đỏ
+   nhấn 47×3px); PC mở rộng thành lưới nhiều cột trong container 1200px.
+   ===================================================================== */
+.th{padding:56px 0 96px}
+.th .ic [stroke]:not([stroke="none"]){stroke:currentColor}
+.th-kicker{display:block;font:400 12px/1.4 var(--font-price);letter-spacing:.1em;text-transform:uppercase;color:var(--color-secondary)}
+.th-kicker--serif{font-size:13px}
+.th-dash{display:block;width:47px;height:3px;border-radius:2px;background:var(--color-secondary)}
+.th-h3{font:400 clamp(20px,2.2vw,30px)/1.25 var(--font-display);color:var(--color-primary)}
+.th-label{display:block;font:700 12px/1.4 var(--font-main);letter-spacing:.08em;text-transform:uppercase;color:var(--color-secondary)}
+.th-sign{margin-top:40px;text-align:center;font:400 12px/1.4 var(--font-price);letter-spacing:.3em;text-transform:uppercase;color:#546c79}
+
+/* 01 · Tổng quan */
+.th-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:40px}
+.th-hero__text{display:flex;flex-direction:column;gap:16px;max-width:640px}
+.th-hero__logo{position:relative;width:min(300px,30vw);aspect-ratio:1;border-radius:32px;background:var(--color-white);display:grid;place-items:center;overflow:hidden;box-shadow:var(--shadow-md)}
+.th-hero__logo::before{content:"";position:absolute;right:-18%;top:-18%;width:44%;aspect-ratio:1;border-radius:50%;background:#efe1c8}
+.th-hero__logo img{position:relative;width:72%;height:auto}
+.th-explore{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.th-explore__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.th-nav-card{display:flex;flex-direction:column;gap:14px;height:100%;padding:20px 22px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light);transition:transform .25s,box-shadow .25s,border-color .25s}
+.th-nav-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--color-border)}
+.th-nav-card__top{display:flex;justify-content:space-between;align-items:flex-start}
+.th-nav-card__top .ic{width:28px;height:28px;color:var(--color-primary)}
+.th-nav-card small{font:400 12px/1 var(--font-price);color:var(--color-secondary)}
+.th-nav-card strong{font:600 18px/1.3 var(--font-main);color:var(--color-primary);flex:1}
+.th-nav-card .th-dash{width:32px;height:2px}
+
+.th-who{margin-top:56px;padding-top:40px;border-top:1px solid var(--color-border-light);display:flex;flex-direction:column;gap:20px}
+.th-who__card{display:grid;grid-template-columns:minmax(160px,280px) minmax(0,1fr);gap:28px;align-items:center;padding:20px;border-radius:var(--radius-2xl);background:var(--color-white);border:1px solid var(--color-border-light)}
+.th-who__img{aspect-ratio:1;border-radius:var(--radius-xl);background:var(--color-bg-body);display:grid;place-items:center}
+.th-who__img img{width:80%;height:auto}
+.th-who__text{display:flex;flex-direction:column;gap:14px;max-width:560px}
+.th-who__text p{font:400 clamp(17px,1.6vw,22px)/1.45 var(--font-main)}
+.th-band{display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px;border-radius:var(--radius-xl);background:var(--color-primary);color:var(--color-white);text-align:center}
+.th-band strong{font:400 clamp(20px,2vw,28px)/1.2 var(--font-price)}
+.th-band span{font:400 14px/1.5 var(--font-main);opacity:.9}
+.th-band--bold strong{font-family:var(--font-display)}
+
+/* 02 · Câu chuyện thương hiệu */
+.th-story{margin-top:72px;padding:72px 0;background:var(--color-bg-surface)}
+.th-story__intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:56px;align-items:center}
+.th-story__text{display:flex;flex-direction:column;gap:14px}
+.th-story__flag{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:38px;box-shadow:var(--shadow-lg)}
+.th-timeline{position:relative;display:flex;flex-direction:column;gap:22px;margin-top:10px}
+.th-timeline::before{content:"";position:absolute;left:16px;top:20px;bottom:20px;width:2px;border-radius:1px;background:var(--color-border-light)}
+.th-timeline li{position:relative;display:flex;gap:17px;align-items:flex-start}
+.th-timeline b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--color-secondary);color:var(--color-white);font:400 12px/1 var(--font-price)}
+.th-timeline b.is-navy{background:var(--color-primary)}
+.th-timeline strong{display:block;font:400 18px/1.35 var(--font-display);margin-bottom:4px}
+.th-timeline p{font:400 16px/1.3 var(--font-main)}
+.th-block{margin-top:56px;display:flex;flex-direction:column;gap:14px}
+.th-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.th-stats > div{display:flex;flex-direction:column;gap:4px;padding:18px 20px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light)}
+.th-stats dt{font:400 clamp(26px,2.6vw,40px)/1.1 var(--font-display);color:var(--color-primary)}
+.th-stats dd{display:flex;flex-direction:column}
+.th-stats dd b{font:600 13px/1.4 var(--font-main)}
+.th-stats dd span{font:400 12px/1.4 var(--font-main);color:var(--color-text-muted)}
+.th-chef{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center;padding:24px;border-radius:24px;background:var(--color-primary);color:var(--color-bg-body)}
+.th-chef img{width:100%;height:100%;min-height:240px;max-height:340px;object-fit:cover;border-radius:var(--radius-lg)}
+.th-chef blockquote{display:flex;flex-direction:column;gap:14px;padding-right:16px}
+.th-chef blockquote > span{font:400 64px/.6 var(--font-price);color:var(--color-secondary)}
+.th-chef blockquote p{font:400 clamp(18px,1.9vw,26px)/1.35 var(--font-display)}
+.th-chef footer{display:flex;align-items:center;gap:10px;font:600 13px/1.4 var(--font-main)}
+.th-chef footer i{width:24px;height:2px;background:var(--color-secondary)}
+.th-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.th-steps li{display:flex;flex-direction:column;gap:14px;padding:12px 12px 18px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light)}
+.th-steps img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px}
+.th-steps div{display:flex;flex-direction:column;gap:6px;padding:0 6px}
+.th-steps strong{display:flex;gap:8px;align-items:baseline;font:600 16px/1.35 var(--font-main)}
+.th-steps strong b{font:400 13px/1 var(--font-price);color:var(--color-secondary)}
+.th-steps p{font:400 14px/1.45 var(--font-main);color:var(--color-text-muted)}
+.th-space{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.th-space img{width:100%;height:clamp(200px,28vw,380px);object-fit:cover;border-radius:var(--radius-xl)}
+.th-invite{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 32px;border-radius:18px;background:var(--color-white);border:1px solid var(--color-border-light)}
+.th-invite > div:first-child{display:flex;flex-direction:column;gap:8px}
+.th-invite__btns{display:flex;gap:12px;flex:none}
+
+/* 03 · Giá trị cốt lõi */
+.th-values{margin-top:80px;display:flex;flex-direction:column;gap:14px}
+.th-values__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:10px}
+.th-value{display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light);transition:transform .25s,box-shadow .25s}
+.th-value:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.th-value__top{display:flex;justify-content:space-between;align-items:flex-start}
+.th-value__ic{width:44px;height:44px;border-radius:50%;background:var(--color-bg-body);display:grid;place-items:center;color:var(--color-primary)}
+.th-value__ic .ic{width:22px;height:22px}
+.th-value small{font:400 12px/1 var(--font-price);color:var(--color-secondary)}
+.th-value h3{font:600 18px/1.3 var(--font-main);margin-top:6px}
+.th-value p{font:400 16px/1.35 var(--font-main);flex:1}
+.th-values .th-band{margin-top:14px}
+
+/* 04 · Liên hệ / Kết nối */
+.th-contact{margin-top:80px}
+.th-contact__head{display:flex;flex-direction:column;gap:14px;margin-bottom:24px}
+.th-contact__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
+.th-contact__info,.th-form{display:flex;flex-direction:column;gap:12px}
+.th-info{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light);transition:border-color .2s}
+a.th-info:hover{border-color:var(--color-primary)}
+.th-info__ic{width:36px;height:36px;border-radius:50%;background:var(--color-bg-body);display:grid;place-items:center;flex:none;color:var(--color-primary)}
+.th-info__ic .ic{width:18px;height:18px}
+.th-info strong{display:block;font:600 15px/1.35 var(--font-main)}
+.th-info small{font:400 13px/1.4 var(--font-main);color:var(--color-text-muted)}
+.th-info--social{justify-content:space-between}
+.th-social{display:flex;gap:8px}
+.th-social a{width:32px;height:32px;border-radius:8px;background:var(--color-bg-body);display:grid;place-items:center;color:var(--color-primary);transition:background .2s,color .2s}
+.th-social a:hover{background:var(--color-primary);color:var(--color-white)}
+.th-social .ic{width:16px;height:16px}
+.th-social b{font:700 12px/1 var(--font-price)}
+.th-form .field__box,.th-form .textarea{border-color:var(--color-border-light)}
+.th-form .textarea{min-height:112px}
+.th-form__ok{padding:12px 14px;border-radius:var(--radius-lg);background:var(--green-bg);color:var(--color-success);font:400 14px/1.5 var(--font-main)}
+.th-form__ok.is-err{background:var(--wine-bg);color:var(--color-secondary)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1023px){
+  .th-explore__grid{gap:12px}
+  .th-stats,.th-values__grid{grid-template-columns:1fr 1fr}
+  .th-steps{grid-template-columns:1fr}
+  .th-steps li{flex-direction:row;align-items:center}
+  .th-steps img{width:96px;height:96px;aspect-ratio:auto;flex:none}
+  .th-story__intro{grid-template-columns:1fr;gap:32px}
+  .th-story__flag{max-width:520px;justify-self:center;order:-1}
+  .th-invite{flex-direction:column;align-items:stretch}
+  .th-contact__grid{grid-template-columns:1fr}
+}
+@media (max-width:767px){
+  .th{padding:24px 0 56px}
+  .th-hero{grid-template-columns:minmax(0,1fr) 132px;gap:12px;align-items:start}
+  .th-hero__text{gap:12px}
+  body[data-design-system] .th-hero .t-h1{font-size:26px;line-height:1.3}
+  .th-hero .t-body-l{font-size:16px;line-height:21px}
+  .th-hero__logo{width:132px;border-radius:20px}
+  .th-explore{margin-top:24px;gap:10px}
+  .th-explore__grid{gap:8px}
+  .th-nav-card{padding:12px 10px;gap:10px;border-radius:14px}
+  .th-nav-card__top .ic{width:20px;height:20px}
+  .th-nav-card small{font-size:11px}
+  .th-nav-card strong{font-size:13px}
+  .th-who{margin-top:24px;padding-top:24px}
+  .th-who__card{grid-template-columns:126px minmax(0,1fr);gap:16px;padding:12px}
+  .th-who__text p{font-size:16px}
+  .th-band strong{font-size:20px}
+  .th-band span{font-size:12px}
+  .th-story{margin-top:40px;padding:32px 0}
+  .th-story__flag{border-radius:28px;max-width:280px}
+  .th-block{margin-top:32px;gap:12px}
+  .th-stats{gap:10px}
+  .th-stats > div{padding:14px 16px}
+  .th-chef{grid-template-columns:1fr;gap:14px;padding:20px;border-radius:18px}
+  .th-chef img{min-height:0;height:150px}
+  .th-chef blockquote{padding:0}
+  .th-chef blockquote p{font-size:17px}
+  .th-steps img{width:64px;height:64px}
+  .th-steps li{padding:10px 12px 10px 10px;gap:12px}
+  .th-steps strong{font-size:14px}
+  .th-steps p{font-size:12px}
+  .th-space{gap:10px}
+  .th-space img{height:200px}
+  .th-invite{padding:20px}
+  .th-invite__btns .btn{flex:1;padding-inline:10px}
+  .th-values{margin-top:40px}
+  .th-values__grid{gap:12px}
+  .th-value{padding:16px 14px}
+  .th-value h3{font-size:16px}
+  .th-value p{font-size:14px}
+  .th-contact{margin-top:40px}
+  .th-info--social{flex-wrap:wrap}
+}

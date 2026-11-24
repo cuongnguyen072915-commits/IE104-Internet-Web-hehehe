@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Tuyển dụng – Fiabesco Palace</title>
+  <meta name="description" content="Cùng nấu nên hương vị Ý – các vị trí đang tuyển tại nhà hàng Fiabesco Palace.">
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/tuyen_dung.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="tuyen_dung">
+  <!-- Luồng Tuyển dụng (Lam) – Figma "★ TỔNG HỢP LUỒNG" › 11 · TUYỂN DỤNG:
+       Danh sách (mặc định) · #vi-tri/<mã> Chi tiết vị trí · #ung-tuyen/<mã> Form ứng tuyển · #da-gui Ứng tuyển thành công. -->
+  <header data-header></header>
+  <main class="site-main td" id="noi-dung-chinh">
+    <div class="container">
+
+      <!-- Danh sách vị trí -->
+      <section data-view="list" aria-labelledby="td-title">
+        <div class="td-top">
+          <div class="td-head">
+            <h1 class="t-h1" id="td-title">Cùng nấu nên<br>hương vị Ý</h1>
+            <p class="t-body c-gray" id="td-count"></p>
+          </div>
+          <div class="td-hero" style="background-image:url('../assets/template-20261120T115451Z-1-001 - Copy/template/restaurant-evening-dining.jpg')"><strong>Gia nhập đội ngũ<br>Fiabesco Palace</strong></div>
+        </div>
+        <div class="td-chips" role="group" aria-label="Lọc theo bộ phận" id="td-filter">
+          <button type="button" class="chip is-active" data-team="all" aria-pressed="true">Tất cả</button>
+          <button type="button" class="chip" data-team="phuc-vu" aria-pressed="false">Phục vụ</button>
+          <button type="button" class="chip" data-team="bep" aria-pressed="false">Bếp</button>
+          <button type="button" class="chip" data-team="giao-hang" aria-pressed="false">Giao hàng</button>
+        </div>
+        <div class="td-layout">
+          <ul class="td-jobs" id="td-jobs" aria-live="polite"></ul>
+          <aside class="td-why" aria-labelledby="td-why-t">
+            <h2 class="t-h3" id="td-why-t">Vì sao chọn Fiabesco?</h2>
+            <ul>
+              <li><span><i data-icon="wallet"></i></span><div><strong>Thu nhập hấp dẫn</strong><small>Lương + thưởng + tip mỗi tháng</small></div></li>
+              <li><span><i data-icon="chef-hat"></i></span><div><strong>Đào tạo bài bản</strong><small>Học nghề cùng đầu bếp Ý</small></div></li>
+              <li><span><i data-icon="gift"></i></span><div><strong>Bữa ăn miễn phí</strong><small>Mỗi ca làm có suất ăn đủ vị</small></div></li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Chi tiết vị trí -->
+      <section data-view="detail" class="td-narrow" aria-labelledby="td-job-title" hidden>
+        <a class="td-back" href="#" aria-label="Quay lại danh sách vị trí"><i data-icon="arrow-left"></i></a>
+        <div id="td-detail"></div>
+      </section>
+
+      <!-- Form ứng tuyển -->
+      <section data-view="apply" class="td-narrow" aria-labelledby="td-apply-title" hidden>
+        <a class="td-back" href="#" data-apply-back aria-label="Quay lại chi tiết vị trí"><i data-icon="arrow-left"></i></a>
+        <h1 class="t-h1 td-title" id="td-apply-title">Gửi hồ sơ<br>ứng tuyển</h1>
+        <form class="td-form" id="td-form" novalidate>
+          <label class="field" data-f="name"><span class="field__label">Họ và tên</span><span class="field__box"><input name="name" placeholder="Nguyễn Văn A" autocomplete="name"></span><span class="field__error"></span></label>
+          <label class="field" data-f="phone"><span class="field__label">Số điện thoại</span><span class="field__box"><input name="phone" type="tel" placeholder="0901 234 567" autocomplete="tel"></span><span class="field__error"></span></label>
+          <label class="field" data-f="email"><span class="field__label">Email</span><span class="field__box"><input name="email" type="email" placeholder="ten@email.com" autocomplete="email"></span><span class="field__error"></span></label>
+          <label class="field" data-f="job"><span class="field__label">Vị trí ứng tuyển</span><span class="field__box td-select"><select name="job" id="td-job-select"></select><i data-icon="chevron-down"></i></span><span class="field__error"></span></label>
+          <div class="field" data-f="cv"><span class="field__label" id="td-cv-label">Hồ sơ / CV</span>
+            <label class="td-upload" aria-labelledby="td-cv-label td-cv-text"><i data-icon="arrow-down"></i><span id="td-cv-text">Chạm để tải CV (PDF, tối đa 5MB)</span>
+              <input type="file" name="cv" accept="application/pdf,.pdf"></label>
+            <span class="field__error"></span></div>
+          <label class="field" data-f="intro"><span class="field__label">Giới thiệu ngắn</span><textarea class="textarea" name="intro" rows="4" maxlength="500" placeholder="Chia sẻ vài dòng về bản thân…"></textarea><span class="field__error"></span></label>
+          <button class="btn btn--navy btn--block" type="submit">Gửi hồ sơ</button>
+        </form>
+      </section>
+
+      <!-- Ứng tuyển thành công -->
+      <section data-view="done" class="td-narrow td-done" aria-labelledby="td-done-title" hidden>
+        <span class="td-done__ic"><i data-icon="check"></i></span>
+        <h1 class="t-h2" id="td-done-title">Đã nhận hồ sơ!</h1>
+        <p class="t-body c-gray">Fiabesco Palace sẽ liên hệ với bạn trong vòng 3 ngày làm việc.</p>
+        <p class="t-body-s c-gray" id="td-done-job"></p>
+        <a class="btn btn--navy btn--block" href="#">Xem vị trí khác</a>
+        <a class="btn btn--outline btn--block" href="trang_chu.html">Về trang chủ</a>
+      </section>
+    </div>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/data/mon_an.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/pages/tuyen_dung.js"></script>
+</body>
+</html>
