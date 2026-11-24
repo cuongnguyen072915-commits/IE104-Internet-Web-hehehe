@@ -26,6 +26,18 @@ body[data-design-system] {display:flex;flex-direction:column;min-height:100vh;mi
 body[data-design-system] > main{flex:1 0 auto;width:100%;min-width:0}
 body[data-design-system] > footer{flex-shrink:0}
 body[data-design-system] :focus-visible{outline:2px solid var(--color-secondary);outline-offset:2px}
+/* Ô nhập liệu (text/email/tel/số/ngày/giờ/tìm kiếm, select, textarea): không vẽ outline đỏ
+   lên chính control — control thường nằm trong khung bo góc nên outline tạo khung chữ nhật
+   thứ hai. Chỉ báo focus nằm trên khung bo góc của ô. Checkbox/radio giữ outline. */
+body[data-design-system] :is(input:not([type="checkbox"],[type="radio"]),select,textarea):focus-visible{outline:none}
+/* Bù chỉ báo focus cho các ô chưa có hiệu ứng riêng (cùng quầng navy như .field__box:focus-within) */
+body[data-design-system] .textarea:focus,
+body[data-design-system] .pp-edit textarea:focus,
+body[data-design-system] .coupon__input:focus-within{box-shadow:0 0 0 3px rgba(0,40,66,.08)}
+body[data-design-system] .pp-map__search:focus-within{box-shadow:var(--sh-card),0 0 0 3px rgba(0,40,66,.08)}
+body[data-design-system] .fiabesco-footer .newsletter__input:focus{border-color:var(--gold-l)}
+/* Ô đang báo lỗi + đang nhập: chỉ một viền đỏ bo góc, không thêm quầng */
+body[data-design-system] :is(.field.is-error .field__box:focus-within,.field.is-error .textarea:focus,.coupon.is-error .coupon__input:focus-within){box-shadow:none}
 body[data-design-system] :is(h1,h2,h3){font-family:var(--font-display);font-weight:400}
 body[data-design-system] :is(p,li,label,input,textarea,select){font-family:var(--font-main)}
 body[data-design-system] .c-gray{color:var(--color-text-muted)}

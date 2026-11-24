@@ -18,7 +18,7 @@
 .dd__menu button:hover{background:var(--cream)}
 .dd__menu button.is-active{font-weight:600;color:var(--wine)}
 .menu-cols{display:flex;gap:42px;align-items:flex-start}
-.side{width:264px;flex:none;display:flex;flex-direction:column;gap:24px;position:sticky;top:120px}
+.side{width:264px;flex:none;display:flex;flex-direction:column;gap:24px}
 .side-card{background:#fff;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--sh-card)}
 .side-card--filter{padding:24px;gap:16px}
 .cats li button{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font:500 15px/1.4 var(--f-sans);text-align:left;transition:background .2s}

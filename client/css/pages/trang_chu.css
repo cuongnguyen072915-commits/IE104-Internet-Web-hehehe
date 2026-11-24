@@ -124,7 +124,8 @@
 .quote-card p{font:400 20px/1.4 var(--f-price)}
 
 /* Đánh giá */
-.reviews{padding:120px 0}
+/* Khoảng giữa Đánh giá ↔ Góc ẩm thực: 48 + 48 = 96px (trước 120 + 110 = 230px); 48px = gap trong .reviews */
+.reviews{padding:120px 0 48px}
 .reviews .container{display:flex;flex-direction:column;gap:48px;align-items:center}
 .reviews .sec-head{width:100%}
 .reviews__sum{display:flex;align-items:center;gap:20px}
@@ -133,8 +134,13 @@
 .reviews__nav{width:48px;height:48px;border:1px solid var(--navy)}
 .reviews__nav .ic{width:20px;height:20px}
 .reviews__nav--fill{background:var(--navy);color:#fff}
-.reviews__viewport{width:100%;overflow:hidden;padding:8px 0 32px}
-.reviews__track{display:flex;gap:24px;transition:transform .5s ease}
+/* Carousel cuộn ngang gốc: vuốt cảm ứng / touchpad + scroll-snap theo trang (JS đặt điểm snap
+   ở thẻ đầu mỗi trang); kéo chuột xử lý trong trang_chu.js. Ẩn thanh cuộn, không tràn trang. */
+.reviews__viewport{width:100%;overflow-x:auto;overflow-y:hidden;padding:8px 0 32px;scroll-snap-type:x mandatory;
+  overscroll-behavior-x:contain;scrollbar-width:none;cursor:grab;-webkit-overflow-scrolling:touch}
+.reviews__viewport::-webkit-scrollbar{display:none}
+.reviews__viewport.is-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none;-webkit-user-select:none}
+.reviews__track{display:flex;gap:24px}
 .review{flex:0 0 calc((100% - 48px)/3);background:#fff;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:20px;box-shadow:var(--sh-card)}
 .review__top{display:flex;justify-content:space-between;align-items:center}
 .review__top .stars{font-size:18px}
@@ -146,7 +152,7 @@
 .dots button.is-active{width:28px;background:var(--navy)}
 
 /* Góc ẩm thực & Instagram */
-.journal{padding:110px 0}
+.journal{padding:48px 0 110px}
 .journal .container{display:flex;flex-direction:column;gap:44px}
 .posts{display:flex;gap:24px}
 .post{flex:1;display:flex;flex-direction:column;gap:16px}
@@ -196,6 +202,7 @@
   .tile--a{grid-column:1/3}
   .experience__lead{width:100%}
   .review{flex-basis:calc((100% - 24px)/2)}
+  .reviews{padding-bottom:var(--space-10)}.journal{padding-top:var(--space-10)} /* 40 + 40 = 80px */
   .cta-book__inner{flex-direction:column;align-items:stretch}.cta-book__text,.quick-book{width:100%}
   .ig-grid{grid-template-columns:repeat(3,1fr)}
 }
@@ -209,6 +216,7 @@
   .featured__grid .dish{width:100%}
   .offer{height:auto;min-height:220px}.offer__body{position:relative;padding:30px 0;left:0;margin-left:28px;max-width:60%}.offer__img{width:180px;height:180px;top:20px}
   .reviews__sum{flex-wrap:wrap}.review{flex-basis:100%}
+  .reviews{padding-bottom:var(--space-8)}.journal{padding-top:var(--space-8)} /* 32 + 32 = 64px */
   .mosaic{grid-template-columns:1fr}.tile--a{grid-column:auto}
   .ig-head{flex-direction:column;align-items:flex-start;gap:8px}
   .quick-book{padding:28px}.quick-book__row{grid-template-columns:1fr}

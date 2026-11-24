@@ -95,8 +95,12 @@
     let wrap = btn.closest('.pp-account');
     if (!wrap) { wrap = document.createElement('div'); wrap.className = 'pp-account'; btn.replaceWith(wrap); wrap.appendChild(btn); }
     $('.pp-menu', wrap)?.remove();
-    if (!u) { btn.innerHTML = I('user'); btn.setAttribute('aria-label', 'Đăng nhập'); return; }
-    btn.innerHTML = `<span class="pp-avatar">${esc(initials(u.name))}</span>`; btn.setAttribute('aria-label', 'Tài khoản của ' + u.name);
+    wrap.classList.toggle('is-member', !!u);
+    requestAnimationFrame(syncAvatarGap); // đo sau khi avatar đã được chèn
+    if (!u) { btn.innerHTML = I('user'); btn.setAttribute('aria-label', 'Đăng nhập'); btn.removeAttribute('aria-haspopup'); btn.removeAttribute('title'); return; }
+    btn.innerHTML = `<span class="pp-chip"><span class="pp-chip__badge">${I('user')}</span>${I('chevron-down')}</span>`;
+    btn.setAttribute('aria-label', 'Tài khoản thành viên của ' + u.name); btn.setAttribute('aria-haspopup', 'menu');
+    btn.title = `Tài khoản thành viên · Hạng ${u.tier}`;
     const next = u.tier === 'Vàng' ? 5000 : 1000;
     wrap.insertAdjacentHTML('beforeend', `<div class="pp-menu" role="menu">
       <div class="pp-menu__head"><span class="pp-avatar">${esc(initials(u.name))}</span><div><strong>Xin chào, ${esc(u.name.split(' ').pop())}!</strong><small>Thành viên ${u.tier} · ${vnd(u.points)} điểm</small></div></div>
@@ -108,6 +112,38 @@
       <a class="pp-menu__item" href="khuyen_mai.html">${I('gift')}<span>Ưu đãi của tôi</span>${I('chevron-right')}</a>
       <button type="button" class="pp-menu__item pp-menu__out" data-logout>${I('arrow-left')}<span>Đăng xuất</span></button></div>`);
   }
+  /* Khoảng cách Avatar → "Đặt bàn" = khoảng cách "Ưu đãi" → icon tìm kiếm.
+     Menu nằm giữa phần trống nên khoảng cách đó thay đổi theo bề rộng màn hình
+     và chính margin thêm vào (thêm M → khoảng "Ưu đãi" giảm M/2), vì vậy đo thực tế
+     rồi hiệu chỉnh vài vòng. Chỉ áp dụng khi đã đăng nhập và nút "Đặt bàn" hiển thị. */
+  let scheduleGap = null;
+  function syncAvatarGap() {
+    // Đăng ký theo dõi trước mọi điều kiện thoát sớm (CSS/font có thể chưa tải xong)
+    if (!scheduleGap) {
+      let raf = 0;
+      scheduleGap = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(syncAvatarGap); };
+      window.addEventListener('resize', scheduleGap);
+      window.addEventListener('load', scheduleGap);
+      document.fonts?.addEventListener?.('loadingdone', scheduleGap);
+      document.fonts?.ready.then(scheduleGap);
+    }
+    const wrap = $('.pc-header .pp-account'); if (!wrap) return;
+    wrap.style.removeProperty('--pp-avatar-gap');
+    const book = $('.pc-header .pc-book'), search = $('.pc-header .pc-search');
+    const last = [...document.querySelectorAll('.pc-header .site-nav__list .site-nav__link')].pop();
+    if (!wrap.classList.contains('is-member') || !book || !search || !last ||
+        !book.offsetWidth || !search.offsetWidth) return;
+    const edge = $('.pp-chip', wrap) || wrap;
+    let m = 0;
+    for (let i = 0; i < 4; i++) {
+      const target = search.getBoundingClientRect().left - last.getBoundingClientRect().right;
+      const now = book.getBoundingClientRect().left - edge.getBoundingClientRect().right;
+      const diff = target - now; if (Math.abs(diff) < 0.25) break;
+      m = Math.max(0, m + diff * 2 / 3);
+      wrap.style.setProperty('--pp-avatar-gap', m + 'px');
+    }
+  }
+
   // Pha capture: thay popup "Tài khoản thành viên" cũ trong main.js
   document.addEventListener('click', e => {
     const acc = e.target.closest('.pc-account');
