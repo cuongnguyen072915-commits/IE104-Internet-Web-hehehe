@@ -1,0 +1,19 @@
+/* Kết quả đơn hàng – Frame "PC – 05c Đặt hàng thành công" & "PC – 06b Đơn hàng đã hủy" (Luồng 4) */
+.result{display:flex;justify-content:center;padding-top:56px;padding-bottom:120px}
+.result__card{width:720px;max-width:100%;padding:48px 56px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.result__badge{width:88px;height:88px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px var(--green-bg)}
+.result__badge--wine{background:var(--wine);box-shadow:0 0 0 10px var(--wine-bg)}
+.result__badge .ic{width:40px;height:40px}
+.result__table{width:100%;margin:0;padding:6px 22px;border-radius:18px;background:var(--cream-2);border:1px solid var(--line);text-align:left}
+.result__table div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.result__table div:last-child{border-bottom:0}
+.result__table dt{font:400 16px/1.5 var(--f-sans);color:var(--gray)}
+.result__table dd{margin:0;font:600 16px/1.4 var(--f-sans);color:var(--navy);text-align:right}
+.result__table dd.is-money{font:400 20px/1.2 var(--f-price);color:var(--wine)}
+.result__table dd.is-green{color:var(--green)}
+.result__table dd.is-wine{color:var(--wine)}
+.result__actions{display:flex;gap:12px;width:100%}
+.result__actions .btn{flex:1}
+.result__link{font:600 14px/1.4 var(--f-sans);color:var(--wine);text-decoration:underline;text-underline-offset:3px}
+.result__link:disabled{color:var(--dis);text-decoration:none;cursor:not-allowed}
+@media (max-width:640px){.result__card{padding:36px 20px}.result__actions{flex-direction:column}}

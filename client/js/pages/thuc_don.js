@@ -23,7 +23,7 @@ document.addEventListener('fb:ready', () => {
     $('#combo-block').hidden = searching;
     $('#list-title').textContent = searching ? `Kết quả cho “${state.q}”` : (state.cat === 'all' ? 'Bán chạy' : D.categories.find(c => c.id === state.cat).name);
     const f = filterLabel();
-    $('#list-meta').textContent = `Hiển thị ${list.length} / ${state.cat === 'all' ? 42 : D.categories.find(c => c.id === state.cat).count} món` + (f ? ' · Bộ lọc: ' + f : '');
+    $('#list-meta').textContent = `Hiển thị ${list.length} / ${D.categories.find(c => c.id === state.cat).count} món` + (f ? ' · Bộ lọc: ' + f : '');
     $('#grid').innerHTML = list.map(d => dishCard(d)).join('');
     const empty = list.length === 0;
     $('#empty').hidden = !empty; $('#pager').hidden = empty; $('#grid').hidden = empty;

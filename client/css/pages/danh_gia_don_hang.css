@@ -1,0 +1,23 @@
+/* Đã nhận món – Đánh giá – Frame "PC – 06c Đã nhận món – Đánh giá" (Luồng 4)
+   Bố cục banner/tiến trình/cột phải dùng lại don_hang.css (qua theo_doi_don_hang.css). */
+.review{padding:32px 36px;display:flex;flex-direction:column;gap:18px}
+.review__stars{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.review__stars button{color:var(--dis);transition:transform .15s,color .15s}
+.review__stars button:hover{transform:scale(1.12)}
+.review__stars button.is-on{color:var(--gold)}
+.review__stars button.is-on svg path{fill:currentColor}
+.review__stars .ic{width:36px;height:36px}
+.review__stars strong{font:600 16px/1.4 var(--f-sans);color:var(--navy);margin-left:4px}
+.review__tags{display:flex;gap:8px;flex-wrap:wrap}
+.review__tags .chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.review textarea{min-height:110px}
+.review__err{font:400 13px/1.5 var(--f-sans);color:var(--wine);margin:-6px 0 0}
+.review__gift{display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:18px;background:var(--navy);color:#fff}
+.review__gift-ic{width:48px;height:48px;border-radius:50%;background:#2A4D63;color:var(--gold-l);display:flex;align-items:center;justify-content:center;flex:none}
+.review__gift-ic .ic{width:22px;height:22px}
+.review__code{padding:8px 14px;border-radius:10px;border:1.5px dashed var(--gold);font:400 18px/1 var(--f-price);color:var(--gold-l);transition:background .2s}
+.review__code:hover{background:rgba(255,255,255,.08)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.review .result__actions{display:flex;gap:12px}
+.review .result__actions .btn{flex:1}
+@media (max-width:640px){.review{padding:24px 20px}.review__gift{flex-wrap:wrap}.review .result__actions{flex-direction:column}}

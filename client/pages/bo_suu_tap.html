@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Bộ sưu tập – Fiabesco Palace</title>
+  <meta name="description" content="Hình ảnh món ăn, không gian và sự kiện tại nhà hàng Ý Fiabesco Palace.">
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/bo_suu_tap.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="bo_suu_tap">
+  <!-- Frame: PC – 11 Bộ sưu tập -->
+  <header data-header></header>
+  <main class="site-main" id="noi-dung-chinh">
+    <section class="banner" style="background-image:url('../assets/template-20261120T115451Z-1-001 - Copy/template/event-proposal-setup.jpg')">
+      <div class="container">
+        <nav class="crumb" aria-label="Đường dẫn"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Bộ sưu tập</span></nav>
+        <h1 class="t-h1">Bộ sưu tập</h1>
+        <p class="t-body-l">Những khoảnh khắc ẩm thực, không gian và sự kiện đáng nhớ tại Fiabesco Palace.</p>
+      </div>
+    </section>
+    <section class="container gal">
+      <div class="gal__head">
+        <div class="gal__filters" role="tablist" aria-label="Lọc ảnh">
+          <button class="gal__chip is-active" role="tab" aria-selected="true" data-filter="all">Tất cả <span>48</span></button>
+          <button class="gal__chip" role="tab" aria-selected="false" data-filter="food">Món ăn <span>18</span></button>
+          <button class="gal__chip" role="tab" aria-selected="false" data-filter="space">Không gian <span>12</span></button>
+          <button class="gal__chip" role="tab" aria-selected="false" data-filter="event">Sự kiện <span>10</span></button>
+          <button class="gal__chip" role="tab" aria-selected="false" data-filter="kitchen">Hậu trường bếp <span>8</span></button>
+        </div>
+        <a class="gal__ig" href="lien_he.html"><i data-icon="social-instagram"></i>@fiabescopalace</a>
+      </div>
+      <div class="masonry" id="masonry" aria-live="polite"></div>
+      <p class="gal__empty t-body c-gray" id="gal-empty" hidden>Chưa có ảnh trong mục này.</p>
+      <button class="btn btn--outline gal__more" id="more" type="button">Xem thêm ảnh</button>
+    </section>
+  </main>
+
+  <div class="modal lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh">
+    <button class="lightbox__close" type="button" data-close aria-label="Đóng"><i data-icon="close"></i></button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Ảnh trước"><i data-icon="arrow-left"></i></button>
+    <figure class="lightbox__fig"><img alt=""><figcaption><span class="t-eyebrow c-goldl"></span><strong></strong></figcaption></figure>
+    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Ảnh sau"><i data-icon="arrow-right"></i></button>
+  </div>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/pages/bo_suu_tap.js"></script>
+</body>
+</html>

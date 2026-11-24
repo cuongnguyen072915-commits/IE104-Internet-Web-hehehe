@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Đánh giá đơn hàng – Fiabesco Palace</title>
+  <meta name="description" content="Đơn hàng đã giao thành công – đánh giá món ăn và nhận ưu đãi cho lần sau.">
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/pages/theo_doi_don_hang.css">
+  <link rel="stylesheet" href="../css/pages/danh_gia_don_hang.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="danh_gia_don_hang">
+  <!-- Frame: PC – 06c Đã nhận món – Đánh giá -->
+  <header data-header></header>
+  <main class="site-main container order" style="gap:24px" id="noi-dung-chinh">
+    <section class="ok-banner">
+      <div class="row" style="gap:24px">
+        <span class="ok-banner__icon"><i data-icon="check"></i></span>
+        <div class="stack" style="gap:6px"><span class="t-eyebrow c-goldl">Giao hàng thành công</span><h1 class="t-h2" style="color:#FFFFFF">Chúc bạn ngon miệng!</h1><p class="t-body" style="opacity:.8" id="order-meta">Mã đơn #FB2611-0248 · Đã giao lúc 19:16 · 499.000 VND</p></div>
+      </div>
+      <div class="eta"><span class="t-caption c-goldl">Đã giao lúc</span><strong id="done-at">19:16</strong><span class="t-caption" style="opacity:.8">sớm 4 phút</span></div>
+    </section>
+
+    <section class="track card" aria-label="Tiến trình đơn hàng">
+      <div class="track__step is-done"><span class="track__dot"><i data-icon="receipt"></i></span><strong>Đã xác nhận</strong><small>18:42</small></div>
+      <span class="track__line is-on"></span>
+      <div class="track__step is-done"><span class="track__dot"><i data-icon="chef-hat"></i></span><strong>Bếp đang chuẩn bị</strong><small>18:45</small></div>
+      <span class="track__line is-on"></span>
+      <div class="track__step is-done"><span class="track__dot"><i data-icon="delivery-truck"></i></span><strong>Đang giao hàng</strong><small>19:05</small></div>
+      <span class="track__line is-on"></span>
+      <div class="track__step is-done"><span class="track__dot"><i data-icon="home"></i></span><strong>Đã nhận món</strong><small id="t4">19:16</small></div>
+    </section>
+
+    <div class="order__cols">
+      <form class="order__left review card" id="review" novalidate>
+        <span class="t-eyebrow c-wine">Đánh giá đơn hàng</span>
+        <h2 class="t-h3">Bữa ăn của bạn thế nào?</h2>
+        <p class="t-body c-gray">Hãy dành chút thời gian cho Fiabesco biết trải nghiệm của bạn nhé.</p>
+        <div class="review__stars" role="radiogroup" aria-label="Chấm điểm">
+          <button type="button" role="radio" aria-checked="false" data-star="1" aria-label="1 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="2" aria-label="2 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="3" aria-label="3 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="4" aria-label="4 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="5" aria-label="5 sao"><i data-icon="star"></i></button>
+          <strong id="star-text">Chạm để chọn số sao</strong>
+        </div>
+        <div class="review__tags" id="tags">
+          <button type="button" class="chip chip--sm" aria-pressed="false">Món ngon</button><button type="button" class="chip chip--sm" aria-pressed="false">Giao nhanh</button><button type="button" class="chip chip--sm" aria-pressed="false">Đóng gói đẹp</button><button type="button" class="chip chip--sm" aria-pressed="false">Tài xế thân thiện</button><button type="button" class="chip chip--sm" aria-pressed="false">Đúng giờ</button>
+        </div>
+        <label class="field"><span class="field__label sr-only">Nhận xét</span><textarea class="textarea" name="text" rows="4" placeholder="Chia sẻ cảm nhận của bạn về món ăn và người giao hàng…"></textarea></label>
+        <p class="review__err" id="review-err" hidden>Vui lòng chọn số sao trước khi gửi đánh giá.</p>
+        <div class="review__gift">
+          <span class="review__gift-ic"><i data-icon="gift"></i></span>
+          <div class="grow"><span class="t-eyebrow c-goldl">Quà cho lần sau</span><p class="t-body-s">Giảm 10% cho đơn giao hàng tiếp theo, áp dụng đến hết 31/12/2026.</p></div>
+          <button type="button" class="review__code" data-copy="FIABESCO10" aria-label="Sao chép mã FIABESCO10">FIABESCO10</button>
+        </div>
+        <div class="result__actions"><a class="btn btn--outline" href="trang_chu.html">Về trang chủ</a><button class="btn btn--navy" type="submit">Gửi đánh giá</button></div>
+      </form>
+      <aside class="summary card" style="gap:16px">
+        <h2 class="t-h4">Chi tiết đơn hàng</h2>
+        <div class="sum-row" style="font-size:14px"><span>Giao đến</span><span id="to">68 Lê Lợi, Q.1 · Lầu 5</span></div>
+        <div class="sum-row" style="font-size:14px"><span>Người nhận</span><span id="who">Minh Anh · 0901 234 567</span></div>
+        <hr class="divider">
+        <div class="stack" style="gap:16px" id="lines"></div>
+        <hr class="divider">
+        <div class="sum-row" style="font-size:14px"><span>Tạm tính</span><span id="sub">509.000 VND</span></div>
+        <div class="sum-row" style="font-size:14px"><span>Phí giao hàng</span><span id="fee">25.000 VND</span></div>
+        <div class="sum-row" style="font-size:14px"><span>Ưu đãi</span><span class="c-green" id="disc">−35.000 VND</span></div>
+        <div class="between"><span class="t-title">Đã thanh toán</span><span class="t-price-l c-wine" id="total">499.000 VND</span></div>
+        <button class="btn btn--outline btn--block" type="button" id="reorder">Đặt lại đơn này</button>
+        <p class="t-caption c-gray" style="text-align:center">Cần hỗ trợ về đơn đã giao? Gọi 0123 456 789.</p>
+      </aside>
+    </div>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/pages/ket_qua_don_hang.js"></script>
+</body>
+</html>

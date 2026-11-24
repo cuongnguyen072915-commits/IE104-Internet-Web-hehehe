@@ -1,0 +1,16 @@
+/* Món yêu thích – Frame "PC – 02b Món yêu thích" & "PC – 02c Yêu thích – Trống" (Luồng 3) */
+.fav{display:flex;flex-direction:column;gap:32px;padding-top:48px;padding-bottom:120px}
+.fav__head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.fav__list{display:flex;flex-direction:column;gap:28px}
+.fav__chips{display:flex;gap:10px;flex-wrap:wrap}
+.fav__chips .chip span{font:400 14px/1 var(--f-price);opacity:.75}
+.fav__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.fav__grid .dish{width:auto}
+.fav__grid .dish.is-out{opacity:0;transform:scale(.96);transition:.25s}
+.fav__tip{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:16px;background:var(--cream-2);border:1px solid var(--line);font:400 14px/1.55 var(--f-sans);color:var(--navy)}
+.fav__tip .ic{width:20px;height:20px;color:var(--wine);flex:none}
+.fav__tip button{font-weight:600;text-decoration:underline}
+.fav__empty{display:flex;flex-direction:column;gap:40px}
+.fav__empty .empty-card{padding:56px 48px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+@media (max-width:1100px){.fav__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.fav__grid{grid-template-columns:1fr}.fav__empty .empty-card{padding:40px 20px}.fav__empty img{width:240px}}
