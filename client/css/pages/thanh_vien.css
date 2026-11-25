@@ -31,9 +31,9 @@
 .mb-tiers span:first-child{border-color:var(--color-white);color:var(--color-white)}
 
 .mb-panel{background:var(--color-white);padding:56px 64px;min-width:0}
-.mb-panel > section,.mb-narrow > section{display:flex;flex-direction:column;gap:18px}
+.mb-panel > section,.mb-narrow > section,.mb-acc__main > section{display:flex;flex-direction:column;gap:18px}
 .mb-panel h1.t-h1{font-size:clamp(34px,3vw,44px)}
-.mb-panel h1:focus,.mb-narrow h1:focus{outline:none}
+.mb-panel h1:focus,.mb-narrow h1:focus,.mb h1[tabindex="-1"]:focus-visible{outline:none}
 .mb-seg{background:var(--color-bg-body);border:1px solid var(--color-border-light)}
 .mb-seg button{padding:12px 22px}
 .mb-seg--icons button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
@@ -293,6 +293,85 @@ body[data-design-system] .btn.mb-btn-wine:hover{background:var(--color-secondary
 .mb-modal .modal__box{max-width:480px}
 .mb-modal .modal__actions{width:100%}
 .mb-modal .modal__actions .btn{flex:1}
+
+/* ---------- Thanh bên tài khoản (chỉ hiện trên PC) + liên kết phụ ---------- */
+.mb-aside{display:none}
+.mb-golink{display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px 16px;border-radius:var(--radius-xl);border:1px dashed var(--gold);background:var(--color-bg-surface);font:600 14px/1.4 var(--font-main);color:var(--color-primary)}
+.mb-golink > .ic:first-child{width:22px;height:22px;color:var(--color-secondary);flex:none}
+.mb-golink span{flex:1}
+.mb-golink > .ic:last-child{width:18px;height:18px;flex:none}
+.mb-golink:hover{border-style:solid}
+
+/* ---------- Ưu đãi của tôi ---------- */
+.mb-offer-sum{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:22px 24px;border-radius:24px;color:var(--color-white);background:linear-gradient(135deg,var(--color-primary) 0%,#173e52 100%);box-shadow:var(--shadow-lg)}
+.mb-offer-sum div{display:flex;flex-direction:column;gap:4px}
+.mb-offer-sum span{font:400 13px/1.4 var(--font-main);opacity:.8}
+.mb-offer-sum b{font:400 32px/1.1 var(--font-price)}
+.mb-offer-sum .btn{grid-column:1/-1}
+.mb-voucher__ic{width:44px;height:44px;border-radius:50%;background:var(--color-white);display:grid;place-items:center;color:var(--color-secondary);flex:none}
+.mb-voucher__ic .ic{width:22px;height:22px}
+.mb-voucher{flex-wrap:wrap}
+.mb-voucher__txt{flex:1;min-width:150px}
+.mb-voucher.is-off{opacity:.7;border-style:solid;border-color:var(--color-border-light)}
+.mb-perk-list{display:flex;flex-direction:column;gap:10px}
+.mb-perk-list li{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light)}
+.mb-perk-list li > span{width:44px;height:44px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;color:#a07a35;flex:none}
+.mb-perk-list .ic{width:20px;height:20px}
+.mb-perk-list strong{display:block;font:600 15px/1.4 var(--font-main)}
+.mb-perk-list small{font:400 13px/1.4 var(--font-main);color:var(--color-text-muted)}
+.mb-perk-list li.is-locked{background:var(--color-bg-surface)}
+.mb-perk-list li.is-locked > span{border-color:var(--color-border);color:var(--color-text-muted)}
+.mb-perk-list li.is-locked strong{color:var(--color-text-muted)}
+
+/* ---------- PC ≥1024px: thanh bên + nội dung rộng (không áp dụng cho màn Lịch sử) ---------- */
+@media (min-width:1024px){
+  .mb-narrow.mb-acc.is-side{max-width:var(--container-max,1440px)!important;display:grid;grid-template-columns:288px minmax(0,1fr);gap:40px;align-items:start}
+  .mb-acc.is-side .mb-aside{display:flex;flex-direction:column;gap:6px;position:sticky;top:132px;padding:22px 14px 12px;border-radius:24px;background:var(--color-white);border:1px solid var(--color-border-light);box-shadow:var(--shadow-sm)}
+  .mb-aside__me{display:flex;align-items:center;gap:12px;padding:0 8px 18px;margin-bottom:6px;border-bottom:1px solid var(--color-border-light)}
+  .mb-aside__me .mb-avatar{width:52px;height:52px;font-size:19px}
+  .mb-aside__me div{min-width:0;display:flex;flex-direction:column;gap:2px}
+  .mb-aside__me strong{font:400 19px/1.25 var(--font-display);overflow-wrap:anywhere}
+  .mb-aside__me small{display:inline-flex;align-items:center;gap:5px;font:400 13px/1.4 var(--font-main);color:var(--color-text-muted)}
+  .mb-aside__me small .ic{width:14px;height:14px;color:#a07a35}
+  .mb-aside__nav{display:flex;flex-direction:column;gap:2px}
+  .mb-aside__link{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;font:500 15px/1.3 var(--font-main);color:var(--color-text-main);transition:background var(--transition),color var(--transition)}
+  .mb-aside__link .ic{width:20px;height:20px;flex:none}
+  .mb-aside__link span{flex:1}
+  .mb-aside__link b{min-width:24px;padding:2px 8px;border-radius:999px;background:var(--color-bg-body);font:600 12px/1.4 var(--font-main);text-align:center}
+  .mb-aside__link:hover{background:var(--color-bg-surface);color:var(--color-primary)}
+  .mb-aside__link.is-on{background:var(--color-primary);color:var(--color-white)}
+  .mb-aside__link.is-on b{background:var(--gold);color:var(--color-primary)}
+  .mb-aside__out{display:flex;align-items:center;gap:12px;width:100%;margin-top:6px;padding:14px 12px 10px;border-top:1px solid var(--color-border-light);font:600 15px/1.3 var(--font-main);color:var(--color-secondary);text-align:left}
+  .mb-aside__out .ic{width:20px;height:20px}
+  .mb-aside__out:hover{color:var(--color-primary)}
+  /* Tiêu đề trang con canh trái; nút quay lại thừa vì đã có thanh bên */
+  .is-side .mb-bar{justify-content:flex-start;padding:0 0 16px;text-align:left}
+  .is-side .mb-bar__back{display:none}
+  /* Hồ sơ */
+  .is-side .mb-hero{grid-template-columns:auto 1fr auto;padding:30px 32px}
+  .is-side .mb-hero__pts{grid-column:3;grid-row:1;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+  .is-side [data-profile] > .btn--block{display:inline-flex;width:auto;padding-inline:32px}
+  .is-side .mb-list{display:grid;grid-template-columns:1fr 1fr}
+  .is-side [data-profile] .mb-logout{display:none}
+  /* Thẻ thành viên: thẻ + hạng | đổi điểm; lịch sử điểm ở dưới */
+  .is-side .mb-cardgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"card rw" "tier rw" "log log";gap:20px 28px;align-items:start}
+  .is-side .mb-cardgrid > .mb-card{grid-area:card}
+  .is-side .mb-cardgrid > .mb-tierbox{grid-area:tier;margin-top:0}
+  .is-side .mb-cardgrid__rw{grid-area:rw}
+  .is-side .mb-cardgrid__log{grid-area:log}
+  .is-side .mb-cardgrid__rw > .mb-sub{margin-top:0}
+  .is-side .mb-cardgrid__log > .mb-sub{margin-top:8px}
+  /* Ưu đãi của tôi */
+  .is-side .mb-offer-sum{grid-template-columns:1fr 1fr auto;align-items:center;padding:26px 32px}
+  .is-side .mb-offer-sum .btn{grid-column:auto}
+  .is-side .mb-vouchers,.is-side .mb-perk-list{display:grid;grid-template-columns:1fr 1fr}
+  /* Món yêu thích */
+  .is-side .mb-favs{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  /* Cập nhật thông tin: 2 cột */
+  .is-side .mb-edit{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+  .is-side .mb-edit > .mb-avatar-edit,.is-side .mb-edit > .mb-item{grid-column:1/-1}
+  .is-side .mb-edit > .mb-avatar-edit{flex-direction:row;flex-wrap:wrap;gap:12px 20px;padding:20px 24px;border-radius:var(--radius-xl);background:var(--color-white);border:1px solid var(--color-border-light)}
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1023px){

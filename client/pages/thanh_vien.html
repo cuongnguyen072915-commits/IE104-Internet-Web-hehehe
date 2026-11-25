@@ -18,7 +18,7 @@
 <body data-design-system="fiabesco-github" data-page="thanh_vien">
   <!-- Luồng Thành viên (Lam) – Figma "★ TỔNG HỢP LUỒNG" mục 07 A–E2 + "PC – 09 Thành viên – Đăng nhập".
        Mỗi màn là một view, chuyển bằng hash: #dang-nhap, #dang-ky, #otp, #quen-mat-khau, #ho-so, #the-thanh-vien,
-       #lich-su, #yeu-thich, #cap-nhat … (xem js/pages/thanh_vien.js). -->
+       #uu-dai, #lich-su, #yeu-thich, #cap-nhat … (xem js/pages/thanh_vien.js). -->
   <header data-header></header>
   <main class="site-main mb" id="noi-dung-chinh">
 
@@ -65,7 +65,7 @@
               <button type="button" class="btn btn--outline" data-mb-social="Facebook"><svg class="mb-social__logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path fill="#fff" d="M15.1 7.5h-1.6c-.9 0-1.1.4-1.1 1v1.4h2.6l-.3 2.6h-2.3v7h-2.7v-7H7.5V9.9h2.3V8.3c0-2.2 1.4-3.5 3.4-3.5 1 0 1.8.1 2 .1v2.6z"/></svg>Facebook</button>
             </div>
             <p class="mb-foot">Chưa có tài khoản? <a class="mb-link" href="#dang-ky">Đăng ký ngay</a></p>
-            <a class="mb-lookup" href="theo_doi_don_hang.html"><i data-icon="search"></i>Đặt hàng không cần tài khoản? Tra cứu đơn</a>
+            <a class="mb-lookup" href="tra_cuu.html"><i data-icon="search"></i>Đặt hàng không cần tài khoản? Tra cứu đơn</a>
             <p class="mb-demo t-caption c-gray">Bản demo – tài khoản mẫu: <b>nguyenvanan@gmail.com</b> · mật khẩu <b>Fiabesco1</b></p>
           </section>
 
@@ -186,12 +186,15 @@
             <li><i data-icon="check"></i>Đổi điểm lấy món miễn phí và voucher</li>
             <li><i data-icon="check"></i>Lưu món yêu thích, đặt lại chỉ với 1 chạm</li></ul>
         </div>
-        <p class="mb-foot">Đặt hàng không cần tài khoản? <a class="mb-link" href="theo_doi_don_hang.html">Tra cứu đơn</a></p>
+        <p class="mb-foot">Đặt hàng không cần tài khoản? <a class="mb-link" href="tra_cuu.html">Tra cứu đơn</a></p>
       </section>
     </div>
 
     <!-- ============ B. TRANG CÁ NHÂN – THÀNH VIÊN ============ -->
-    <div class="container mb-narrow" data-group="account" hidden>
+    <!-- Trên PC (≥1024px): thanh bên tài khoản + nội dung rộng. Màn Lịch sử (của Cường) giữ nguyên một cột, không có thanh bên. -->
+    <div class="container mb-narrow mb-acc" data-group="account" hidden>
+      <aside class="mb-aside" data-aside aria-label="Tài khoản thành viên"></aside>
+      <div class="mb-acc__main">
       <!-- M10 Hồ sơ thành viên + E23–E26 -->
       <section data-view="ho-so" aria-label="Hồ sơ thành viên" hidden>
         <div data-profile></div>
@@ -201,6 +204,12 @@
       <section data-view="the-thanh-vien" aria-labelledby="t-card" hidden>
         <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-card">Thẻ thành viên</h1></div>
         <div data-card></div>
+      </section>
+
+      <!-- Ưu đãi của tôi: mã đã đổi bằng điểm + quyền lợi theo hạng thành viên -->
+      <section data-view="uu-dai" aria-labelledby="t-offer" hidden>
+        <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-offer">Ưu đãi của tôi</h1></div>
+        <div data-offers></div>
       </section>
 
       <!-- M12a/M12b Lịch sử + E30–E34 · thẻ & popup dùng chung js/components/don_dat.js (giống trang Tra cứu) -->
@@ -223,7 +232,7 @@
       <!-- M14 Cập nhật thông tin + E37–E40 -->
       <section data-view="cap-nhat" aria-labelledby="t-edit" hidden>
         <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-edit">Cập nhật thông tin</h1></div>
-        <form class="mb-form" id="f-edit" novalidate>
+        <form class="mb-form mb-edit" id="f-edit" novalidate>
           <div class="mb-avatar-edit">
             <span class="mb-avatar mb-avatar--lg" data-edit-avatar></span>
             <label class="mb-link mb-avatar-btn"><i data-icon="edit"></i>Đổi ảnh đại diện<input type="file" name="avatar" accept="image/png,image/jpeg,image/webp" hidden></label>
@@ -244,6 +253,7 @@
           <a class="btn btn--outline btn--block" href="#ho-so">Hủy</a>
         </form>
       </section>
+      </div>
     </div>
   </main>
   <footer data-footer></footer>

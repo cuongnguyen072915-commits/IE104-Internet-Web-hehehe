@@ -62,6 +62,23 @@ body[data-design-system] .td-title{font-size:clamp(28px,3.4vw,44px);line-height:
 .td-save .ic{width:20px;height:20px}
 .td-save.is-on svg path{fill:var(--color-secondary)}
 
+.td-cta__info{display:none}
+.td h1[tabindex="-1"]:focus-visible{outline:none}
+/* PC: chi tiết vị trí 2 cột (nội dung | thẻ tóm tắt dính khi cuộn); form ứng tuyển 2 cột */
+@media (min-width:1024px){
+  .td-narrow[data-view="detail"]{max-width:1200px}
+  .td-narrow[data-view="apply"]{max-width:960px}
+  #td-detail{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px 48px;align-items:start}
+  #td-detail > *{grid-column:1}
+  #td-detail > .td-cta{grid-column:2;grid-row:1 / span 6;position:sticky;top:132px;bottom:auto;flex-wrap:wrap;padding:24px;border-radius:24px;background:var(--color-white);backdrop-filter:none;box-shadow:var(--shadow-md)}
+  .td-cta__info{display:flex;flex-direction:column;gap:12px;width:100%;padding-bottom:16px;margin-bottom:4px;border-bottom:1px solid var(--color-border-light)}
+  .td-cta__info div{display:flex;justify-content:space-between;gap:16px;font:400 14px/1.4 var(--font-main)}
+  .td-cta__info dt{color:var(--color-text-muted)}
+  .td-cta__info dd{font-weight:600;text-align:right}
+  .td-cta__info div:first-child dd{color:var(--color-secondary)}
+  .td .td-form{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+  .td-form > [data-f="cv"],.td-form > [data-f="intro"],.td-form > .btn{grid-column:1/-1}
+}
 .td-form{display:flex;flex-direction:column;gap:16px}
 .td-form .field__box,.td-form .textarea{border-color:var(--color-border)}
 .td-select{position:relative}

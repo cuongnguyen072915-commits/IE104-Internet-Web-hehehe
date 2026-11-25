@@ -22,10 +22,18 @@
     <div class="container bl-article-wrap">
       <a class="bl-back" href="blog.html"><i data-icon="arrow-left"></i>Quay lại blog</a>
       <article class="bl-article" id="bl-article" aria-live="polite"></article>
-      <section class="bl-related" id="bl-related" aria-labelledby="bl-rel-title" hidden>
-        <h2 class="t-h3" id="bl-rel-title">Bài viết liên quan</h2>
-        <div class="bl-related__grid" id="bl-related-grid"></div>
-      </section>
+      <!-- PC: cột phải dính khi cuộn (bài liên quan + mời đặt bàn); điện thoại: nằm dưới bài viết -->
+      <aside class="bl-side">
+        <section class="bl-related" id="bl-related" aria-labelledby="bl-rel-title" hidden>
+          <h2 class="t-h3" id="bl-rel-title">Bài viết liên quan</h2>
+          <div class="bl-related__grid" id="bl-related-grid"></div>
+        </section>
+        <div class="bl-cta">
+          <strong>Thưởng thức tại Fiabesco Palace</strong>
+          <p>Đặt bàn trước để giữ chỗ đẹp và tích điểm thành viên.</p>
+          <a class="btn btn--gold btn--block" href="dat_ban.html">Đặt bàn ngay</a>
+        </div>
+      </aside>
     </div>
   </main>
   <footer data-footer></footer>

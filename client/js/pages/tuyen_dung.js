@@ -60,7 +60,8 @@ document.addEventListener('fb:ready', () => {
       <p class="td-pay">${esc(j.salary)}</p>
       <div class="td-tags"><span>${esc(j.type)}</span><span>${esc(j.area)}</span><span>${esc(j.shift)}</span></div>
       ${list('Mô tả công việc', j.desc)}${list('Yêu cầu', j.req)}${list('Quyền lợi', j.perks)}
-      <div class="td-cta"><a class="btn btn--navy" href="#ung-tuyen/${j.id}">Ứng tuyển ngay</a>
+      <div class="td-cta"><dl class="td-cta__info"><div><dt>Mức lương</dt><dd>${esc(j.salary)}</dd></div><div><dt>Hình thức</dt><dd>${esc(j.type)}</dd></div><div><dt>Khu vực</dt><dd>${esc(j.area)}</dd></div><div><dt>Ca làm</dt><dd>${esc(j.shift)}</dd></div></dl>
+        <a class="btn btn--navy" href="#ung-tuyen/${j.id}">Ứng tuyển ngay</a>
         <button type="button" class="td-save${isSaved ? ' is-on' : ''}" data-save="${j.id}" aria-pressed="${isSaved}" aria-label="${isSaved ? 'Bỏ lưu vị trí' : 'Lưu vị trí'}">${I('heart')}</button></div>`;
   }
   document.addEventListener('click', e => {

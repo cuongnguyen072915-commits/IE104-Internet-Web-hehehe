@@ -39,7 +39,7 @@ document.addEventListener('fb:ready', () => {
   /* ---------------- Người dùng đang đăng nhập ---------------- */
   const getUser = () => store.get(USER_KEY, null);
   let lastUser = JSON.stringify(getUser());
-  const setUser = u => { if (u) u.tier = tierOf(u.points || 0)[0]; store.set(USER_KEY, u); FB.renderAccount && FB.renderAccount(); lastUser = JSON.stringify(u); };
+  const setUser = u => { if (u) u.tier = tierOf(u.points || 0)[0]; store.set(USER_KEY, u); FB.renderAccount && FB.renderAccount(); lastUser = JSON.stringify(u); if (u && sideOn()) renderSide(); };
   // Figma M10: "Nguyễn Văn An" → "NA" (chữ đầu của họ + tên)
   const initials = n => { const w = String(n || '?').trim().split(/\s+/); return (w[0][0] + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase(); };
   const maskPhone = p => { const d = FB.normPhone(p || ''); return d.length >= 7 ? `${d.slice(0, 4)} *** ${d.slice(-3)}` : p; };
@@ -58,6 +58,7 @@ document.addEventListener('fb:ready', () => {
   function demoData(phone) {
     return {
       ...histSample(phone),
+      vouchers: [{ code: 'FB-TIRA-7K2Q', name: 'Tiramisu miễn phí', date: '02/11/2026' }],
       log: [['Đơn giao hàng #FB2410-0190', '07/11/2026', 125], ['Đổi Tiramisu miễn phí', '02/11/2026', -300], ['Quà chào mừng thành viên', '20/10/2026', 100]]
     };
   }
@@ -118,13 +119,15 @@ document.addEventListener('fb:ready', () => {
      ================================================================= */
   const GROUP = {
     'dang-nhap': 'auth', 'dang-ky': 'auth', otp: 'auth', 'dang-ky-thanh-cong': 'auth', 'quen-mat-khau': 'auth', 'dat-lai-mat-khau': 'auth', 'doi-mat-khau-thanh-cong': 'auth',
-    'can-dang-nhap': 'guest', 'ho-so': 'account', 'the-thanh-vien': 'account', 'lich-su': 'account', 'yeu-thich': 'account', 'cap-nhat': 'account'
+    'can-dang-nhap': 'guest', 'ho-so': 'account', 'the-thanh-vien': 'account', 'uu-dai': 'account', 'lich-su': 'account', 'yeu-thich': 'account', 'cap-nhat': 'account'
   };
-  const TITLES = { 'dang-nhap': 'Đăng nhập', 'dang-ky': 'Đăng ký', otp: 'Xác thực OTP', 'dang-ky-thanh-cong': 'Đăng ký thành công', 'quen-mat-khau': 'Quên mật khẩu', 'dat-lai-mat-khau': 'Đặt lại mật khẩu', 'doi-mat-khau-thanh-cong': 'Đổi mật khẩu thành công', 'can-dang-nhap': 'Thành viên', 'ho-so': 'Hồ sơ thành viên', 'the-thanh-vien': 'Thẻ thành viên', 'lich-su': 'Lịch sử', 'yeu-thich': 'Món yêu thích', 'cap-nhat': 'Cập nhật thông tin' };
+  const TITLES = { 'dang-nhap': 'Đăng nhập', 'dang-ky': 'Đăng ký', otp: 'Xác thực OTP', 'dang-ky-thanh-cong': 'Đăng ký thành công', 'quen-mat-khau': 'Quên mật khẩu', 'dat-lai-mat-khau': 'Đặt lại mật khẩu', 'doi-mat-khau-thanh-cong': 'Đổi mật khẩu thành công', 'can-dang-nhap': 'Thành viên', 'ho-so': 'Hồ sơ thành viên', 'the-thanh-vien': 'Thẻ thành viên', 'uu-dai': 'Ưu đãi của tôi', 'lich-su': 'Lịch sử', 'yeu-thich': 'Món yêu thích', 'cap-nhat': 'Cập nhật thông tin' };
   let current = '', sub = '', afterLogin = 'ho-so';
   const otp = { mode: '', target: '', code: '', exp: 0, tries: 0, resends: 0, timer: 0, left: 0, locked: false, data: null };
   let resetMode = '', resetEmail = '';
 
+  // Thanh bên tài khoản (PC): mọi màn nhóm "account" trừ Lịch sử – màn đó dùng component chung với trang Tra cứu (Cường) nên giữ nguyên bố cục một cột.
+  const sideOn = () => GROUP[current] === 'account' && current !== 'lich-su';
   function go(view) { if (location.hash.slice(1) === view) route(); else location.hash = view; }
   function route() {
     const [raw, s = ''] = decodeURIComponent(location.hash.slice(1)).split('/');
@@ -151,8 +154,9 @@ document.addEventListener('fb:ready', () => {
     if (v !== 'can-dang-nhap' && location.hash.slice(1).split('/')[0] !== v) history.replaceState(null, '', '#' + v + (s ? '/' + s : ''));
     $$('[data-group]').forEach(g => { g.hidden = g.dataset.group !== GROUP[v]; });
     $$('[data-view]').forEach(sec => { sec.hidden = sec.dataset.view !== v; });
+    $('[data-group="account"]').classList.toggle('is-side', sideOn()); if (sideOn()) renderSide();
     document.title = `${TITLES[v]} – Fiabesco Palace`;
-    ({ 'ho-so': renderProfile, 'the-thanh-vien': renderCard, 'lich-su': renderHistory, 'yeu-thich': renderFavs, 'cap-nhat': () => { if (prev !== 'otp' && prev !== 'cap-nhat') fillEdit(); },
+    ({ 'ho-so': renderProfile, 'the-thanh-vien': renderCard, 'uu-dai': renderOffers, 'lich-su': renderHistory, 'yeu-thich': renderFavs, 'cap-nhat': () => { if (prev !== 'otp' && prev !== 'cap-nhat') fillEdit(); },
       otp: renderOtp, 'dang-ky-thanh-cong': () => { $('[data-user-name]').textContent = (getUser() || {}).name || ''; }, 'dat-lai-mat-khau': prepReset, 'doi-mat-khau-thanh-cong': prepPwOk })[v]?.();
     if (prev && prev !== v) {
       window.scrollTo({ top: 0, behavior: 'auto' });
@@ -410,7 +414,7 @@ document.addEventListener('fb:ready', () => {
     }
     const nt = nextTier(u.points), favN = (FB.Fav ? FB.Fav.all() : []).length;
     const R = window.FB_TRA_CUU && FB_TRA_CUU.rules, upcoming = R ? (u.bookings || []).filter(R.isUpcoming).length : 0, shipping = R ? (u.orders || []).filter(R.isActiveOrder).length : 0;
-    const canRedeem = REWARDS.filter(r => u.points >= r.cost).length;
+    const canRedeem = REWARDS.filter(r => u.points >= r.cost).length, validN = myVouchers(u).filter(v => !v.off).length;
     const pct = nt ? Math.min(100, Math.round(u.points / nt[1] * 100)) : 100;
     const noActivity = !(u.bookings || []).length && !(u.orders || []).length;
     const histSub = upcoming || shipping ? [upcoming && `${upcoming} bàn sắp tới`, shipping && `${shipping} đơn đang xử lý`].filter(Boolean).join(' • ') : noActivity ? 'Chưa có hoạt động' : 'Xem các lượt đặt bàn và đơn đã giao';
@@ -430,6 +434,7 @@ document.addEventListener('fb:ready', () => {
       <h2 class="t-h4 mb-sub">Tài khoản của tôi</h2>
       <nav class="mb-list" aria-label="Tài khoản của tôi">
         ${item('#the-thanh-vien', 'star', 'Thẻ thành viên & đổi điểm', `${vnd(u.points)} điểm • ${canRedeem ? canRedeem + ' ưu đãi có thể đổi' : 'chưa đủ điểm đổi ưu đãi'}`)}
+        ${item('#uu-dai', 'coupon-tag', 'Ưu đãi của tôi', validN ? `${validN} mã còn hiệu lực` : 'Chưa có mã ưu đãi')}
         ${item('#lich-su', 'clock', 'Lịch sử đặt bàn & giao hàng', histSub)}
         ${item('#yeu-thich', 'heart', 'Món yêu thích', favN ? `${favN} món đã lưu` : 'Chưa lưu món nào')}
         ${item('#cap-nhat', 'edit', 'Cập nhật thông tin', 'Họ tên, ngày sinh, email, số điện thoại')}
@@ -453,8 +458,9 @@ document.addEventListener('fb:ready', () => {
     const u = getUser(); if (!u) return;
     const [tier, , label] = tierOf(u.points), nt = nextTier(u.points);
     const pct = Math.min(100, Math.round(u.points / 2000 * 100));
-    const log = u.log || [], vouchers = u.vouchers || [];
-    $('[data-card]').innerHTML = `
+    const log = u.log || [], validN = myVouchers(u).filter(v => !v.off).length;
+    // .mb-cardgrid: điện thoại xếp dọc đúng thứ tự Figma M11; PC chia 2 cột (thẻ + hạng | đổi điểm, lịch sử điểm ở dưới)
+    $('[data-card]').innerHTML = `<div class="mb-cardgrid">
       <div class="mb-card mb-card--${label.toLowerCase()}">
         <div class="mb-card__top"><span class="mb-card__logo">Fiabesco Palace<small>Italy on Every Plate</small></span><span class="mb-card__tier">${label}</span></div>
         <span class="mb-card__lbl">Điểm tích lũy</span><b class="mb-card__pts">${vnd(u.points)}</b>
@@ -465,15 +471,65 @@ document.addEventListener('fb:ready', () => {
         <div class="mb-bar-prog mb-bar-prog--light"><i style="width:${pct}%"></i></div>
         <p class="t-body">${nt ? `Tích thêm ${vnd(nt[1] - u.points)} điểm để lên ${nt[0]}${nt[0] === 'Bạch Kim' ? ' – giảm 10% mọi hóa đơn.' : '.'}` : 'Bạn đang ở hạng Bạch Kim – giảm 10% mọi hóa đơn.'}</p>
       </div>
-      ${vouchers.length ? `<h2 class="t-h4 mb-sub">Mã ưu đãi của bạn</h2><div class="mb-vouchers">${vouchers.map(v => `<div class="mb-voucher"><div><strong>${esc(v.name)}</strong><small>Đổi ngày ${esc(v.date)} · hiệu lực 30 ngày</small></div><button type="button" class="code" data-copy="${esc(v.code)}" aria-label="Sao chép mã ${esc(v.code)}">${esc(v.code)}${I('copy')}</button></div>`).join('')}</div>` : ''}
-      <h2 class="t-h4 mb-sub">Đổi điểm lấy ưu đãi</h2>
+      <div class="mb-cardgrid__rw"><h2 class="t-h4 mb-sub">Đổi điểm lấy ưu đãi</h2>
       <div class="mb-rewards">${REWARDS.map(r => { const ok = u.points >= r.cost; return `<div class="mb-reward${ok ? '' : ' is-locked'}"><span class="mb-reward__ic">${I('gift')}</span>
         <div class="mb-reward__txt"><strong>${r.name}</strong><small>${r.desc}</small><b>${vnd(r.cost)} điểm</b></div>
         ${ok ? `<button type="button" class="mb-reward__btn" data-redeem="${r.id}">Đổi</button>` : `<span class="mb-reward__btn is-off" title="Còn thiếu ${vnd(r.cost - u.points)} điểm">Chưa đủ</span>`}</div>`; }).join('')}</div>
       ${u.points < REWARDS[0].cost ? `<p class="t-body-s c-gray mb-note">Bạn cần tối thiểu ${REWARDS[0].cost} điểm để đổi ưu đãi đầu tiên. Đặt bàn hoặc đặt món để tích thêm điểm.</p>` : ''}
-      <h2 class="t-h4 mb-sub">Lịch sử điểm</h2>
+      <a class="mb-golink" href="#uu-dai">${I('coupon-tag')}<span>${validN ? `Bạn có ${validN} mã ưu đãi còn hiệu lực` : 'Mã đã đổi được lưu trong Ưu đãi của tôi'}</span>${I('chevron-right')}</a></div>
+      <div class="mb-cardgrid__log"><h2 class="t-h4 mb-sub">Lịch sử điểm</h2>
       ${log.length ? `<div class="mb-box mb-log">${log.map(([t, d, v]) => `<div class="mb-log__row"><div><strong>${esc(t)}</strong><small>${esc(d)}</small></div><b class="${v < 0 ? 'is-minus' : ''}">${v > 0 ? '+' : '−'}${vnd(Math.abs(v))}</b></div>`).join('')}</div>`
-        : `<div class="mb-box mb-empty-sm">${I('clock')}<p class="t-body-s c-gray">Chưa có lịch sử điểm. Điểm sẽ được cộng sau mỗi đơn hoàn thành.</p></div>`}`; // E29
+        : `<div class="mb-box mb-empty-sm">${I('clock')}<p class="t-body-s c-gray">Chưa có lịch sử điểm. Điểm sẽ được cộng sau mỗi đơn hoàn thành.</p></div>`}</div></div>`; // E29
+  }
+
+  /* =================================================================
+     ƯU ĐÃI CỦA TÔI  ·  mã đã đổi bằng điểm (hiệu lực 30 ngày) + quyền lợi theo hạng
+     ================================================================= */
+  const VOUCHER_DAYS = 30;
+  const PERKS = [ // [icon, tên, mô tả, hạng mở khóa] – khớp nội dung khung Đăng nhập (mb-perks) và câu "Bạch Kim – giảm 10% mọi hóa đơn"
+    ['star', 'Tích 5% điểm mỗi đơn', 'Đặt bàn và giao hàng đều được cộng điểm', 'Bạc'],
+    ['gift', 'Quà sinh nhật', 'Tráng miệng miễn phí trong tháng sinh nhật', 'Bạc'],
+    ['calendar', 'Ưu tiên đặt bàn', 'Giữ bàn đẹp vào cuối tuần và dịp lễ', 'Vàng'],
+    ['sparkle', 'Giảm 10% mọi hóa đơn', 'Áp dụng khi dùng bữa tại nhà hàng và giao hàng', 'Bạch Kim']
+  ];
+  const fromDmy = s => { const [d, m, y] = String(s).split('/').map(Number); return new Date(y, m - 1, d); };
+  // Mã còn hạn đứng trước; off = đã quá hạn (hết ngày thứ 30 kể từ ngày đổi)
+  function myVouchers(u) {
+    return (u.vouchers || []).map(v => { const exp = fromDmy(v.date); exp.setDate(exp.getDate() + VOUCHER_DAYS); exp.setHours(23, 59, 59, 999); return { ...v, exp, off: Date.now() > exp }; })
+      .sort((a, b) => a.off - b.off);
+  }
+  function renderOffers() {
+    const u = getUser(); if (!u) return;
+    const list = myVouchers(u), validN = list.filter(v => !v.off).length;
+    const rank = TIERS.findIndex(t => t[0] === tierOf(u.points)[0]);
+    $('[data-offers]').innerHTML = `
+      <div class="mb-offer-sum">
+        <div><span>Điểm hiện có</span><b>${vnd(u.points)}</b></div>
+        <div><span>Mã còn hiệu lực</span><b>${validN}</b></div>
+        <a class="btn btn--gold" href="#the-thanh-vien">Đổi điểm lấy ưu đãi</a>
+      </div>
+      <h2 class="t-h4 mb-sub">Mã ưu đãi của bạn</h2>
+      ${list.length ? `<div class="mb-vouchers">${list.map(v => `<div class="mb-voucher${v.off ? ' is-off' : ''}"><span class="mb-voucher__ic">${I('coupon-tag')}</span>
+        <div class="mb-voucher__txt"><strong>${esc(v.name)}</strong><small>Đổi ngày ${esc(v.date)} · ${v.off ? 'đã hết hạn' : 'HSD ' + dmy(v.exp)}</small></div>
+        ${v.off ? '<span class="mb-tag mb-tag--gray">Hết hạn</span>' : `<button type="button" class="code" data-copy="${esc(v.code)}" aria-label="Sao chép mã ${esc(v.code)}">${esc(v.code)}${I('copy')}</button>`}</div>`).join('')}</div>`
+        : `<div class="mb-box mb-empty-sm">${I('coupon-tag')}<p class="t-body-s c-gray">Bạn chưa có mã ưu đãi nào. Dùng điểm tích lũy để đổi Tiramisu miễn phí, voucher giảm 10% và nhiều quà khác.</p></div>`}
+      <h2 class="t-h4 mb-sub">Quyền lợi hạng ${esc(u.tier || tierOf(u.points)[0])}</h2>
+      <ul class="mb-perk-list">${PERKS.map(([ic, t, d, need]) => { const on = rank >= TIERS.findIndex(x => x[0] === need);
+        return `<li class="${on ? '' : 'is-locked'}"><span>${I(on ? ic : 'lock')}</span><div><strong>${t}</strong><small>${on ? d : 'Mở khóa ở hạng ' + need}</small></div></li>`; }).join('')}</ul>
+      <a class="mb-golink" href="khuyen_mai.html">${I('gift')}<span>Xem chương trình khuyến mãi chung của nhà hàng</span>${I('chevron-right')}</a>`;
+  }
+
+  /* ---------------- Thanh bên tài khoản (PC) ---------------- */
+  function renderSide() {
+    const u = getUser(), box = $('[data-aside]'); if (!u || !box) return;
+    const favN = (FB.Fav ? FB.Fav.all() : []).length, validN = myVouchers(u).filter(v => !v.off).length;
+    const link = (v, ic, t, n) => `<a class="mb-aside__link${current === v ? ' is-on' : ''}" href="#${v}"${current === v ? ' aria-current="page"' : ''}>${I(ic)}<span>${t}</span>${n ? `<b>${n}</b>` : ''}</a>`;
+    box.innerHTML = `<div class="mb-aside__me"><span class="mb-avatar">${avatarHtml(u)}</span><div><strong>${esc(u.name)}</strong><small>${I('star')}${esc(u.tier || '')} · ${vnd(u.points)} điểm</small></div></div>
+      <nav class="mb-aside__nav" aria-label="Mục tài khoản">
+        ${link('ho-so', 'user', 'Hồ sơ của tôi')}${link('the-thanh-vien', 'star', 'Thẻ thành viên')}${link('uu-dai', 'coupon-tag', 'Ưu đãi của tôi', validN)}
+        ${link('lich-su', 'clock', 'Đặt bàn & đơn giao')}${link('yeu-thich', 'heart', 'Món yêu thích', favN)}${link('cap-nhat', 'edit', 'Cập nhật thông tin')}
+      </nav>
+      <button type="button" class="mb-aside__out" data-mb-logout>${I('arrow-left')}Đăng xuất</button>`;
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-redeem]');
@@ -485,8 +541,9 @@ document.addEventListener('fb:ready', () => {
         me.points -= r.cost; me.log = [[`Đổi ${r.name}`, dmy(new Date()), -r.cost], ...(me.log || [])];
         me.vouchers = [{ code, name: r.name, date: dmy(new Date()) }, ...(me.vouchers || [])];
         setUser(me); renderCard();
-        dialog({ id: 'mb-redeem-ok', icon: 'check', tone: 'green', title: 'Đổi điểm thành công!', desc: `Mã ưu đãi “${r.name}” đã được lưu vào thẻ thành viên. Đưa mã cho nhân viên hoặc nhập ở bước thanh toán.`, // E28
-          extra: `<button type="button" class="code mb-code-lg" data-copy="${code}">${code}${I('copy')}</button>`, actions: [{ label: 'Đóng', style: 'navy' }] });
+        dialog({ id: 'mb-redeem-ok', icon: 'check', tone: 'green', title: 'Đổi điểm thành công!', desc: `Mã ưu đãi “${r.name}” đã được lưu trong mục Ưu đãi của tôi. Đưa mã cho nhân viên hoặc nhập ở bước thanh toán.`, // E28
+          extra: `<button type="button" class="code mb-code-lg" data-copy="${code}">${code}${I('copy')}</button>`,
+          actions: [{ label: 'Xem ưu đãi của tôi', style: 'outline', attr: 'data-close data-mb-go="uu-dai"' }, { label: 'Đóng', style: 'navy' }] });
       });
     }
     const c = e.target.closest('[data-copy]');
@@ -550,8 +607,8 @@ document.addEventListener('fb:ready', () => {
   }
   document.addEventListener('click', e => {
     const rm = e.target.closest('[data-fav-rm]');
-    if (rm) { const id = rm.dataset.favRm; lastRemoved = { id, name: (D.byId(id) || {}).name || '', idx: FB.Fav.all().indexOf(id) }; if (FB.Fav.has(id)) FB.Fav.toggle(id); renderFavs(); return; }
-    if (e.target.closest('[data-undo]') && lastRemoved) { const a = FB.Fav.all().filter(x => x !== lastRemoved.id); a.splice(Math.max(0, lastRemoved.idx), 0, lastRemoved.id); FB.Fav.set(a); lastRemoved = null; renderFavs(); return; }
+    if (rm) { const id = rm.dataset.favRm; lastRemoved = { id, name: (D.byId(id) || {}).name || '', idx: FB.Fav.all().indexOf(id) }; if (FB.Fav.has(id)) FB.Fav.toggle(id); renderFavs(); renderSide(); return; }
+    if (e.target.closest('[data-undo]') && lastRemoved) { const a = FB.Fav.all().filter(x => x !== lastRemoved.id); a.splice(Math.max(0, lastRemoved.idx), 0, lastRemoved.id); FB.Fav.set(a); lastRemoved = null; renderFavs(); renderSide(); return; }
     const add = e.target.closest('[data-fav-add]');
     if (add) { const id = add.dataset.favAdd; FB.Cart.add(id); if (FB.openAdded) FB.openAdded(id); else FB.toast('Đã thêm vào giỏ', esc((D.byId(id) || {}).name || ''), 'Xem giỏ', 'gio_hang.html', 'navy'); }
   });
