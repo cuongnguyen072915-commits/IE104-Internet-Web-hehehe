@@ -50,27 +50,20 @@ document.addEventListener('fb:ready', () => {
   const WD = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
   const sameDay = (a, b) => a.toDateString() === b.toDateString();
 
-  /* Dữ liệu mẫu theo Figma M11/M12a/M12b. Ngày "sắp tới" tính theo hôm nay để luôn đúng là sắp tới. */
-  function demoData() {
-    const soon = new Date(); soon.setDate(soon.getDate() + 3); soon.setHours(19, 0, 0, 0);
-    if (DEMO === 'sat-gio') { soon.setTime(Date.now() + 60 * 60e3); soon.setSeconds(0, 0); }
-    const today = new Date(); today.setHours(18, 42, 0, 0);
+  /* Dữ liệu mẫu lịch sử: dùng chung DẠNG DỮ LIỆU với trang Tra cứu (js/data/tra_cuu.js)
+     để thẻ đặt bàn / đơn giao và các thao tác hủy, đổi lịch hiển thị giống hệt nhau.
+     TODO(BE): GET /api/thanh-vien/lich-su (token thành viên) → { bookings, orders }. */
+  const histSample = phone => { const T = window.FB_TRA_CUU; const d = T ? T.sample(phone || DEMO_ACC.phone) : { bookings: [], orders: [] }; return { bookings: d.bookings, orders: d.orders }; };
+  const oldHistory = u => (u.bookings || []).some(b => !b.tableId) || (u.orders || []).some(o => !Array.isArray(o.items) || Array.isArray(o.items[0])); // dữ liệu demo bản cũ
+  function demoData(phone) {
     return {
-      bookings: [
-        { code: 'DB20481', status: 'ok', at: soon.toISOString(), guests: 4, table: 'Bàn T05 – Sảnh chính', deposit: 200000 },
-        { code: 'DB19877', status: 'done', at: '2026-10-14T18:30:00', guests: 2, pack: 'Gói Sinh nhật', table: 'Bàn V02 – Ban công' },
-        { code: 'DB18850', status: 'cancel', at: '2026-09-21T12:00:00', guests: 6, table: 'Bàn T11 – Sảnh chính' }
-      ],
-      orders: [
-        { code: 'GH1031', status: 'ship', at: today.toISOString(), step: 2, total: 427000, items: [['bolognese', 'Mì Ý Bò Bằm Phô Mai', 2], ['caprese', 'Salad Caprese', 1], ['tiramisu', 'Tiramisu', 1]] },
-        { code: 'GH1029', status: 'done', at: '2026-11-12T19:10:00', total: 845000, items: [['risotto-ga', 'Cơm Risotto Gà', 2], ['lasagna', 'Mì Lasagna đút lò', 1], ['minestrone', 'Súp Minestrone', 2]] }
-      ],
-      log: [['Đơn giao hàng #GH1029', '12/11/2026', 125], ['Đổi Tiramisu miễn phí', '02/11/2026', -300], ['Quà chào mừng thành viên', '20/10/2026', 100]]
+      ...histSample(phone),
+      log: [['Đơn giao hàng #FB2410-0190', '07/11/2026', 125], ['Đổi Tiramisu miễn phí', '02/11/2026', -300], ['Quà chào mừng thành viên', '20/10/2026', 100]]
     };
   }
   function makeUser(acc, extra = {}) {
     const fresh = !!extra.fresh;
-    const base = fresh ? { bookings: [], orders: [], log: [['Quà chào mừng thành viên', dmy(new Date()), 100]] } : demoData();
+    const base = fresh ? { bookings: [], orders: [], log: [['Quà chào mừng thành viên', dmy(new Date()), 100]] } : demoData(acc.phone);
     return { name: acc.name, id: acc.email || acc.phone, email: acc.email || '', phone: acc.phone || '', dob: acc.dob || '',
       code: acc.code || 'FP-' + String(Math.floor(10000 + Math.random() * 89999)), card: acc.card || (acc.email === DEMO_ACC.email ? DEMO_ACC.card : ''), points: fresh ? 100 : (acc.points != null ? acc.points : 1250),
       avatar: acc.avatar || '', fresh, vouchers: [], ...base, ...extra };
@@ -86,6 +79,7 @@ document.addEventListener('fb:ready', () => {
       if (fresh) full.log = [['Quà chào mừng thành viên', dmy(new Date()), full.points]];
       setUser(full); return full;
     }
+    if (oldHistory(u)) { Object.assign(u, histSample(u.phone)); setUser(u); } // chuyển dữ liệu demo bản cũ sang dạng mới
     return u;
   }
 
@@ -415,11 +409,11 @@ document.addEventListener('fb:ready', () => {
       profileLoaded = true; setTimeout(() => { if (current === 'ho-so') renderProfile(); }, 450); return;
     }
     const nt = nextTier(u.points), favN = (FB.Fav ? FB.Fav.all() : []).length;
-    const upcoming = (u.bookings || []).filter(b => b.status === 'ok').length, shipping = (u.orders || []).filter(o => o.status === 'ship').length;
+    const R = window.FB_TRA_CUU && FB_TRA_CUU.rules, upcoming = R ? (u.bookings || []).filter(R.isUpcoming).length : 0, shipping = R ? (u.orders || []).filter(R.isActiveOrder).length : 0;
     const canRedeem = REWARDS.filter(r => u.points >= r.cost).length;
     const pct = nt ? Math.min(100, Math.round(u.points / nt[1] * 100)) : 100;
     const noActivity = !(u.bookings || []).length && !(u.orders || []).length;
-    const histSub = upcoming || shipping ? [upcoming && `${upcoming} bàn sắp tới`, shipping && `${shipping} đơn đang giao`].filter(Boolean).join(' • ') : noActivity ? 'Chưa có hoạt động' : 'Xem các lượt đặt bàn và đơn đã giao';
+    const histSub = upcoming || shipping ? [upcoming && `${upcoming} bàn sắp tới`, shipping && `${shipping} đơn đang xử lý`].filter(Boolean).join(' • ') : noActivity ? 'Chưa có hoạt động' : 'Xem các lượt đặt bàn và đơn đã giao';
     box.innerHTML = `
       <div class="mb-hero">
         <span class="mb-avatar">${avatarHtml(u)}</span>
@@ -502,69 +496,36 @@ document.addEventListener('fb:ready', () => {
   /* =================================================================
      M12a/M12b LỊCH SỬ ĐẶT BÀN & GIAO HÀNG  ·  E30–E34
      ================================================================= */
-  const B_STATUS = { ok: ['Đã xác nhận', 'green'], done: ['Đã hoàn thành', 'gray'], cancel: ['Đã hủy', 'wine'] };
-  const O_STEPS = ['Đã đặt', 'Đang nấu', 'Đang giao', 'Đã nhận'];
-  const when = iso => { const d = new Date(iso); return `${sameDay(d, new Date()) ? 'Hôm nay' : WD[d.getDay()]}, ${dmy(d)} • ${hm(d)}`; };
   const empty = (ic, t, d, href, label) => `<div class="mb-empty">${I(ic)}<h2 class="t-h3">${t}</h2><p class="t-body c-gray">${d}</p><a class="btn btn--navy" href="${href}">${label}</a></div>`;
+  /* Thẻ, popup hủy bàn / đổi lịch / hủy đơn dùng component chung FB_DON
+     (js/components/don_dat.js) — giống hệt trang Tra cứu (tra_cuu.html).
+     Thành viên đã đăng nhập nên không cần OTP khi thao tác trên lịch sử của mình. */
+  // API thành viên: cùng tên hàm với FB_TRA_CUU.guestApi; dữ liệu demo lưu trong đối tượng người dùng.
+  // TODO(BE): thay bằng các endpoint có token thành viên (xem chú thích trong js/data/tra_cuu.js).
+  const memberApi = window.FB_TRA_CUU ? FB_TRA_CUU.createApi({
+    load: () => { const u = getUser() || {}; return { name: u.name, bookings: u.bookings || [], orders: u.orders || [] }; },
+    save: (_, d) => { const u = getUser(); if (!u) return; u.bookings = d.bookings; u.orders = d.orders; setUser(u); }
+  }) : null;
   function renderHistory() {
     const u = getUser(); if (!u) return;
     const tab = sub === 'giao-hang' ? 'giao-hang' : 'dat-ban';
     $$('[data-tab]').forEach(b => { const on = b.dataset.tab === tab; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', on); });
     const box = $('[data-history]');
-    if (tab === 'dat-ban') {
-      const list = u.bookings || [], up = list.filter(b => b.status === 'ok'), past = list.filter(b => b.status !== 'ok');
-      if (!list.length) { box.innerHTML = empty('calendar', 'Bạn chưa có lượt đặt bàn nào', 'Đặt bàn trước để được giữ chỗ đẹp, chọn gói trang trí và tích điểm thành viên.', 'dat_ban.html', 'Đặt bàn ngay'); return; } // E30
-      box.innerHTML = `${up.length ? `<h2 class="t-h4 mb-sub">Sắp tới</h2>${up.map(bookingCard).join('')}` : ''}${past.length ? `<h2 class="t-h4 mb-sub">Trước đây</h2>${past.map(bookingCard).join('')}` : ''}`;
-    } else {
-      const list = u.orders || [], up = list.filter(o => o.status === 'ship'), past = list.filter(o => o.status !== 'ship');
-      if (!list.length) { box.innerHTML = empty('delivery-truck', 'Bạn chưa có đơn giao hàng nào', 'Đặt món yêu thích và nhận tận nơi trong 30–40 phút. Mỗi đơn đều được tích điểm.', 'thuc_don.html', 'Đặt món ngay'); return; } // E31
-      box.innerHTML = `${up.length ? `<h2 class="t-h4 mb-sub">Đang xử lý</h2>${up.map(orderCard).join('')}` : ''}${past.length ? `<h2 class="t-h4 mb-sub">Đã giao</h2>${past.map(orderCard).join('')}` : ''}`;
-    }
-  }
-  function bookingCard(b) {
-    const [st, tone] = B_STATUS[b.status];
-    const info = [`${b.guests} khách`, b.pack, b.table, b.deposit && b.status === 'ok' ? `Đã cọc ${money(b.deposit)}` : '', b.refund ? `Hoàn cọc ${money(b.refund)}` : ''].filter(Boolean).join(' • ');
-    const acts = b.status === 'ok' ? `<button type="button" class="btn btn--outline mb-btn-wine" data-cancel="${b.code}">Hủy bàn</button><button type="button" class="btn btn--navy" data-detail="${b.code}" aria-expanded="false">Xem chi tiết</button>`
-      : b.status === 'done' ? `<button type="button" class="btn btn--outline" data-soon="Đánh giá đặt bàn">Đánh giá</button><a class="btn btn--navy" href="dat_ban.html">Đặt lại</a>` : '';
-    return `<article class="mb-hcard"><div class="between"><strong class="mb-hcard__code">#${b.code}</strong><span class="mb-tag mb-tag--${tone}">${st}</span></div>
-      <p class="mb-hcard__when">${I('calendar')}${when(b.at)}</p><p class="t-body-s c-gray">${esc(info)}</p>
-      ${b.status === 'ok' ? `<div class="mb-hcard__more" data-more="${b.code}" hidden><p><span>Hủy trước 24 giờ</span><b>Hoàn 100% tiền cọc</b></p><p><span>Hủy trong vòng 24 giờ</span><b>Không hoàn cọc</b></p><p><span>Đổi giờ / hỗ trợ</span><a href="${HOTLINE_TEL}">Hotline ${HOTLINE}</a></p></div>` : ''}
-      ${acts ? `<div class="mb-row2">${acts}</div>` : ''}</article>`;
-  }
-  function orderCard(o) {
-    const ship = o.status === 'ship';
-    return `<article class="mb-hcard"><div class="between"><strong class="mb-hcard__code">#${o.code}</strong><span class="mb-tag mb-tag--${ship ? 'gold' : 'green'}">${ship ? 'Đang giao' : 'Đã giao'}</span></div>
-      <p class="mb-hcard__when">${I('clock')}${when(o.at)}</p><p class="t-body-s c-gray">${o.items.map(([, n, q]) => `${esc(n)} x${q}`).join(', ')}</p>
-      ${ship ? `<ol class="mb-steps" aria-label="Tiến trình đơn hàng">${O_STEPS.map((s, i) => `<li class="${i < o.step ? 'is-done' : i === o.step ? 'is-now' : ''}"${i === o.step ? ' aria-current="step"' : ''}>${s}</li>`).join('')}</ol>` : ''}
-      <div class="between mb-hcard__total"><span>Tổng cộng</span><b class="mb-hcard__price">${money(o.total)}</b></div>
-      <div class="mb-row2">${ship ? `<a class="btn btn--outline" href="${HOTLINE_TEL}">${I('phone')}Liên hệ shipper</a><a class="btn btn--navy" href="theo_doi_don_hang.html">Theo dõi đơn</a>`
-        : `<a class="btn btn--outline" href="danh_gia_don_hang.html">Đánh giá</a><button type="button" class="btn btn--navy" data-reorder="${o.code}">Đặt lại</button>`}</div></article>`;
+    if (!window.FB_DON || !memberApi) { box.innerHTML = '<p class="t-body c-gray">Thiếu js/components/don_dat.js hoặc js/data/tra_cuu.js.</p>'; return; }
+    box.innerHTML = tab === 'dat-ban'
+      ? FB_DON.bookingsHtml(u.bookings || [], { emptyTitle: 'Bạn chưa có lượt đặt bàn nào', emptyText: 'Đặt bàn trước để được giữ chỗ đẹp, chọn gói trang trí và tích điểm thành viên.' }) // E30
+      : FB_DON.ordersHtml(u.orders || [], { emptyTitle: 'Bạn chưa có đơn giao hàng nào', emptyText: 'Đặt món yêu thích và nhận tận nơi trong 30–40 phút. Mỗi đơn đều được tích điểm.' }); // E31
+    FB.hydrateIcons(box);
+    FB_DON.mount(box, {
+      api: memberApi,
+      ctx: () => getUser(),                         // đã đăng nhập = đã xác thực
+      reverify: () => go('dang-nhap'),
+      find: (kind, code) => ((getUser() || {})[kind === 'order' ? 'orders' : 'bookings'] || []).find(x => x.code === code),
+      onChange: () => renderHistory()
+    });
   }
   document.addEventListener('click', e => {
-    const t = e.target.closest('[data-tab]'); if (t) { history.replaceState(null, '', '#lich-su/' + t.dataset.tab); sub = t.dataset.tab; renderHistory(); return; }
-    const d = e.target.closest('[data-detail]');
-    if (d) { const m = $(`[data-more="${d.dataset.detail}"]`); m.hidden = !m.hidden; d.setAttribute('aria-expanded', !m.hidden); d.textContent = m.hidden ? 'Xem chi tiết' : 'Thu gọn'; return; }
-    const r = e.target.closest('[data-reorder]');
-    if (r) { const o = ((getUser() || {}).orders || []).find(x => x.code === r.dataset.reorder); if (!o) return; o.items.forEach(([id, , q]) => { if (D.byId(id)) FB.Cart.add(id, q); }); location.href = 'gio_hang.html'; return; }
-    const c = e.target.closest('[data-cancel]'); if (!c) return;
-    const u = getUser(), b = ((u || {}).bookings || []).find(x => x.code === c.dataset.cancel); if (!b) return;
-    const hours = (new Date(b.at) - Date.now()) / 36e5;
-    if (hours < 2) { // E34 – sát giờ
-      const mins = Math.max(1, Math.round(hours * 60));
-      dialog({ id: 'mb-nocancel', icon: 'clock', title: 'Không thể hủy trực tuyến', desc: `Bàn #${b.code} sẽ bắt đầu sau ${mins >= 60 ? Math.round(mins / 60) + ' giờ' : mins + ' phút'} nữa. Vui lòng gọi hotline ${HOTLINE} để được hỗ trợ đổi giờ hoặc hủy bàn.`,
-        actions: [{ label: 'Gọi hotline', style: 'navy', href: HOTLINE_TEL }, { label: 'Đóng', style: 'outline' }] });
-      return;
-    }
-    const refund = hours >= 24 ? b.deposit || 0 : 0;
-    dialog({ id: 'mb-cancel', icon: 'alert-triangle', tone: 'wine', title: `Hủy đặt bàn #${b.code}?`, // E32
-      desc: `Hủy trước 24 giờ: hoàn 100% tiền cọc ${money(b.deposit || 0)} trong 3–5 ngày làm việc. Hủy trong vòng 24 giờ: không hoàn cọc.${hours < 24 ? ' Bàn của bạn bắt đầu trong vòng 24 giờ nên tiền cọc sẽ không được hoàn.' : ''}`,
-      actions: [{ label: 'Giữ lại', style: 'outline' }, { label: 'Hủy đặt bàn', style: 'wine', attr: 'data-mb-ok' }] }, () => {
-      const me = getUser(); const bk = me && (me.bookings || []).find(x => x.code === b.code); if (!bk) return;
-      bk.status = 'cancel'; bk.refund = refund; setUser(me); renderHistory();
-      dialog({ id: 'mb-cancel-ok', icon: 'check', tone: 'green', title: 'Đã hủy đặt bàn', // E33
-        desc: refund ? `Bàn #${b.code} đã được hủy. Tiền cọc ${money(refund)} sẽ được hoàn về phương thức thanh toán ban đầu trong 3–5 ngày làm việc.` : `Bàn #${b.code} đã được hủy. Theo chính sách, tiền cọc không được hoàn do hủy trong vòng 24 giờ.`,
-        actions: [{ label: 'Đặt bàn mới', style: 'outline', href: 'dat_ban.html' }, { label: 'Đóng', style: 'navy' }] });
-    });
+    const t = e.target.closest('[data-tab]'); if (t) { history.replaceState(null, '', '#lich-su/' + t.dataset.tab); sub = t.dataset.tab; renderHistory(); }
   });
 
   /* =================================================================

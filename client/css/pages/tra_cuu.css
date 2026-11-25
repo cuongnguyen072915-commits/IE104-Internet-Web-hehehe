@@ -1,0 +1,99 @@
+/* =====================================================================
+   FIABESCO PALACE — css/pages/tra_cuu.css
+   Trang Tra cứu đặt bàn & đơn giao (Figma Page PC › 07c Tra cứu đặt bàn).
+   Thẻ/popup dùng chung nằm ở css/components/don_dat.css.
+   ===================================================================== */
+body[data-page="tra_cuu"]{background:var(--cream)}
+.tq{display:grid;grid-template-columns:340px minmax(0,1fr);gap:56px;align-items:start;padding-top:56px;padding-bottom:96px}
+
+/* ---------- Cột giới thiệu ---------- */
+.tq-intro{position:sticky;top:120px;display:flex;flex-direction:column;gap:16px}
+.tq-eyebrow{font:600 12px/1.4 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--wine)}
+.tq-title{font:700 40px/1.15 var(--f-display);color:var(--navy);letter-spacing:-.01em}
+.tq-lead{font:400 15px/1.6 var(--f-sans);color:var(--gray)}
+.tq-perks{display:flex;flex-direction:column;gap:14px;margin-top:8px;padding:20px;border-radius:16px;background:#fff;border:1px solid rgba(204,166,97,.3)}
+.tq-perks li{display:flex;gap:12px;align-items:flex-start}
+.tq-perks li > span{width:38px;height:38px;flex:none;border-radius:999px;background:#fff6e8;color:var(--wine);display:flex;align-items:center;justify-content:center}
+.tq-perks .ic,.tq-perks svg{width:17px;height:17px}
+.tq-perks strong{display:block;font:600 14px/1.4 var(--f-sans);color:var(--navy)}
+.tq-perks small{font:400 13px/1.45 var(--f-sans);color:var(--gray)}
+.tq-help{display:inline-flex;align-items:center;gap:10px;font:400 14px/1.4 var(--f-sans);color:var(--navy)}
+.tq-help .ic,.tq-help svg{width:17px;height:17px;color:var(--wine)}
+.tq-help b{color:var(--wine);text-decoration:underline;text-underline-offset:4px}
+
+/* ---------- Thẻ chính ---------- */
+.tq-card{max-width:720px;width:100%;padding:36px;border-radius:24px;background:#fffdf8;border:1px solid rgba(204,166,97,.3);box-shadow:0 24px 60px rgba(0,40,66,.08)}
+.tq-h2{font:700 26px/1.25 var(--f-display);color:var(--navy)}
+[data-step="form"]{display:flex;flex-direction:column;gap:20px}
+[data-step="form"][hidden],[data-step][hidden]{display:none}
+
+.tq-member{display:flex;gap:14px;padding:16px 18px;border-radius:14px;background:linear-gradient(135deg,#0d3a55,#002842);color:#fff}
+.tq-member > span{width:40px;height:40px;flex:none;border-radius:999px;background:rgba(204,166,97,.2);color:var(--gold-l);display:flex;align-items:center;justify-content:center}
+.tq-member > span .ic,.tq-member > span svg{width:18px;height:18px}
+.tq-member strong{display:block;font:600 15px/1.4 var(--f-sans)}
+.tq-member small{display:block;font:400 13px/1.5 var(--f-sans);color:rgba(254,244,228,.8)}
+.tq-member__links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tq-member__links a,.tq-member__links button{height:32px;padding:0 14px;border-radius:999px;display:inline-flex;align-items:center;font:600 12.5px/1 var(--f-sans);border:1px solid rgba(204,166,97,.6);color:#fff;background:transparent}
+.tq-member__links button{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.tq-member__links a:hover{background:rgba(255,255,255,.08)}
+
+.tq-kind{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tq-kind button{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:center;padding:16px 18px;border-radius:14px;border:1px solid var(--line);background:#fff;text-align:left;transition:border-color .2s,box-shadow .2s}
+.tq-kind button > span{grid-row:1 / 3;width:44px;height:44px;border-radius:12px;background:#fff6e8;color:var(--navy);display:flex;align-items:center;justify-content:center}
+.tq-kind button > span .ic,.tq-kind button > span svg{width:20px;height:20px}
+.tq-kind b{font:600 15px/1.3 var(--f-sans);color:var(--navy)}
+.tq-kind small{font:400 12.5px/1.3 var(--f-sans);color:var(--gray)}
+.tq-kind button:hover{border-color:var(--gold)}
+.tq-kind button.is-on{border:1.5px solid var(--wine);background:#fff8f4;box-shadow:0 8px 20px rgba(160,30,50,.08)}
+.tq-kind button.is-on > span{background:var(--wine);color:#fff}
+
+.tq-form{display:flex;flex-direction:column;gap:14px}
+.tq-field{display:flex;flex-direction:column;gap:8px}
+.tq-field > span:first-child{font:600 14px/1.4 var(--f-sans);color:var(--navy)}
+.tq-input{display:flex;align-items:center;height:56px;border-radius:12px;border:1px solid var(--line);background:#fff;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.tq-input:focus-within{border-color:var(--gold);box-shadow:0 0 0 4px rgba(204,166,97,.2)}
+.tq-input.is-err{border-color:var(--wine);box-shadow:0 0 0 4px rgba(160,30,50,.1)}
+.tq-input em{padding:0 14px;height:100%;display:flex;align-items:center;font:600 15px/1 var(--f-sans);font-style:normal;color:var(--navy);background:#fff6e8;border-right:1px solid var(--line)}
+.tq-input input{flex:1;height:100%;padding:0 16px;border:0;outline:0;background:transparent;font:500 17px/1 var(--f-sans);letter-spacing:.04em;color:var(--navy)}
+.tq-err{font:600 13px/1.5 var(--f-sans);color:var(--wine)}
+.tq-fine{font:400 12.5px/1.5 var(--f-sans);color:var(--gray);text-align:center}
+
+/* ---------- Kết quả ---------- */
+[data-step="result"]{display:flex;flex-direction:column;gap:16px}
+.tq-res-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.tq-res-head .dd-link{flex:none;margin-top:6px}
+.tq-res-sub{margin-top:4px;font:400 14px/1.4 var(--f-sans);color:var(--gray)}
+.tq-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.tq-tabs button{display:flex;align-items:center;justify-content:center;gap:8px;height:42px;border-radius:999px;font:600 13px/1 var(--f-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gray)}
+.tq-tabs button .ic,.tq-tabs button svg{width:16px;height:16px}
+.tq-tabs button b{min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:#eef0f2;font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+.tq-tabs button.is-on{background:var(--navy);color:#fff}
+.tq-tabs button.is-on b{background:var(--gold);color:var(--navy)}
+.tq-list{min-height:120px}
+.tq-session{display:flex;align-items:center;gap:8px;font:400 12.5px/1.5 var(--f-sans);color:var(--gray)}
+.tq-session .ic,.tq-session svg{width:15px;height:15px;flex:none;color:var(--green)}
+.tq-session b{color:var(--navy)}
+.tq-join{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;border:1px dashed var(--gold);background:#fffaf2;color:var(--navy)}
+.tq-join[hidden]{display:none}
+.tq-join > span{width:40px;height:40px;flex:none;border-radius:999px;background:var(--wine-bg,#fbeaec);color:var(--wine);display:flex;align-items:center;justify-content:center}
+.tq-join .ic,.tq-join svg{width:18px;height:18px}
+.tq-join div{flex:1}
+.tq-join strong{display:block;font:600 14px/1.4 var(--f-sans)}
+.tq-join small{font:400 13px/1.45 var(--f-sans);color:var(--gray)}
+.tq-skel{display:flex;flex-direction:column;gap:12px}
+.tq-skel i{height:120px;border-radius:16px;background:linear-gradient(90deg,#f3ead9 0%,#fbf6ec 50%,#f3ead9 100%);background-size:200% 100%;animation:tq-sh 1.2s linear infinite}
+.tq-skel i:first-child{height:260px}
+@keyframes tq-sh{to{background-position:-200% 0}}
+
+@media (max-width:1023px){
+  .tq{grid-template-columns:1fr;gap:28px;padding-top:32px}
+  .tq-intro{position:static}
+  .tq-perks{display:none}
+  .tq-card{max-width:none}
+}
+@media (max-width:768px){
+  .tq-title{font-size:30px}
+  .tq-card{padding:22px 16px;border-radius:18px}
+  .tq-kind{grid-template-columns:1fr}
+  .tq-tabs button{font-size:11px;letter-spacing:.02em}
+}

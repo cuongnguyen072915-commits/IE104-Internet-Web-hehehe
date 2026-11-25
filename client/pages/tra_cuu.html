@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002842">
+  <title>Tra cứu đặt bàn &amp; đơn giao – Fiabesco Palace</title>
+  <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/components/don_dat.css">
+  <link rel="stylesheet" href="../css/pages/tra_cuu.css">
+  <link rel="stylesheet" href="../css/github-sync.css">
+  <link rel="stylesheet" href="../css/popups.css">
+</head>
+<body data-design-system="fiabesco-github" data-page="tra_cuu">
+  <!-- Figma: Page PC › 04 · TRA CỨU & ĐỔI LỊCH ĐẶT BÀN (07c TH1–TH10, 07d DL1–DL5)
+       + PC – 06 Theo dõi đơn hàng, PC Popup – Hủy đơn hàng -->
+  <header data-header></header>
+  <main class="site-main" id="noi-dung-chinh">
+    <div class="container tq">
+      <!-- Cột trái: giới thiệu -->
+      <aside class="tq-intro">
+        <span class="tq-eyebrow">Tra cứu</span>
+        <h1 class="tq-title" id="tq-title">Đặt bàn &amp; đơn giao của bạn</h1>
+        <p class="tq-lead" id="tq-lead">Nhập số điện thoại đã dùng khi đặt bàn hoặc đặt món. Chúng tôi gửi mã xác minh để chỉ bạn mới xem được thông tin.</p>
+        <ul class="tq-perks">
+          <li><span><i data-icon="shield-check"></i></span><div><strong>Xác minh 2 lớp</strong><small>Số điện thoại + mã OTP gửi qua SMS</small></div></li>
+          <li><span><i data-icon="calendar"></i></span><div><strong>Đổi lịch hoặc hủy bàn</strong><small>Trước 24 giờ, hoàn 100% tiền cọc</small></div></li>
+          <li><span><i data-icon="delivery-truck"></i></span><div><strong>Hủy đơn giao</strong><small>Khi bếp đang chuẩn bị, trước lúc giao</small></div></li>
+        </ul>
+        <a class="tq-help" href="tel:0123456789"><i data-icon="phone"></i><span>Cần hỗ trợ? Gọi <b>0123 456 789</b></span></a>
+      </aside>
+
+      <!-- Cột phải: các bước -->
+      <section class="tq-card" aria-labelledby="tq-title" aria-live="polite">
+        <!-- Bước 1 · chọn loại + nhập SĐT (Figma T01, TH8) -->
+        <div data-step="form">
+          <div class="tq-member" id="tq-member" hidden></div>
+          <h2 class="tq-h2">Bạn muốn tra cứu gì?</h2>
+          <div class="tq-kind" role="radiogroup" aria-label="Loại tra cứu" id="tq-kind">
+            <button type="button" role="radio" aria-checked="true" data-kind="dat-ban"><span><i data-icon="calendar"></i></span><b>Đặt bàn</b><small>Xem, đổi lịch, hủy bàn</small></button>
+            <button type="button" role="radio" aria-checked="false" data-kind="giao-hang"><span><i data-icon="delivery-truck"></i></span><b>Đơn giao hàng</b><small>Theo dõi, hủy đơn đặt món</small></button>
+          </div>
+          <form class="tq-form" id="tq-form" novalidate>
+            <label class="tq-field" for="tq-phone"><span>Số điện thoại</span>
+              <span class="tq-input"><em>+84</em><input id="tq-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0901 234 567" maxlength="13" aria-describedby="tq-phone-err"></span>
+              <small class="tq-err" id="tq-phone-err" role="alert" hidden></small></label>
+            <button type="submit" class="dd-btn dd-btn--navy dd-btn--block" id="tq-send">Gửi mã xác minh<i data-icon="arrow-right"></i></button>
+            <p class="tq-fine">Bằng việc tiếp tục, bạn đồng ý nhận một tin SMS chứa mã xác minh. Mã có hiệu lực 5 phút.</p>
+          </form>
+        </div>
+
+        <!-- Bước 2 · OTP (Figma TH10) -->
+        <div data-step="otp" hidden><div id="tq-otp"></div></div>
+
+        <!-- Bước 3 · kết quả (Figma TH1–TH7, T02, T03) -->
+        <div data-step="result" hidden>
+          <div class="tq-res-head">
+            <div><h2 class="tq-h2" id="tq-res-title">Kết quả</h2><p class="tq-res-sub" id="tq-res-sub"></p></div>
+            <button type="button" class="dd-link dd-link--wine" id="tq-other">Tra số khác</button>
+          </div>
+          <div class="tq-tabs" role="tablist" aria-label="Loại">
+            <button type="button" role="tab" data-tab="dat-ban" aria-selected="true"><i data-icon="calendar"></i>Đặt bàn <b data-count="dat-ban">0</b></button>
+            <button type="button" role="tab" data-tab="giao-hang" aria-selected="false"><i data-icon="delivery-truck"></i>Đơn giao hàng <b data-count="giao-hang">0</b></button>
+          </div>
+          <div class="tq-list" id="tq-list" role="tabpanel"></div>
+          <p class="tq-session" id="tq-session"></p>
+          <a class="tq-join" id="tq-join" href="thanh_vien.html#dang-ky"><span><i data-icon="user"></i></span><div><strong>Xem lại không cần tra cứu</strong><small>Tạo tài khoản miễn phí bằng số điện thoại này — đặt bàn và đơn hàng tự hiện trong mục Thành viên.</small></div><i data-icon="chevron-right"></i></a>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer data-footer></footer>
+  <script src="../js/icons.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/data/dat_ban.js"></script>
+  <script src="../js/data/tra_cuu.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/popups.js"></script>
+  <script src="../js/components/don_dat.js"></script>
+  <script src="../js/pages/tra_cuu.js"></script>
+</body>
+</html>

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/pc-components.css">
+  <link rel="stylesheet" href="../css/components/don_dat.css">
   <link rel="stylesheet" href="../css/pages/thanh_vien.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
@@ -202,14 +203,15 @@
         <div data-card></div>
       </section>
 
-      <!-- M12a/M12b Lịch sử + E30–E34 -->
+      <!-- M12a/M12b Lịch sử + E30–E34 · thẻ & popup dùng chung js/components/don_dat.js (giống trang Tra cứu) -->
       <section data-view="lich-su" aria-labelledby="t-hist" hidden>
         <div class="mb-bar"><a class="mb-bar__back" href="#ho-so" aria-label="Quay lại hồ sơ"><i data-icon="arrow-left"></i></a><h1 class="t-h3" id="t-hist">Lịch sử</h1></div>
         <div class="seg mb-seg mb-seg--icons" role="tablist">
           <button type="button" role="tab" data-tab="dat-ban"><i data-icon="calendar"></i>Đặt bàn</button>
           <button type="button" role="tab" data-tab="giao-hang"><i data-icon="delivery-truck"></i>Giao hàng</button>
         </div>
-        <div data-history></div>
+        <div class="mb-hist" data-history></div>
+        <a class="mb-hist__other" href="tra_cuu.html"><i data-icon="search"></i><span><strong>Tra cứu số điện thoại khác</strong><small>Xem đặt bàn hoặc đơn giao của người thân bằng số điện thoại + mã OTP.</small></span><i data-icon="chevron-right"></i></a>
       </section>
 
       <!-- M13 Món yêu thích + E35–E36 -->
@@ -248,8 +250,11 @@
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
+  <script src="../js/data/dat_ban.js"></script>
+  <script src="../js/data/tra_cuu.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/popups.js"></script>
+  <script src="../js/components/don_dat.js"></script>
   <script src="../js/pages/thanh_vien.js"></script>
 </body>
 </html>

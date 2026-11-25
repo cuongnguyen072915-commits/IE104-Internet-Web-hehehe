@@ -65,7 +65,7 @@
   const NAV = [
     ['Trang chủ','trang_chu.html'],
     ['Thực đơn','thuc_don.html'],
-    ['Tra cứu đơn','theo_doi_don_hang.html'],
+    ['Tra cứu đơn','tra_cuu.html'],
     ['Đặt bàn','dat_ban.html'],
     ['Về chúng tôi','gioi_thieu.html'],
     ['Bộ sưu tập','bo_suu_tap.html'],
@@ -96,7 +96,7 @@
         <div class="container pc-topbar__inner">
           <div class="pc-topbar__group"><span>Giao hàng 10:00 – 22:00 mỗi ngày</span>
             <a href="tel:0123456789">Hotline: 0123 456 789</a></div>
-          <div class="pc-topbar__group"><a href="theo_doi_don_hang.html">Tra cứu đơn</a>
+          <div class="pc-topbar__group"><a href="tra_cuu.html">Tra cứu đơn</a>
             <a href="khuyen_mai.html">Khuyến mãi</a><span lang="vi">VI</span></div>
         </div>
       </div>

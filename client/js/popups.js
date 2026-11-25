@@ -106,7 +106,7 @@
       <div class="pp-menu__head"><span class="pp-avatar">${esc(initials(u.name))}</span><div><strong>Xin chào, ${esc(u.name.split(' ').pop())}!</strong><small>Thành viên ${u.tier} · ${vnd(u.points)} điểm</small></div></div>
       <div class="pp-points"><div class="pp-row"><span>Còn ${vnd(next - u.points)} điểm để lên ${u.tier === 'Vàng' ? 'Kim cương' : 'Vàng'}</span><a href="khuyen_mai.html">Ưu đãi của tôi →</a></div><i></i></div>
       <a class="pp-menu__item" href="thanh_vien.html#ho-so">${I('user')}<span>Hồ sơ cá nhân</span>${I('chevron-right')}</a>
-      <a class="pp-menu__item" href="theo_doi_don_hang.html">${I('receipt')}<span>Đơn hàng của tôi</span>${I('chevron-right')}</a>
+      <a class="pp-menu__item" href="thanh_vien.html#lich-su/giao-hang">${I('receipt')}<span>Đơn hàng của tôi</span>${I('chevron-right')}</a>
       <a class="pp-menu__item" href="thanh_vien.html#lich-su/dat-ban">${I('calendar')}<span>Đặt bàn của tôi</span>${I('chevron-right')}</a>
       <a class="pp-menu__item" href="mon_yeu_thich.html">${I('heart')}<span>Món yêu thích</span>${I('chevron-right')}</a>
       <a class="pp-menu__item" href="khuyen_mai.html">${I('gift')}<span>Ưu đãi của tôi</span>${I('chevron-right')}</a>

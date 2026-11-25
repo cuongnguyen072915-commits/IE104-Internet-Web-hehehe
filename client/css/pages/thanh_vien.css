@@ -326,3 +326,15 @@ body[data-design-system] .btn.mb-btn-wine:hover{background:var(--color-secondary
   .mb-otp input{width:38px;height:48px}
   .mb-row2{grid-template-columns:1fr}
 }
+
+/* ---------- Lịch sử (M12a/M12b): thẻ dùng chung css/components/don_dat.css ---------- */
+[data-view="lich-su"] .mb-seg{margin-bottom:8px}
+.mb-hist{margin-top:20px}
+.mb-hist .dd-sec:first-child{margin-top:4px}
+.mb-hist__other{display:flex;align-items:center;gap:14px;margin-top:24px;padding:16px 18px;border-radius:14px;border:1px dashed var(--gold);background:#fffaf2;color:var(--color-primary)}
+.mb-hist__other > .ic:first-child{width:40px;height:40px;padding:11px;flex:none;border-radius:999px;background:var(--wine-bg);color:var(--color-secondary)}
+.mb-hist__other > .ic:last-child{width:18px;height:18px;flex:none}
+.mb-hist__other span{flex:1;display:flex;flex-direction:column;gap:2px}
+.mb-hist__other strong{font:600 15px/1.4 var(--font-main)}
+.mb-hist__other small{font:400 13px/1.45 var(--font-main);color:var(--color-text-muted)}
+.mb-hist__other:hover{border-style:solid}
