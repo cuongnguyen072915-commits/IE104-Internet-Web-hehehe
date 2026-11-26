@@ -260,7 +260,7 @@
 
   // Món yêu thích (localStorage) – đồng bộ trái tim trên mọi thẻ món
   const Fav = {
-    all: () => store.get(FAV_KEY, ['carbonara', 'bolognese', 'burrata', 'lasagna', 'risotto-kem', 'risotto-ga', 'bruschetta', 'caprese']),
+    all: () => store.get(FAV_KEY, []), // chỉ những món người dùng tự bấm ♥ (không đánh dấu sẵn)
     has: id => Fav.all().includes(id),
     toggle(id) { const a = Fav.all(); const i = a.indexOf(id); if (i < 0) a.unshift(id); else a.splice(i, 1); store.set(FAV_KEY, a); document.dispatchEvent(new CustomEvent('fav:change', { detail: { id, on: i < 0 } })); return i < 0; },
     set: a => { store.set(FAV_KEY, a); document.dispatchEvent(new CustomEvent('fav:change')); }
@@ -536,8 +536,6 @@
     if (page === 'trang_chu') {
       // Thẻ món nổi bật → Xem nhanh món; "Đặt món ngay" → Chọn vị trí giao hàng
       document.addEventListener('click', e => {
-        const link = e.target.closest('#featured-grid .dish__media,#featured-grid .dish__name');
-        if (link) { e.preventDefault(); e.stopImmediatePropagation(); FB.openQuickView(link.closest('.dish').dataset.id); return; }
         const order = e.target.closest('a.btn[href="thuc_don.html"]');
         if (order && /Đặt món ngay/i.test(order.textContent) && !store.get(ADDR_KEY, null)) { e.preventDefault(); e.stopImmediatePropagation(); openLocation('thuc_don.html'); }
       }, true);

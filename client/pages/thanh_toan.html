@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/pages/thanh_toan.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
+  <link rel="stylesheet" href="../css/tim_kiem.css">
   <link rel="stylesheet" href="../css/tuy_chinh_mon.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="thanh_toan">
@@ -27,11 +28,13 @@
       <div class="order__left" style="gap:24px">
         <section class="co-card card">
           <h2 class="num-title t-h4"><b>1</b>Thông tin nhận hàng</h2>
+          <p class="prefill-note" id="prefill-note" role="status" hidden></p>
           <div class="alert err-sum" id="err-sum"><i data-icon="alert-triangle"></i><strong class="c-wine" style="font:600 15px/1.4 var(--f-sans)" id="err-text">Có 3 thông tin cần kiểm tra lại trước khi thanh toán.</strong></div>
           <div class="co-grid">
             <label class="field" data-f="name"><span class="field__label" data-l="Họ và tên *">Họ và tên *</span><span class="field__box"><input name="name" placeholder="Nguyễn Minh Anh" autocomplete="name"></span></label>
-            <label class="field" data-f="phone"><span class="field__label" data-l="Số điện thoại *">Số điện thoại *</span><span class="field__box"><input name="phone" type="tel" placeholder="0901 234 567" autocomplete="tel"></span></label>
+            <label class="field" data-f="phone"><span class="field__label" data-l="Số điện thoại *">Số điện thoại *</span><span class="field__box"><input name="phone" type="tel" inputmode="tel" placeholder="0901 234 567" autocomplete="tel" maxlength="16"></span></label>
           </div>
+          <label class="checkbox save-phone" id="save-phone-wrap" hidden><input type="checkbox" id="save-phone"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s">Lưu số này làm số điện thoại mặc định của tài khoản</span></label>
           <div class="co-grid">
             <label class="field" data-f="email"><span class="field__label" data-l="Email">Email</span><span class="field__box"><input name="email" type="email" placeholder="minhanh@gmail.com" autocomplete="email"></span></label>
             <label class="field"><span class="field__label">Tòa nhà / Căn hộ</span><span class="field__box"><input name="apt" placeholder="Lầu 5, phòng 502"></span></label>
@@ -52,19 +55,18 @@
               </div>
               <div class="field" data-f="area">
                 <label class="field__label" for="co-area">Quận/Huyện cũ (khu vực giao hàng)</label>
-                <span class="field__box addr__select"><select id="co-area" name="area" aria-describedby="hint-area"><option value="">Tất cả khu vực</option></select></span>
-                <span class="field__hint" id="hint-area">Chỉ để lọc nhanh và hỗ trợ giao hàng, không phải đơn vị hành chính hiện hành.</span>
+                <span class="field__box addr__select"><select id="co-area" name="area"><option value="">Tất cả khu vực</option></select></span>
               </div>
             </div>
             <div class="field" data-f="ward">
               <label class="field__label" for="co-ward">Phường/Xã *</label>
               <span class="field__box addr__select"><select id="co-ward" name="ward" required aria-required="true" aria-describedby="hint-ward err-ward"><option value="">Chọn phường/xã</option></select></span>
-              <span class="field__hint" id="hint-ward">Tên theo đơn vị hành chính hiện hành. Một phường mới có thể gồm nhiều khu vực cũ — nếu không thấy, hãy chọn “Tất cả khu vực”.</span>
+              <span class="field__hint" id="hint-ward"></span>
               <span class="field__error" id="err-ward" role="alert"></span>
             </div>
+            <label class="checkbox save-addr"><input type="checkbox" id="save-addr"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s" id="save-addr-label">Ghi nhớ địa chỉ này cho lần đặt sau trên thiết bị này</span></label>
           </fieldset>
           <div class="alert alert--gold pickup-note" id="pickup-note" hidden><i data-icon="location-pin"></i><span class="t-body-s">Bạn chọn <strong>tự đến lấy</strong> tại chi nhánh 102 Tôn Dật Tiên (khu vực Quận 7 cũ) — không cần địa chỉ giao hàng.</span><button type="button" class="pickup-note__undo" id="pickup-undo">Giao tận nơi</button></div>
-          <a class="map-link" href="lien_he.html"><i data-icon="location-pin"></i>Chọn vị trí trên bản đồ · Cách nhà hàng 2,4 km</a>
         </section>
 
         <section class="co-card card">
@@ -83,9 +85,9 @@
             <button type="button" class="pay" data-pay="VietQR"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-vietqr.png" alt="VietQR"></span><span class="pay__text"><strong>Chuyển khoản VietQR</strong><small>Quét mã QR từ mọi ứng dụng ngân hàng</small></span></button>
             <button type="button" class="pay" data-pay="Thẻ quốc tế"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-visa-mastercard.png" alt="VISA / Mastercard"></span><span class="pay__text"><strong>Thẻ VISA / Mastercard</strong><small>Thẻ tín dụng &amp; ghi nợ quốc tế</small></span></button>
             <div class="card-fields" id="card-fields" hidden>
-              <p class="card-fields__demo"><i data-icon="alert-triangle"></i><span><strong>Chế độ demo giao diện:</strong> không nhập thẻ thật. Các ô dưới đây không bắt buộc, không được lưu và không được gửi đi. Khi tích hợp thật, các ô này được thay bằng form bảo mật (hosted fields) của đơn vị xử lý thanh toán.</span></p>
+              <p class="card-fields__demo"><i data-icon="alert-triangle"></i><span>Thanh toán thẻ trực tuyến đang được hoàn thiện. Vui lòng <strong>không nhập thông tin thẻ thật</strong> — các ô dưới đây không bắt buộc và không được lưu.</span></p>
               <div class="co-grid co-grid--card">
-                <label class="field card-fields__num"><span class="field__label">Số thẻ</span><span class="field__box"><input id="cc-num" inputmode="numeric" autocomplete="off" maxlength="23" placeholder="4111 1111 1111 1111 (thẻ thử nghiệm)" aria-describedby="cc-hint"></span></label>
+                <label class="field card-fields__num"><span class="field__label">Số thẻ</span><span class="field__box"><input id="cc-num" inputmode="numeric" autocomplete="off" maxlength="23" placeholder="0000 0000 0000 0000" aria-describedby="cc-hint"></span></label>
                 <label class="field"><span class="field__label">Ngày hết hạn</span><span class="field__box"><input id="cc-exp" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/YY"></span></label>
                 <label class="field"><span class="field__label">Mã bảo mật (CVV)</span><span class="field__box"><input id="cc-cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="•••"></span></label>
               </div>
@@ -131,6 +133,7 @@
   <script src="../js/main.js"></script>
   <script src="../js/don_hang_store.js"></script>
   <script src="../js/popups.js"></script>
+  <script src="../js/tim_kiem.js"></script>
   <script src="../js/tuy_chinh_mon.js"></script>
   <script src="../js/pages/thanh_toan.js"></script>
 </body>

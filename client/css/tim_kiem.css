@@ -2,10 +2,17 @@
    FIABESCO PALACE — css/tim_kiem.css (MỚI) · A7 Thanh tìm kiếm chung dưới Header
    Phong cách lấy từ ô tìm kiếm trang Thực đơn (.search) + popup gợi ý (.pp-suggest).
    ===================================================================== */
-.gsearch{background:var(--cream-2,#fdf8f0);border-bottom:1px solid var(--line);padding:14px 0;position:relative;z-index:40}
+/* Thanh tìm kiếm Trang chủ: KHÔNG còn là một hàng riêng trong luồng bố cục.
+   Trước đây .gsearch (padding 18/14px + ô 52px ≈ 84px) nằm giữa Header và Hero → lộ nền kem của <body>
+   thành một dải toàn chiều ngang và đẩy Hero xuống. Nay .gsearch được đặt nổi (absolute) trên phần đầu Hero,
+   không có nền/padding riêng; chỉ còn ô tìm kiếm trắng. Neo: .site-main của Trang chủ (css/pages/trang_chu.css). */
+.gsearch{position:absolute;top:28px;left:0;right:0;z-index:40;padding:0;margin:0;background:none;pointer-events:none}
+.gsearch__form{pointer-events:auto}
 .gsearch__form{position:relative;display:flex;align-items:center;gap:12px;max-width:760px;margin:0 auto;height:52px;padding:0 6px 0 20px;
-  border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 2px 10px rgba(0,40,66,.05);transition:border-color .2s,box-shadow .2s}
-.gsearch__form:focus-within,.gsearch__form.is-open{border-color:var(--navy);box-shadow:0 0 0 3px rgba(0,40,66,.08)}
+  border-radius:999px;background:#fff;border:1px solid var(--color-border);box-shadow:none;transition:border-color .2s,box-shadow .2s}
+/* Bỏ lớp quầng/viền kem bao ngoài (box-shadow + viền --line nhạt): chỉ còn 1 viền của ô nhập theo Design System (--color-border).
+   Chỉ báo focus (viền navy + quầng mảnh) được giữ cho thao tác bàn phím. */
+.gsearch__form:focus-within,.gsearch__form.is-open{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy)}
 .gsearch__form > .ic{width:20px;height:20px;color:var(--gray);flex:none}
 .gsearch__form input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;font:400 16px/1.4 var(--f-sans);color:var(--navy)}
 .gsearch__form input::placeholder{color:var(--gray)}
@@ -51,7 +58,7 @@
 .gs-none small{display:block;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
 
 @media (max-width:767px){
-  .gsearch{padding:10px 0}
+  .gsearch{top:16px}
   .gsearch__form{height:48px;padding-left:16px;gap:10px}
   .gsearch__form input{font-size:15px}
   .gsearch__btn{width:40px;padding:0;font-size:0;position:relative}
@@ -61,4 +68,28 @@
   .gs-tip,.gs-hit__type{display:none}
   .gs-hit{gap:10px;padding:8px}
   .gs-hit img,.gs-ic{width:40px;height:40px}
+}
+
+/* =====================================================================
+   7 · SearchModal (icon tìm kiếm trên Header) — dùng chung giao diện gợi ý ở trên
+   ===================================================================== */
+.gs-modal{align-items:flex-start;padding:min(12vh,96px) 16px 24px}
+.gs-modal__box{position:relative;width:760px;max-width:100%;max-height:calc(100vh - min(12vh,96px) - 24px);display:flex;flex-direction:column;gap:14px;
+  padding:20px 22px 22px;border-radius:24px;background:#fff;box-shadow:var(--sh-float);animation:pop .25s ease}
+.gs-modal__head{display:flex;justify-content:space-between;align-items:center}
+.gs-modal__head .pp-x{position:static}
+.gs-modal__title{display:inline-flex;align-items:center;gap:8px;font:600 13px/1.4 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.gs-modal__title .ic{width:16px;height:16px}
+.gs-modal__form{max-width:none;margin:0;flex:none;display:flex;flex-wrap:wrap;height:auto;padding:0;border:0;box-shadow:none;border-radius:0;background:none}
+.gs-modal__form:focus-within{box-shadow:none}
+.gs-modal__form > .ic{display:none}
+.gs-modal__form input{flex:1 1 0;height:52px;padding:0 18px;border:1px solid var(--navy);border-radius:999px;box-shadow:0 0 0 3px rgba(0,40,66,.08)}
+.gs-modal__form .gsearch__btn{height:52px;margin-left:8px}
+.gs-modal__pop{position:static;flex:1 0 100%;margin-top:14px;padding:4px 2px 0;max-height:none;box-shadow:none;border-radius:0;overflow:visible}
+.gs-modal__box{overflow:auto}
+@media (max-width:767px){
+  .gs-modal{padding:12px 10px}
+  .gs-modal__box{max-height:calc(100vh - 24px);padding:16px;border-radius:18px}
+  .gs-modal__form input{height:48px;font-size:15px}
+  .gs-modal__form .gsearch__btn{height:48px;width:48px}
 }

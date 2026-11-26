@@ -270,6 +270,16 @@ input::placeholder,textarea::placeholder{color:var(--gray);opacity:1}
 .num-title b{width:32px;height:32px;border-radius:999px;background:var(--gold);display:flex;align-items:center;justify-content:center;font:400 16px/1 var(--f-price);flex:none}
 
 /* ---------- Pagination ---------- */
+/* Nút xanh lá (màu success của Design System) — "Tôi đã thanh toán" */
+.btn--success{background:var(--color-success,#298052);color:#FFFFFF;border-color:transparent}
+.btn--success:hover:not(:disabled){background:#1F6640;color:#FFFFFF}
+.btn--success .ic path{stroke:#FFFFFF}
+.btn--success:disabled{background:#b8c9bf;cursor:not-allowed}
+/* Nút "Hủy đơn hàng": nền trắng, viền + chữ đỏ rượu; hover đảo màu (viền giữ nguyên độ dày → không đổi kích thước) */
+.btn--cancel{background:#FFFFFF;color:var(--color-secondary,#A01E32);border:1.5px solid var(--color-secondary,#A01E32)}
+.btn--cancel:hover:not(:disabled){background:var(--color-secondary,#A01E32);color:#FFFFFF}
+.btn--cancel:focus-visible{outline:3px solid rgba(160,30,50,.35);outline-offset:3px}
+.btn--cancel:disabled{background:#FFFFFF;color:var(--dis);border-color:var(--dis);cursor:not-allowed}
 .pager{display:flex;gap:10px;align-items:center;justify-content:center}
 .pager button{width:44px;height:44px;border-radius:999px;background:#fff;border:1px solid var(--line);font:600 15px/1 var(--f-sans);display:flex;align-items:center;justify-content:center;transition:.2s}
 .pager button.is-active{background:var(--navy);border-color:var(--navy);color:#fff}

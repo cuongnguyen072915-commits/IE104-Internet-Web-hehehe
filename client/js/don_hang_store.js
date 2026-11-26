@@ -4,7 +4,7 @@
    ---------------------------------------------------------------------
    ⚠ Dự án CHƯA có backend / cổng thanh toán thật. Toàn bộ dữ liệu ở đây được lưu
    trên trình duyệt (localStorage) và mọi thay đổi trạng thái thanh toán / giao hàng
-   chỉ xảy ra khi người dùng bấm "Bộ điều khiển mô phỏng" (ghi rõ là demo).
+   chỉ xảy ra qua các hàm của mô-đun này (điểm nối cho backend) — giao diện khách hàng không có nút đổi trạng thái.
    Không có trạng thái nào tự chuyển chỉ vì thời gian trôi qua.
    TODO(BE): thay OrderAPI/PaymentAPI bằng gọi API thật:
      POST /api/orders                    → tạo đơn, trả về id duy nhất
@@ -24,7 +24,7 @@ window.FB_ORDERS = (function () {
       desc: 'Fiabesco đang chờ cổng thanh toán xác nhận giao dịch. Bếp chỉ bắt đầu chuẩn bị sau khi thanh toán được xác nhận.', next: ['ORDER_PLACED', 'CANCELED'] },
     ORDER_PLACED: { title: 'Đặt hàng thành công', banner: 'ĐƠN HÀNG ĐÃ ĐƯỢC GỬI TỚI NHÀ HÀNG', icon: 'receipt', tone: 'navy',
       desc: 'Đơn hàng của bạn đã đến Fiabesco Palace và đang chờ nhà hàng xác nhận.', next: ['CONFIRMED', 'CANCELED'] },
-    CONFIRMED: { title: 'Đã xác nhận', banner: 'NHÀ HÀNG ĐÃ XÁC NHẬN ĐƠN', icon: 'check', tone: 'navy',
+    CONFIRMED: { title: 'Đã xác nhận', banner: 'ĐÃ XÁC NHẬN', icon: 'check', tone: 'navy',
       desc: 'Fiabesco Palace đã tiếp nhận và xác nhận đơn hàng. Bếp sẽ bắt đầu chuẩn bị ngay.', next: ['PREPARING', 'CANCELED'] },
     PREPARING: { title: 'Bếp đang chuẩn bị', banner: 'BẾP ĐANG CHUẨN BỊ MÓN', icon: 'chef-hat', tone: 'navy',
       desc: 'Đầu bếp Fiabesco đang chuẩn bị những món ăn trong đơn hàng của bạn.', next: ['DELIVERING', 'CANCELED'] },
@@ -127,11 +127,13 @@ window.FB_ORDERS = (function () {
       pickup: !!data.pickup, note: data.note || '', when: data.when || 'now', slot: data.slot || '',
       items: data.items, sub: data.sub, fee: data.fee, disc: data.disc, bonus: data.bonus || 0, coupon: data.coupon || null, total: data.total,
       pay: { method: data.method, label: PAY_LABEL[data.method] || data.method, status: cash ? 'COD' : 'UNPAID', ref: null, paidAt: null },
-      status: cash ? 'ORDER_PLACED' : 'PENDING_PAYMENT',
-      history: [{ status: cash ? 'ORDER_PLACED' : 'PENDING_PAYMENT', at: now }],
+      // Đơn đặt thành công khởi tạo ở trạng thái "Đã xác nhận" (CONFIRMED); đơn trả trước chờ cổng thanh toán xác nhận
+      status: cash ? 'CONFIRMED' : 'PENDING_PAYMENT',
+      history: cash ? [{ status: 'ORDER_PLACED', at: now }, { status: 'CONFIRMED', at: now }] : [{ status: 'PENDING_PAYMENT', at: now }],
       eta: null, member: user ? (user.id || user.email || user.name) : null,
       expectedPoints: Math.max(0, Math.round((+data.total || 0) / 10000)), pointsAwarded: false, review: null
     };
+    o.eta = computeEta(o);
     return put(o);
   }
   /** Đổi phương thức cho đơn còn chờ thanh toán (không tạo đơn mới, không mất dữ liệu) */
@@ -146,11 +148,12 @@ window.FB_ORDERS = (function () {
     const o = get(id); if (!o || o.status !== 'PENDING_PAYMENT') return null;
     o.pay = { method: 'Tiền mặt', label: PAY_LABEL['Tiền mặt'], status: 'COD', ref: null, paidAt: null };
     if (total != null) { o.total = total; o.bonus = 0; o.disc = o.sub + o.fee - total; o.expectedPoints = Math.round(total / 10000); }
-    put(o); return transition(id, 'ORDER_PLACED', 'Khách chọn thanh toán tiền mặt khi nhận hàng').order;
+    put(o); transition(id, 'ORDER_PLACED', 'Khách chọn thanh toán tiền mặt khi nhận hàng');
+    return transition(id, 'CONFIRMED').order;
   }
 
   /* =================================================================
-     PaymentAPI — MÔ PHỎNG. Kết quả chỉ thay đổi qua demoResolve() (nút mô phỏng).
+     PaymentAPI — chưa có cổng thật. Kết quả chỉ thay đổi khi backend/cổng gọi demoResolve() (tương lai: IPN/callback).
      ================================================================= */
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const PaymentAPI = {
@@ -178,8 +181,13 @@ window.FB_ORDERS = (function () {
     demoResolve(id, result, reason) {
       const o = get(id); if (!o || o.pay.status === 'PAID') return o;
       o.pay.status = result; o.pay.reason = reason || '';
-      if (result === 'PAID') { o.pay.paidAt = Date.now(); put(o); transition(id, 'ORDER_PLACED', `Thanh toán ${o.pay.label} đã xác nhận (mô phỏng)`); return get(id); }
+      if (result === 'PAID') { o.pay.paidAt = Date.now(); put(o); transition(id, 'ORDER_PLACED', `Thanh toán ${o.pay.label} đã xác nhận`); transition(id, 'CONFIRMED'); return get(id); }
       put(o); return o;
+    },
+    /** Khách hủy giao dịch đang chờ (đơn vẫn được giữ để chọn phương thức khác) — TODO(BE): POST /api/payments/{ref}/cancel */
+    cancel(id) {
+      const o = get(id); if (!o || o.pay.status === 'PAID') return o;
+      o.pay.status = 'CANCELED'; o.pay.reason = 'Khách hủy'; return put(o);
     }
   };
 

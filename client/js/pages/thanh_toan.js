@@ -59,7 +59,7 @@ document.addEventListener('fb:ready', () => {
   function cardCheck() {
     const n = $('#cc-num').value.replace(/\s/g, ''), ex = $('#cc-exp').value, cv = $('#cc-cvv').value;
     if (!n && !ex && !cv) return ''; // demo: các ô không bắt buộc
-    if (n && (n.length < 13 || !luhn(n))) return 'Số thẻ chưa hợp lệ (demo: dùng thẻ thử nghiệm 4111 1111 1111 1111).';
+    if (n && (n.length < 13 || !luhn(n))) return 'Số thẻ chưa hợp lệ, vui lòng kiểm tra lại.';
     if (ex && !/^(0[1-9]|1[0-2])\/\d{2}$/.test(ex)) return 'Ngày hết hạn theo dạng MM/YY.';
     if (cv && !/^\d{3,4}$/.test(cv)) return 'Mã bảo mật gồm 3–4 chữ số.';
     return '';
@@ -158,19 +158,100 @@ document.addEventListener('fb:ready', () => {
     totals(); renderShipTo();
   }
 
-  // Khởi tạo dropdown + điền lại địa chỉ lần trước (nếu có), không ghi đè giá trị đang nhập.
-  fillProvince(); fillArea(); fillWard();
-  try {
-    const s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
-    if (s && DC) {
-      if (!el.street.value && s.street) el.street.value = s.street;
-      if (!form.apt.value && s.apt) form.apt.value = s.apt;
-      if (s.provinceId && PROVINCES.some(p => p.id === s.provinceId)) { el.province.value = s.provinceId; fillArea(); }
-      if (s.areaId) { el.area.value = s.areaId; if (el.area.value !== s.areaId) el.area.value = ''; el.area.classList.toggle('is-placeholder', !el.area.value); }
-      fillWard();
-      if (s.wardId) { el.ward.value = s.wardId; if (el.ward.value !== s.wardId) el.ward.value = ''; el.ward.classList.toggle('is-placeholder', !el.ward.value); }
+  /* ================= TỰ ĐỘNG ĐIỀN THÔNG TIN NHẬN HÀNG =================
+     Ưu tiên: (1) bản nháp đã nhập cho lượt thanh toán này (sessionStorage, đúng tài khoản)
+              (2) hồ sơ tài khoản đang đăng nhập (fb_user_v1 — dùng chung với popups.js / thanh_vien.js)
+              (3) địa chỉ người dùng đã đồng ý ghi nhớ (gắn với tài khoản / khách)
+     Chỉ điền ô đang trống, không khóa ô, không ghi ngược vào hồ sơ tài khoản. */
+  const DRAFT_KEY = 'fb_checkout_draft';
+  const readJSON = (st, k) => { try { return JSON.parse(st.getItem(k) || 'null'); } catch (e) { return null; } };
+  const curUser = () => (FB.getUser ? FB.getUser() : readJSON(localStorage, 'fb_user_v1'));
+  const ownerOf = u => (u ? String(u.id || u.email || u.phone || u.name) : 'guest');
+  let owner = ownerOf(curUser());
+  const fmtTel = p => String(p || '').replace(/\D/g, '').replace(/^(\d{4})(\d{3})(\d+)$/, '$1 $2 $3');
+  function profileOf(u) {
+    if (!u) return null;
+    const id = String(u.id || '');
+    return { name: u.name || '', phone: u.phone || (FB.isPhone(id) ? FB.normPhone(id) : ''), email: u.email || (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id) ? id : ''), address: u.address || null };
+  }
+  const filledFrom = {}; // tên ô → 'draft' | 'profile' | 'saved' (để biết ô nào là dữ liệu tự điền)
+  const setIfEmpty = (input, v, from) => { if (!input || input.value.trim() || !v) return false; input.value = v; filledFrom[input.name] = from; return true; };
+  function applyAddress(a, from) {
+    if (!a || !DC || el.street.value.trim() || el.ward.value) return false;
+    if (a.street) { el.street.value = a.street; filledFrom.street = from; }
+    if (a.apt && !form.apt.value) form.apt.value = a.apt;
+    if (a.provinceId && PROVINCES.some(p => p.id === a.provinceId)) { el.province.value = a.provinceId; fillArea(); }
+    // Khu vực cũ: chỉ chọn khi giá trị đã lưu có trong danh sách
+    if (a.areaId) { el.area.value = a.areaId; if (el.area.value !== a.areaId) el.area.value = ''; el.area.classList.toggle('is-placeholder', !el.area.value); }
+    fillWard();
+    if (a.wardId) {
+      el.ward.value = a.wardId;
+      if (el.ward.value !== a.wardId) { // phường/xã không còn trong danh mục hiện hành → không chọn bừa
+        el.ward.value = ''; wardHint.textContent = 'Phường/xã trong địa chỉ đã lưu không còn trong danh mục hành chính hiện tại. Vui lòng kiểm tra và chọn lại.';
+      }
+      el.ward.classList.toggle('is-placeholder', !el.ward.value);
     }
-  } catch (e) {}
+    return true;
+  }
+  /* Bản nháp thông tin nhận hàng (gồm số điện thoại người nhận):
+     - Đã đăng nhập: lưu theo tài khoản (localStorage, khóa băm theo tài khoản) → còn khi quay lại sau.
+     - Khách: chỉ trong phiên (sessionStorage) → không lưu thông tin cá nhân vô thời hạn.
+     - Chỉ đọc bản nháp đúng tài khoản đang đăng nhập; đăng xuất / đổi tài khoản không lộ dữ liệu tài khoản trước. */
+  const hashOf = v => { let h = 5381; for (const c of String(v)) h = ((h << 5) + h + c.charCodeAt(0)) >>> 0; return h.toString(36); };
+  const draftStore = () => (owner === 'guest' ? sessionStorage : localStorage);
+  const draftKey = () => DRAFT_KEY + ':' + hashOf(owner);
+  const readDraft = () => { const d = readJSON(draftStore(), draftKey()); return d && d.owner === owner ? d : null; };
+  const clearDraft = () => { try { draftStore().removeItem(draftKey()); sessionStorage.removeItem(DRAFT_KEY); } catch (e) {} };
+  function prefill() {
+    const draft = readDraft();
+    const saved = (() => { const s = readJSON(localStorage, SAVE_KEY); return s && (s.owner || 'guest') === owner ? s : null; })();
+    const prof = profileOf(curUser());
+    let fromProfile = false;
+    if (draft) { setIfEmpty(form.name, draft.name, 'draft'); setIfEmpty(form.phone, draft.phone, 'draft'); setIfEmpty(form.email, draft.email, 'draft'); }
+    if (prof) {
+      fromProfile = setIfEmpty(form.name, prof.name, 'profile') | setIfEmpty(form.phone, fmtTel(prof.phone), 'profile') | setIfEmpty(form.email, prof.email, 'profile');
+    }
+    const usedSaved = !(draft && draft.street) && !(prof && prof.address) && !!saved;
+    applyAddress(draft && (draft.street || draft.wardId) ? draft : null, 'draft') || (prof && applyAddress(prof.address, 'profile')) || applyAddress(saved, 'saved');
+    $('#save-addr').checked = usedSaved; // người dùng đã đồng ý ghi nhớ trước đó
+    $('#save-addr-label').textContent = prof ? 'Ghi nhớ địa chỉ này cho lần đặt sau (chỉ với tài khoản của bạn, không thay đổi hồ sơ)' : 'Ghi nhớ địa chỉ này cho lần đặt sau trên thiết bị này';
+    const note = $('#prefill-note');
+    note.hidden = !(fromProfile || usedSaved);
+    if (!note.hidden) note.innerHTML = `${icon('user')}<span>Đã điền sẵn từ ${fromProfile ? 'hồ sơ tài khoản' : 'địa chỉ bạn đã lưu'} — bạn có thể sửa bất kỳ thông tin nào cho đơn này.</span>`;
+  }
+  // Lưu bản nháp của lượt thanh toán hiện tại (không lưu thông tin thẻ)
+  function saveDraft() {
+    const prev = readDraft() || {};
+    const raw = form.phone.value.trim();
+    // Số điện thoại: chỉ ghi khi hợp lệ (định dạng Việt Nam); đang gõ dở thì giữ số hợp lệ gần nhất; xóa trống thì xóa
+    const phone = !raw ? '' : (FB.isPhone(raw) ? fmtTel(FB.normPhone(raw)) : (prev.phone || ''));
+    try { draftStore().setItem(draftKey(), JSON.stringify({ owner, name: form.name.value, phone, email: form.email.value, apt: form.apt.value,
+      street: el.street.value, provinceId: el.province.value, areaId: el.area.value, wardId: el.ward.value, at: Date.now() })); } catch (e) {}
+  }
+  /* Số điện thoại: kiểm tra khi rời ô; tuỳ chọn lưu làm số mặc định của tài khoản (chỉ khi người dùng tick) */
+  function syncSavePhone() {
+    const prof = profileOf(curUser()); const v = form.phone.value.trim();
+    const show = !!prof && FB.isPhone(v) && FB.normPhone(v) !== FB.normPhone(prof.phone || '');
+    $('#save-phone-wrap').hidden = !show; if (!show) $('#save-phone').checked = false;
+  }
+  form.phone.addEventListener('blur', () => { const v = form.phone.value.trim(); setErr('phone', v && !FB.isPhone(v) ? 'Số điện thoại gồm 10 số, bắt đầu bằng 0' : ''); });
+  form.phone.addEventListener('input', () => { if (FB.isPhone(form.phone.value)) setErr('phone'); syncSavePhone(); });
+  // Đăng xuất / đổi tài khoản: xóa thông tin riêng tư của tài khoản trước khỏi biểu mẫu
+  function onAccountChange() {
+    const next = ownerOf(curUser()); if (next === owner) return;
+    const wasMember = owner !== 'guest'; owner = next;
+    if (wasMember) {
+      ['name', 'phone', 'email', 'apt'].forEach(k => { form[k].value = ''; });
+      el.street.value = ''; el.area.value = ''; fillWard(); el.ward.value = ''; el.ward.classList.add('is-placeholder');
+      Object.keys(filledFrom).forEach(k => delete filledFrom[k]);
+    }
+    prefill(); renderShipTo(); syncSavePhone();
+  }
+  fillProvince(); fillArea(); fillWard();
+  prefill(); syncSavePhone();
+  ['input', 'change'].forEach(ev => form.addEventListener(ev, e => { if (e.target.closest('#addr-block, .co-grid') && !e.target.closest('#card-fields')) { delete filledFrom[e.target.name]; saveDraft(); } }));
+  window.addEventListener('storage', e => { if (e.key === 'fb_user_v1') onAccountChange(); });
+  setInterval(onAccountChange, 1500); // đăng nhập/đăng xuất ngay trên trang (popup header)
 
   el.province.addEventListener('change', () => { fillArea(); fillWard(); if (prov()) fieldErr('province'); renderShipTo(); });
   el.area.addEventListener('change', () => { el.area.classList.toggle('is-placeholder', !el.area.value); fillWard(); renderShipTo(); });
@@ -243,13 +324,27 @@ document.addEventListener('fb:ready', () => {
       items: data.items, keys: data.keys, sub: data.sub, fee, bonus, disc: data.sub + fee - total, total, coupon: data.coupon || null
     };
   }
+  /* Lưu số nhận hàng làm số mặc định của tài khoản — chỉ khi người dùng chọn */
+  function savePhone(p) {
+    if ($('#save-phone-wrap').hidden || !$('#save-phone').checked) return;
+    try {
+      const u = curUser(); if (!u || ownerOf(u) !== owner) return;
+      const phone = FB.normPhone(p.customer.phone); const old = u.email || u.id;
+      u.phone = phone; localStorage.setItem('fb_user_v1', JSON.stringify(u));
+      const acc = readJSON(localStorage, 'fb_members_v1'); // danh sách tài khoản của trang Thành viên
+      if (Array.isArray(acc)) { const a = acc.find(x => x.email && x.email === old); if (a) { a.phone = phone; localStorage.setItem('fb_members_v1', JSON.stringify(acc)); } }
+    } catch (e) {}
+  }
   function saveAddr(p) {
-    if (p.address) { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ street: p.address.street, provinceId: p.address.provinceId, areaId: p.address.deliveryArea ? p.address.deliveryArea.id : '', wardId: p.address.wardId, apt: p.apt })); } catch (e) {} }
+    savePhone(p);
+    // Chỉ ghi nhớ khi người dùng đồng ý; gắn với tài khoản đang đăng nhập (hoặc khách) — không sửa hồ sơ tài khoản
+    if (!$('#save-addr').checked) { try { const s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); if (s && (s.owner || 'guest') === owner) localStorage.removeItem(SAVE_KEY); } catch (e) {} return; }
+    if (p.address) { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ owner, street: p.address.street, provinceId: p.address.provinceId, areaId: p.address.deliveryArea ? p.address.deliveryArea.id : '', wardId: p.address.wardId, apt: p.apt })); } catch (e) {} }
   }
   /** Đơn đã được xác nhận (tiền mặt / đã thanh toán) → bỏ các món đã đặt khỏi giỏ, sang trang cảm ơn */
   function done(o) {
     const keys = data.keys || [];
-    try { Cart.set(keys.length ? Cart.get().filter(x => !keys.includes(keyOf(x))) : []); sessionStorage.removeItem(PENDING); sessionStorage.removeItem('fb_checkout'); } catch (e) {}
+    try { Cart.set(keys.length ? Cart.get().filter(x => !keys.includes(keyOf(x))) : []); sessionStorage.removeItem(PENDING); sessionStorage.removeItem('fb_checkout'); clearDraft(); } catch (e) {}
     location.href = 'dat_hang_thanh_cong.html?ma=' + encodeURIComponent(o.id);
   }
 
@@ -315,24 +410,6 @@ document.addEventListener('fb:ready', () => {
     });
   }
 
-  /* ---------- Bộ điều khiển mô phỏng (CHỈ DEMO) ---------- */
-  function demoCtl(o, opts) {
-    return `<details class="demo-ctl"><summary>${icon('sparkle')}Bộ điều khiển mô phỏng <span>· chỉ dùng cho demo đồ án</span></summary>
-      <p>Giả lập kết quả mà ${esc(opts.who)} gửi về máy chủ. Trang chỉ chuyển sang “Đặt hàng thành công” sau khi bạn bấm “${esc(opts.check)}” và kết quả là thành công.</p>
-      <div class="demo-ctl__btns">${opts.results.map(([k, l]) => `<button type="button" class="chip chip--sm" data-demo="${k}">${esc(l)}</button>`).join('')}</div>
-      <p class="demo-ctl__state">Kết quả máy chủ hiện tại: <b data-demo-state>${esc(o.pay.status)}</b></p></details>`;
-  }
-  function bindDemo(root, o, after) {
-    root.addEventListener('click', e => {
-      const b = e.target.closest('[data-demo]'); if (!b) return;
-      const k = b.dataset.demo; const n = O.get(o.id);
-      if (k === 'EXPIRED') { n.pay.expiresAt = Date.now() - 1; O.put(n); } else PAYAPI.demoResolve(o.id, k);
-      const s = $('[data-demo-state]', root); if (s) s.textContent = k === 'EXPIRED' ? 'PENDING (đã quá hạn)' : k;
-      FB.toast('Đã ghi kết quả mô phỏng', 'Bấm nút kiểm tra để xác nhận trạng thái thanh toán.', '', '', 'navy');
-      after && after(k);
-    });
-  }
-
   /* ---------- D1 · ZaloPay / D2 · Apple Pay / D4 · Thẻ: màn hình cổng thanh toán ---------- */
   const main = $('main.order'), head = $('.order__head'), box = $('#paybox');
   function showPayScreen(on) {
@@ -354,11 +431,8 @@ document.addEventListener('fb:ready', () => {
       'Apple Pay': ['Dùng Safari trên iPhone, iPad hoặc Mac đã thêm thẻ vào Wallet.', 'Xác thực bằng Face ID / Touch ID trên bảng thanh toán của Apple.', 'Đơn hàng chỉ được xác nhận khi Apple Pay và ngân hàng báo thành công.'],
       'Thẻ quốc tế': ['Ngân hàng phát hành có thể yêu cầu xác thực 3-D Secure (OTP).', 'Hoàn tất xác thực trên trang của ngân hàng.', 'Fiabesco chỉ xác nhận đơn khi cổng thanh toán báo giao dịch thành công.']
     }[m];
-    const results = m === 'Apple Pay' ? [['PAID', 'Apple Pay: Thành công'], ['FAILED', 'Apple Pay: Bị từ chối'], ['CANCELED', 'Khách đóng bảng thanh toán']]
-      : m === 'Thẻ quốc tế' ? [['PAID', 'Ngân hàng: Chấp thuận'], ['FAILED', 'Ngân hàng: Từ chối'], ['CANCELED', 'Khách hủy xác thực 3-D Secure']]
-      : [['PAID', 'ZaloPay: Thành công'], ['FAILED', 'ZaloPay: Thất bại'], ['CANCELED', 'Khách hủy trên ZaloPay']];
     box.innerHTML = `<div class="paybox__card card">
-      <span class="paybox__demo">${icon('alert-triangle')}Mô phỏng thanh toán — chưa kết nối cổng ${esc(m === 'Thẻ quốc tế' ? 'thanh toán thẻ' : m)} thật, không phát sinh giao dịch</span>
+      ${PAYAPI.gatewayConfigured ? '' : `<span class="paybox__demo">${icon('alert-triangle')}Cổng ${esc(m === 'Thẻ quốc tế' ? 'thanh toán thẻ' : m)} hiện chưa sẵn sàng — nếu chưa thanh toán được, vui lòng chọn phương thức khác</span>`}
       <span class="paybox__logo"><img src="${IMG + LOGO[m]}" alt="${esc(o.pay.label)}"></span>
       <h1 class="t-h2 paybox__title">${m === 'Thẻ quốc tế' ? 'Thanh toán bằng thẻ VISA / Mastercard' : 'Thanh toán qua ' + esc(m)}</h1>
       <dl class="paybox__info">
@@ -374,23 +448,29 @@ document.addEventListener('fb:ready', () => {
       <div class="paybox__actions">
         ${m === 'ZaloPay' ? `<button type="button" class="btn btn--navy" data-gw="open">Mở cổng thanh toán ZaloPay ${icon('arrow-right')}</button>` : ''}
         ${m === 'Thẻ quốc tế' ? `<button type="button" class="btn btn--navy" data-gw="open">Tiếp tục xác thực thẻ ${icon('arrow-right')}</button>` : ''}
-        <button type="button" class="btn btn--wine" data-gw="check">Tôi đã thanh toán – Kiểm tra trạng thái</button>
-        <div class="paybox__row"><button type="button" class="btn btn--outline" data-gw="back">${icon('arrow-left')}Chọn phương thức khác</button><button type="button" class="btn btn--outline" data-gw="cancel">Hủy giao dịch</button></div>
+        <button type="button" class="btn btn--success" data-gw="check">Tôi đã thanh toán – Kiểm tra trạng thái</button>
+        <div class="paybox__row"><button type="button" class="btn btn--outline" data-gw="back">${icon('arrow-left')}Chọn phương thức khác</button><button type="button" class="btn btn--cancel" data-gw="cancel">Hủy giao dịch</button></div>
       </div>
       ${m === 'ZaloPay' ? '<p class="paybox__note">Tìm hiểu thêm về Zalo tại <a href="https://zalo.me/vi/" target="_blank" rel="noopener noreferrer">zalo.me</a> (trang thông tin, không phải nơi xác nhận giao dịch).</p>' : ''}
-      ${demoCtl(o, { who: m === 'Thẻ quốc tế' ? 'ngân hàng / cổng thanh toán thẻ' : (m === 'Apple Pay' ? 'Apple Pay & đơn vị xử lý thanh toán' : 'ZaloPay Gateway'), check: 'Tôi đã thanh toán – Kiểm tra trạng thái', results })}
     </div>`;
     FB.hydrateIcons(box); showPayScreen(true);
-    bindDemo(box, o);
     box.onclick = e => {
       const a = e.target.closest('[data-gw]'); if (!a) return;
       const act = a.dataset.gw; const cur = O.get(o.id);
       if (act === 'back') return backToMethods();
-      if (act === 'cancel') { PAYAPI.demoResolve(o.id, 'CANCELED', 'Khách hủy'); FB.toast('Đã hủy giao dịch', 'Đơn hàng vẫn được giữ — bạn có thể chọn phương thức khác.', '', '', 'navy'); return backToMethods(); }
+      if (act === 'cancel') { // 3.2 · Luôn hỏi lại trước khi hủy để tránh bấm nhầm
+        const c = statusPopup(`${closeX()}<span class="pp-badge pp-badge--soft">${icon('alert-triangle')}</span><h3 class="t-h3">Hủy giao dịch ${esc(cur.pay.label)}?</h3>
+          <p class="t-body c-gray">Giao dịch #${esc(cur.pay.ref || '')} sẽ bị hủy. Đơn #${esc(cur.id)} vẫn được giữ để bạn chọn phương thức thanh toán khác. Nếu bạn đã thanh toán, đừng hủy — hãy bấm “Kiểm tra trạng thái”.</p>
+          <div class="pp-actions"><button type="button" class="btn btn--outline" data-close>Giữ giao dịch</button><button type="button" class="btn btn--wine" data-confirm-cancel>Hủy giao dịch</button></div>`);
+        $('[data-confirm-cancel]', c).addEventListener('click', () => {
+          FB.closeModal(c); PAYAPI.cancel(o.id);
+          FB.toast('Đã hủy giao dịch', 'Đơn hàng vẫn được giữ — bạn có thể chọn phương thức khác.', '', '', 'navy'); backToMethods();
+        });
+        return;
+      }
       if (act === 'check') return checkPayment(cur);
-      if (act === 'open') { // Tích hợp thật: location.href = payUrl (do backend lấy từ cổng). Demo: mở bảng mô phỏng.
-        const d = $('.demo-ctl', box); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        FB.toast('Chưa có cổng thanh toán thật', 'Dùng “Bộ điều khiển mô phỏng” để giả lập kết quả, rồi bấm Kiểm tra trạng thái.', '', '', 'navy');
+      if (act === 'open') { // Tích hợp thật: location.href = payUrl (do backend lấy từ cổng). Chưa có cổng → thông báo cho khách.
+        FB.toast('Cổng thanh toán chưa sẵn sàng', 'Vui lòng thử lại sau hoặc chọn phương thức thanh toán khác.', '', '', 'navy');
       }
     };
     setTimeout(() => { const h = $('.paybox__title', box); h.tabIndex = -1; h.focus({ preventScroll: true }); }, 80);
@@ -412,7 +492,7 @@ document.addEventListener('fb:ready', () => {
     const content = P.transferContent(o.id); // "FIAB <mã đơn>"
     const B = P.BANK, fmtAcc = a => String(a).replace(/^(\d{4})(\d{4})(\d+)$/, '$1 $2 $3');
     panel.innerHTML = `<h2 class="num-title t-h4" id="qr-title"><b>${icon('credit-card')}</b>Chuyển khoản VietQR</h2>
-      ${B.demo ? `<p class="qr-demo">${icon('alert-triangle')}<span><strong>Mô phỏng thanh toán:</strong> tài khoản nhận tiền đang là cấu hình minh họa của đồ án (BANK.demo = true). Vui lòng <u>không chuyển tiền thật</u>.</span></p>` : ''}
+      ${B.demo ? `<p class="qr-demo">${icon('alert-triangle')}<span><strong>Tài khoản nhận tiền minh họa</strong> — vui lòng <u>không chuyển tiền thật</u>.</span></p>` : ''}
       <div class="qr-grid">
         <div class="tc-qrbox">${B.demo ? '<span class="tc-demo">Mã minh họa</span>' : ''}<div class="tc-qr" role="img" aria-label="Mã VietQR thanh toán đơn ${esc(o.id)}">${qrSVG(P.buildVietQR({ amount: o.total, content }))}</div>
           <span class="tc-expiry">${icon('clock')}Mã hết hạn sau <b data-qr-left>15:00</b></span></div>
@@ -425,12 +505,10 @@ document.addEventListener('fb:ready', () => {
           <p class="tc-warn">Giữ nguyên số tiền và nội dung chuyển khoản để hệ thống tự đối chiếu đúng đơn #${esc(o.id)}.</p>
         </dl>
       </div>
-      ${demoCtl(o, { who: 'ngân hàng (đối soát giao dịch)', check: 'Tôi đã chuyển khoản', results: [['PAID', 'Đã nhận đủ tiền'], ['UNDERPAID', 'Chuyển thiếu tiền'], ['WRONG_CONTENT', 'Sai nội dung'], ['EXPIRED', 'Quá thời gian']] })}
       <div class="qr-actions"><button type="button" class="btn btn--outline" data-qr="back">${icon('arrow-left')}Quay lại phương thức thanh toán</button>
-        <button type="button" class="btn btn--wine" data-qr="paid">Tôi đã chuyển khoản</button></div>`;
+        <button type="button" class="btn btn--success" data-qr="paid">Tôi đã chuyển khoản</button></div>`;
     FB.hydrateIcons(panel);
     form.classList.add('is-qr'); panel.hidden = false; panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    bindDemo(panel, o);
     panel.onclick = async e => {
       const c = e.target.closest('[data-qcopy]');
       if (c) { let ok = false; try { await navigator.clipboard.writeText(c.dataset.qcopy); ok = true; } catch (er) { const ta = document.createElement('textarea'); ta.value = c.dataset.qcopy; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try { ok = document.execCommand('copy'); } catch (x) {} ta.remove(); }

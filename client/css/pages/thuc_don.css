@@ -104,3 +104,117 @@
 .pager .pager__gap{width:28px;text-align:center;font:600 15px/44px var(--f-sans);color:var(--gray)}
 .pager .pager__nav .ic path{stroke:var(--navy)}
 @media (max-width:600px){.pager{gap:6px}.pager button{width:40px;height:40px}.pager .pager__gap{width:18px}}
+
+/* =====================================================================
+   4 · Popup "BỘ LỌC MÓN ĂN"
+   ===================================================================== */
+.tool-pill__count{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--wine);color:#fff;display:inline-grid;place-items:center;font:700 12px/1 var(--f-sans)}
+.mf{display:flex;flex-direction:column;overflow:hidden;max-height:calc(100vh - 48px)}
+.mf__head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 24px 16px;border-bottom:1px solid var(--line)}
+.mf__head .pp-x{position:static}
+body[data-design-system] .mf__title{display:flex;align-items:center;gap:10px;margin:0;font:600 15px/1.3 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}
+.mf__title .ic{width:18px;height:18px}
+.mf__count{padding:3px 10px;border-radius:999px;background:var(--wine-bg);color:var(--wine);font-size:12px;letter-spacing:0;text-transform:none}
+.mf__count:empty{display:none}
+.mf__body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px 24px 18px;display:flex;flex-direction:column}
+.mf__group{margin:0;padding:16px 0;border:0;border-bottom:1px dashed var(--line);display:flex;flex-direction:column;gap:12px}
+.mf__group:last-child{border-bottom:0}
+.mf__group legend{float:left;width:100%;padding:0;margin-bottom:12px;font:600 12px/1.4 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.mf__chips{display:flex;flex-wrap:wrap;gap:8px}
+.mf__chips .chip.is-active{background:var(--navy);border-color:var(--navy);color:#fff}
+.mf__hint{margin:0;font:400 12px/1.5 var(--f-sans);color:var(--gray)}
+.mf .checkbox.is-disabled{opacity:.5;cursor:not-allowed}
+.mf .checkbox em{font-style:normal;color:var(--gray)}
+.mf__foot{display:flex;gap:12px;padding:16px 24px 20px;border-top:1px solid var(--line);background:#fff}
+.mf__foot .btn{flex:1;text-transform:uppercase}
+.mf__foot .btn:disabled{opacity:.5;cursor:not-allowed}
+@media (max-width:600px){
+  #menu-filter{align-items:flex-end;padding:0}
+  .mf{width:100%;max-height:90vh;border-radius:24px 24px 0 0}
+  .mf__head,.mf__body,.mf__foot{padding-left:18px;padding-right:18px}
+  .mf__foot{flex-direction:column-reverse}
+}
+
+/* =====================================================================
+   5 · Combo hấp dẫn — Featured Combo (Premium Italian)
+   ===================================================================== */
+.combos--v2{display:flex;flex-direction:column;gap:20px;padding-bottom:12px}
+.cfeat{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);border-radius:28px;overflow:hidden;background:var(--navy);color:#fff;
+  box-shadow:0 18px 40px rgba(0,40,66,.18);outline:1px solid rgba(237,199,133,.45);outline-offset:-8px}
+.cfeat__media{position:relative;background:var(--cream-2);overflow:hidden;min-height:320px}
+.cfeat__media img{position:absolute;inset:64px 24px 24px;width:calc(100% - 48px);height:calc(100% - 88px);object-fit:contain;border-radius:14px;transition:transform .6s ease}
+.cfeat:hover .cfeat__media img{transform:scale(1.03)}
+.cfeat__badge{position:absolute;left:20px;top:20px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--navy);color:var(--gold-l);font:600 12px/1 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;box-shadow:var(--sh-card)}
+.cfeat__badge .ic{width:14px;height:14px}.cfeat__badge .ic path{stroke:var(--gold-l)}
+.cfeat__body{padding:32px 34px;display:flex;flex-direction:column;gap:22px;min-width:0}
+body[data-design-system] .cfeat__name{margin:0;font:400 clamp(28px,2.5vw,36px)/1.15 var(--f-display);color:#fff}
+.cfeat__desc{margin:0;font:400 15px/1.6 var(--f-sans);opacity:.85}
+.cfeat__items{list-style:none;margin:2px 0;padding:12px 0;border-top:1px solid rgba(237,199,133,.25);border-bottom:1px solid rgba(237,199,133,.25);display:flex;flex-direction:column;gap:6px}
+.cfeat__items li{display:flex;align-items:center;gap:10px;font:400 14px/1.45 var(--f-sans)}
+.cfeat__items li span{flex:1;min-width:0}
+.cfeat__items .ic{width:14px;height:14px;flex:none}.cfeat__items .ic path{stroke:#EDC785}
+.cfeat__items b{font:400 15px/1 var(--f-price);color:#EDC785}
+.ccards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.ccard{display:grid;grid-template-columns:42% minmax(0,1fr);background:#fff;border-radius:22px;overflow:hidden;border:1px solid rgba(204,166,97,.45);box-shadow:var(--sh-card);transition:transform .3s,box-shadow .3s}
+.ccard:hover{transform:translateY(-4px);box-shadow:var(--sh-float)}
+.ccard__media{position:relative;background:var(--cream-2);min-height:180px}
+.ccard__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.ccard:hover .ccard__media img{transform:scale(1.04)}
+.ccard__tag{position:absolute;left:12px;top:12px;padding:5px 10px;border-radius:999px;background:var(--wine);color:#fff;font:700 12px/1 var(--f-sans)}
+.ccard__body{padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ccard__name{margin:0;font:600 18px/1.3 var(--f-sans);color:var(--navy)}
+.ccard__meta{font:600 12px/1.4 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--wine)}
+.ccard__desc{margin:0;font:400 14px/1.5 var(--f-sans);color:var(--gray)}
+.ccard__foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;padding-top:8px}
+.ccard__price{display:flex;flex-direction:column}
+.ccard__price s{font:400 14px/1.2 var(--f-price);color:var(--gray)}
+.ccard__price strong{font:400 20px/1.2 var(--f-price);color:var(--wine)}
+.ccard__more{display:inline-flex;align-items:center;gap:4px;font:600 13px/1.4 var(--f-sans);color:var(--navy);white-space:nowrap}
+.ccard__more .ic{width:14px;height:14px}
+@media (max-width:1280px){.cfeat__body{padding:26px}}
+@media (max-width:1100px){.ccards{grid-template-columns:1fr 1fr}}
+/* 5.4 · Mobile: Featured 1 cột (ảnh trên, nội dung + CTA dưới); combo còn lại xếp dọc */
+@media (max-width:767px){
+  .cfeat{grid-template-columns:1fr;border-radius:22px;outline-offset:-6px}
+  .cfeat__media{min-height:0;aspect-ratio:16/10}
+  .cfeat__body{padding:22px 20px 24px}
+  .ccards{grid-template-columns:1fr}
+  .ccard{grid-template-columns:120px minmax(0,1fr)}
+  .ccard__media{min-height:0}
+}
+@media (max-width:400px){.ccard{grid-template-columns:96px minmax(0,1fr)}.ccard__body{padding:14px}.ccard__desc{font-size:13px}}
+@media (max-width:767px){.cfeat__media img{inset:56px 14px 14px;width:calc(100% - 28px);height:calc(100% - 70px)}}
+
+/* =====================================================================
+   Combo nổi bật — cụm giá, lợi ích & CTA (thứ bậc: giá combo → giá gọi lẻ → lợi ích → nút)
+   ===================================================================== */
+.cfeat__info{display:flex;flex-direction:column;gap:12px}
+.cfeat__tags{display:flex;flex-wrap:wrap;gap:8px}
+.cfeat__tag{display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:#EDC785;color:var(--navy);font:700 11px/1.4 var(--f-sans);letter-spacing:.12em;text-transform:uppercase}
+.cfeat__tag--soft{background:transparent;color:#EDC785;border:1px solid rgba(237,199,133,.55);letter-spacing:.06em}
+.cfeat__deal{display:flex;flex-direction:column;gap:14px;padding:18px 20px;border-radius:18px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(237,199,133,.3)}
+.cfeat__prices{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:16px;row-gap:2px;min-width:0}
+.cfeat__label{flex:1 0 100%}
+.cfeat__label{font:600 11px/1.4 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.cfeat__now{font:400 clamp(32px,2.6vw,40px)/1.05 var(--f-price);color:#EDC785;white-space:nowrap}
+.cfeat__was{font:400 13px/1.4 var(--f-sans);color:rgba(255,255,255,.6);white-space:nowrap}
+.cfeat__was s{margin-left:4px;font:400 16px/1 var(--f-price);color:#E4A3AD;text-decoration-thickness:1.5px}
+.cfeat__benefit{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-top:14px;border-top:1px solid rgba(237,199,133,.3);min-width:0}
+.cfeat__save{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid #EDC785;color:#EDC785;font:600 13px/1.3 var(--f-sans);white-space:nowrap}
+.cfeat__save .ic{width:14px;height:14px}.cfeat__save .ic path{stroke:#EDC785}
+.cfeat__save em{font-style:normal;padding:1px 7px;border-radius:999px;background:#EDC785;color:var(--navy);font-size:11px;font-weight:700}
+.cfeat__benefit p{margin:0;font:400 13px/1.55 var(--f-sans);color:rgba(255,255,255,.78)}
+.cfeat__benefit p strong{display:block;font-weight:600;color:#fff}
+body[data-design-system] .cfeat__cta{align-self:flex-start;margin-top:auto;min-height:52px;padding:0 28px;background:#EDC785;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;transition:background .2s,transform .2s}
+body[data-design-system] .cfeat__cta:hover{background:#f4d9a8;transform:translateY(-1px)}
+body[data-design-system] .cfeat__cta:active{transform:none}
+.cfeat__cta:focus-visible{outline:3px solid #EDC785;outline-offset:3px}
+.cfeat__cta .ic path{stroke:var(--navy)}
+
+@media (max-width:767px){
+  .cfeat__body{gap:18px}
+  .cfeat__deal{padding:16px}
+  body[data-design-system] .cfeat__cta{align-self:stretch;width:100%}
+}
+@media (max-width:360px){.cfeat__now{font-size:28px}.cfeat__save{white-space:normal}}

@@ -76,7 +76,7 @@
   const COMBO_INFO = {
     'combo-an-y': { people: 'Dành cho 2 người · 3 món', desc: 'Bộ ba hương vị Ý kinh điển: risotto bò đậm đà, salad Caprese tươi mát và mì Ý cua sốt kem — vừa đủ cho bữa tối hai người.',
       items: [{ id: 'risotto-bo-barolo', name: 'Risotto Bò', qty: 1 }, { id: 'caprese', name: 'Salad cà chua phô mai Caprese', qty: 1 }, { id: 'mi-cua', name: 'Mì Ý Cua', qty: 1 }] },
-    'combo-gia-dinh': { people: 'Dành cho 4 người · 5 món', desc: 'Bữa tối sum vầy cho cả nhà: hai pizza nướng lò đá, hai phần mì Ý và salad tươi chia sẻ — tiết kiệm 15% so với gọi lẻ.',
+    'combo-gia-dinh': { people: 'Dành cho 4 người · 5 món', desc: 'Bữa tối sum vầy cho cả nhà: hai pizza nướng lò đá, hai phần mì Ý và salad tươi để cả nhà cùng chia sẻ — tiết kiệm hơn so với gọi lẻ từng món.',
       items: [{ id: 'pizza-margherita', name: 'Pizza Margherita', qty: 2 }, { id: 'bolognese', name: 'Mì Ý Bò Bằm Phô Mai', qty: 2 }, { id: 'burrata', name: 'Salad Phô Mai Burrata', qty: 1 }] },
     'combo-dong-am': { people: 'Dành cho 2 người · 3 món', desc: 'Ấm bụng ngày mưa: súp Minestrone nóng hổi, risotto kem phô mai và ấm trà thảo mộc thơm dịu.',
       items: [{ id: 'minestrone', name: 'Súp Minestrone', qty: 1 }, { id: 'risotto-kem', name: 'Cơm Risotto Kem Phô Mai', qty: 1 }, { id: null, name: 'Trà thảo mộc Ý', qty: 1 }] }

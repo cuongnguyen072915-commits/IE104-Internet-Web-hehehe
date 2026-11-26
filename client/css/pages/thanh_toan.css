@@ -51,17 +51,8 @@
 .qr-panel .tc-warn{margin:0;padding:12px 14px;border-radius:10px;background:var(--wine-bg);color:var(--wine);font:400 13px/1.5 var(--f-sans)}
 .qr-actions{display:flex;gap:12px;flex-wrap:wrap}
 .qr-actions .btn{flex:1 1 220px}
-.qr-actions .btn--wine{text-transform:uppercase}
+.qr-actions .btn--success{text-transform:uppercase}
 
-/* Bộ điều khiển mô phỏng (demo) */
-.demo-ctl{border:1px dashed var(--gray);border-radius:14px;padding:0 16px;background:#fff;text-align:left}
-.demo-ctl[open]{padding-bottom:14px}
-.demo-ctl summary{display:flex;align-items:center;gap:8px;padding:12px 0;cursor:pointer;font:600 13px/1.4 var(--f-sans);color:var(--navy)}
-.demo-ctl summary span{font-weight:400;color:var(--gray)}
-.demo-ctl summary .ic{width:16px;height:16px}
-.demo-ctl p{margin:0 0 10px;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
-.demo-ctl__btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.demo-ctl__state b{color:var(--navy)}
 
 /* D1/D2/D4 · Màn hình cổng thanh toán (chỉ còn Header + khối này) */
 .order.is-paying{align-items:center}
@@ -91,7 +82,6 @@
 .paybox__row .btn{flex:1}
 .paybox__note{margin:0;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
 .paybox__note a{color:var(--wine);text-decoration:underline}
-.paybox .demo-ctl{width:100%}
 
 @media (max-width:768px){
   .co-grid--card{grid-template-columns:1fr 1fr}.card-fields__num{grid-column:1/-1}
@@ -136,3 +126,20 @@
   .addr .co-grid{grid-template-columns:1fr}
   .pickup-note{flex-wrap:wrap}
 }
+/* VietQR trên màn hẹp: 2 nút xếp dọc, chữ được xuống dòng (trước: nút "Quay lại phương thức thanh toán" tràn ngang ở ≤402px) */
+@media (max-width:600px){.qr-actions{flex-direction:column}.qr-actions .btn{flex:none;width:100%;min-width:0;white-space:normal;text-align:center;justify-content:center}}
+
+/* 3 · Tự động điền từ hồ sơ + ghi nhớ địa chỉ (cần người dùng đồng ý) */
+.prefill-note{display:flex;align-items:center;gap:10px;margin:-6px 0 0;padding:10px 14px;border-radius:12px;background:var(--green-bg);color:var(--navy);font:400 14px/1.45 var(--f-sans)}
+.prefill-note[hidden]{display:none}
+.prefill-note .ic{flex:none;width:16px;height:16px}.prefill-note .ic path{stroke:var(--green)}
+.save-addr{align-items:flex-start}
+.save-addr .t-body-s{color:var(--gray)}
+
+/* Ghi chú nhỏ dưới Phường/Xã chỉ hiện khi có cảnh báo (phường/xã bị bỏ chọn, địa chỉ đã lưu không còn hợp lệ) */
+#hint-ward:empty{display:none}
+
+/* Lưu số nhận hàng làm số mặc định (chỉ hiện khi đã đăng nhập và số khác hồ sơ) */
+.save-phone{margin-top:-8px}
+.save-phone[hidden]{display:none}
+.save-phone .t-body-s{color:var(--gray)}

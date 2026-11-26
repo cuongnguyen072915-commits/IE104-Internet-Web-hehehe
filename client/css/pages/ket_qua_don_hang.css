@@ -56,8 +56,6 @@ body[data-design-system] .ok__title{margin:0;font:400 clamp(30px,3.4vw,46px)/1.1
 .ok__thanks{margin:8px 0 0;max-width:620px;padding:0 12px}
 .ok__thanks p{margin:0;font:400 19px/1.55 var(--f-display);color:var(--navy)}
 .ok__thanks cite{display:block;margin-top:8px;font:600 13px/1.4 var(--f-sans);font-style:normal;color:var(--gray)}
-.ok__actions{display:flex;gap:12px;width:100%;max-width:620px;margin-top:6px}
-.ok__actions .btn{flex:1}
 .ok__track .ic path{stroke:#FFFFFF}
 .ok__cancel{display:flex;flex-direction:column;align-items:center;gap:4px}
 .ok-missing .result__actions{max-width:480px}
@@ -70,8 +68,28 @@ body[data-design-system] .ok__title{margin:0;font:400 clamp(30px,3.4vw,46px)/1.1
   .ok__desc{font-size:15px}
   .ok__info{padding:4px 16px}.ok__info div{flex-wrap:wrap;gap:4px 12px}
   .ok__eta-time{font-size:26px}
-  .ok__actions{flex-direction:column}
   .ok__thanks p{font-size:17px}
 }
 /* Văn bản (không phải giờ) dùng font sans để dấu tiếng Việt hiển thị đúng */
 .ok__eta-time.is-text{font:600 20px/1.35 var(--f-sans)}
+/* 3.2 · Nút "Hủy đơn hàng" dạng nút xanh lá, giữ vị trí dưới cụm hành động */
+.ok__cancel-btn{min-height:44px;padding:10px 22px}
+
+/* 6 · Nhóm CTA: nút chính "Theo dõi đơn hàng" (navy, nổi bật, bên trái) + nút phụ "Khám phá thực đơn" (viền navy) */
+/* Thứ tự: "Tiếp tục khám phá thực đơn" (trái / trên) → "Theo dõi đơn hàng" (phải / dưới); 2 nút cùng chiều cao, không xuống dòng */
+.ok__actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:700px;margin:14px auto 4px;align-items:stretch}
+.ok__actions .btn{white-space:nowrap;padding-left:20px;padding-right:20px}
+.ok__actions .btn{flex:none;width:100%;gap:10px}
+body[data-design-system] .ok__actions .ok__track{min-height:60px;font-size:15px;letter-spacing:.04em;background:var(--navy);color:#FFFFFF;box-shadow:0 10px 24px rgba(0,40,66,.22)}
+body[data-design-system] .ok__actions .ok__track:hover{background:var(--navy-2,#0b3a5a)}
+.ok__track .ic{width:20px;height:20px}
+body[data-design-system] .ok__actions .ok__menu{min-height:60px;background:#FFFFFF;color:var(--navy);border:1.5px solid var(--navy)}
+body[data-design-system] .ok__actions .ok__menu:hover{background:var(--cream-2);color:var(--navy)}
+.ok__menu .ic path{stroke:var(--navy)}
+.ok__track:focus-visible,.ok__menu:focus-visible{outline:3px solid rgba(0,40,66,.35);outline-offset:3px}
+@media (max-width:640px){
+  .ok__actions{grid-template-columns:1fr;gap:12px}
+  body[data-design-system] .ok__actions .btn{min-height:56px}
+}
+@media (max-width:640px){.ok__actions{grid-auto-rows:1fr}body[data-design-system] .ok__actions .btn{font-size:13px;letter-spacing:.02em;padding-left:14px;padding-right:14px}}
+@media (max-width:360px){.ok__actions .btn{white-space:normal}}

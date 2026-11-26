@@ -2,3 +2,9 @@
 @import url("./don_hang.css");
 
 /* Bổ sung các quy tắc chỉ dành cho trang Giỏ hàng ở bên dưới. */
+
+/* 9 · Thanh "Sửa nhiều món" (nền navy): icon bút chì của nút "Đổi khẩu phần" màu trắng.
+   Chỉ áp dụng đúng nút này — các icon bút chì khác trên website giữ màu navy. */
+.pp-bulk__btn[data-bulk-size] .ic path{stroke:#FFFFFF}
+/* Nút "Tiến hành thanh toán" (nền navy): mũi tên trắng, các mũi tên khác giữ nguyên */
+#go .ic path{stroke:#FFFFFF}

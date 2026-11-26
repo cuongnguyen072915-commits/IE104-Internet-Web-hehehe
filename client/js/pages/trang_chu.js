@@ -5,6 +5,11 @@ document.addEventListener('fb:ready', () => {
   const picks = ['burrata', 'lasagna', 'bolognese', 'risotto-kem'].map(FB_DATA.byId);
   $('#featured-grid').innerHTML = picks.map(d => dishCard(d, { tag: d.homeTag || d.tag })).join('');
 
+  /* 8 · Ảnh @fiabescopalace: chú thích khi hover (luôn hiện trên màn hình cảm ứng) + lightbox dùng chung */
+  const igItems = $$('.ig-grid .ig-item');
+  const igImgs = igItems.map(b => { const im = $('img', b); return { src: im.getAttribute('src'), alt: im.alt, cap: im.alt }; });
+  igItems.forEach((b, i) => b.addEventListener('click', () => FB.openLightbox ? FB.openLightbox(igImgs, i, { zoom: false }) : null));
+
   /* A5 · Sao chép mã giảm giá trong thẻ ưu đãi — không chuyển trang khi bấm vào mã,
      phần còn lại của thẻ vẫn là liên kết tới trang Khuyến mãi như cũ. */
   async function copyText(v) {

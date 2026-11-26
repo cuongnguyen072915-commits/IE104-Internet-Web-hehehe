@@ -117,7 +117,7 @@
           </div>
         </nav>
         <div class="header-actions">
-          <a class="header-action pc-search" href="thuc_don.html#tim-kiem" aria-label="Tìm món">
+          <a class="header-action pc-search" href="thuc_don.html#tim-kiem" aria-label="Tìm kiếm" aria-haspopup="dialog">
             ${assetIcon('search')}</a>
           <a class="header-action pc-cart" href="gio_hang.html" aria-label="Giỏ hàng">
             ${assetIcon('giohang')}<span class="cart-badge" data-cart>0</span></a>

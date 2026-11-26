@@ -281,3 +281,23 @@
 
 /* A8 · Nút "ĐẶT BÀN NGAY" (khung Đặt bàn): mũi tên trắng, giữ hình dạng/kích thước/hover */
 .cta-book .btn--wine .ic path,.quick-book .btn--wine .ic path{stroke:#FFFFFF}
+
+
+/* 8 · Ảnh @fiabescopalace: lớp phủ tối + chú thích khi hover; trên cảm ứng chú thích luôn hiện */
+.ig-grid .ig-item{position:relative;display:block;width:100%;padding:0;border:0;aspect-ratio:1;border-radius:16px;overflow:hidden;cursor:zoom-in;background:var(--cream-2)}
+.ig-grid .ig-item img{display:block}
+.ig-grid .ig-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,27,46,0) 35%,rgba(0,27,46,.78) 100%);opacity:0;transition:opacity .3s}
+.ig-cap{position:absolute;left:10px;right:10px;bottom:10px;z-index:1;display:flex;align-items:flex-end;gap:6px;color:#fff;text-align:left;
+  font:500 12px/1.35 var(--f-sans);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+.ig-cap .ic{flex:none;width:14px;height:14px;margin-bottom:1px}.ig-cap .ic path{stroke:#fff}
+.ig-grid .ig-item:hover img,.ig-grid .ig-item:focus-visible img{transform:scale(1.04);filter:none}
+.ig-grid .ig-item:hover::after,.ig-grid .ig-item:focus-visible::after{opacity:1}
+.ig-grid .ig-item:hover .ig-cap,.ig-grid .ig-item:focus-visible .ig-cap{opacity:1;transform:none}
+.ig-grid .ig-item:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+@media (hover:none){
+  .ig-grid .ig-item::after{opacity:1;background:linear-gradient(180deg,rgba(0,27,46,0) 50%,rgba(0,27,46,.72) 100%)}
+  .ig-cap{opacity:1;transform:none;font-size:11px}
+}
+
+/* Mốc định vị cho thanh tìm kiếm nổi trên đầu Hero (css/tim_kiem.css) */
+body[data-page="trang_chu"] .site-main{position:relative}

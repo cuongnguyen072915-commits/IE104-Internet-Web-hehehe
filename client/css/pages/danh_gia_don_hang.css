@@ -36,3 +36,7 @@
 .review__stars strong[hidden]{display:none}
 .review__stars button.is-on .ic path{fill:currentColor;stroke:currentColor}
 @media (max-width:1100px){.summary--first{position:static}}
+/* 5 · Trang Đánh giá: khung đánh giá không kéo giãn hết phần còn lại — giới hạn bề rộng nội dung, Chi tiết đơn giữ 400px */
+.order__left.review--wide{max-width:600px;padding:28px 30px}
+@media (max-width:1100px){.order__left.review--wide{max-width:none}}
+@media (max-width:640px){.order__left.review--wide{padding:22px 18px}}

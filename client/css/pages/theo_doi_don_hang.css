@@ -19,8 +19,6 @@
 .trk-skel i{display:block;height:160px;border-radius:24px;background:linear-gradient(90deg,#f3eadb 0%,#fbf5ea 50%,#f3eadb 100%);background-size:200% 100%;animation:trk-sk 1.2s infinite}
 .trk-skel i:first-child{height:200px}
 @keyframes trk-sk{to{background-position:-200% 0}}
-.trk-sample{display:flex;gap:10px;align-items:center;margin:0;padding:12px 16px;border-radius:14px;background:#fff6e5;border:1px solid rgba(204,166,97,.7);font:400 14px/1.5 var(--f-sans);color:var(--navy)}
-.trk-sample .ic{width:18px;height:18px;flex:none}.trk-sample .ic path{stroke:var(--wine)}
 
 /* Trống / lỗi / tra cứu */
 .trk-empty{max-width:620px;margin:0 auto;padding:48px 40px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
@@ -115,7 +113,7 @@ body[data-design-system] .trk-banner__status{margin:0;font:400 clamp(26px,2.6vw,
 .trk-map__note .ic{width:16px;height:16px;flex:none}
 
 /* Phần 5 + 6 · G: Chi tiết đơn (giữ chiều rộng 400px như thiết kế) ↔ Hỗ trợ & Đánh giá */
-.trk-bottom{display:grid;grid-template-columns:400px minmax(0,1fr);gap:24px;align-items:start}
+.trk-bottom{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
 .trk-detail{padding:28px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:140px}
 .trk-detail h2{display:flex;justify-content:space-between;align-items:baseline}
 .trk-detail h2 span{font:400 14px/1.4 var(--f-sans);color:var(--gray)}
@@ -145,7 +143,7 @@ a.trk-sup:hover{border-color:var(--navy);background:var(--cream-2)}
 .trk-sup--faq summary::-webkit-details-marker{display:none}
 .trk-sup--faq[open] summary > .ic{transform:rotate(180deg)}
 .trk-sup--faq ol{margin:0 0 14px;padding-left:22px;display:flex;flex-direction:column;gap:6px;font:400 14px/1.55 var(--f-sans);color:var(--navy)}
-.trk-cancel{align-self:flex-start;margin-top:4px;font:600 14px/1.4 var(--f-sans);color:var(--wine);text-decoration:underline;text-underline-offset:3px}
+.trk-cancel{align-self:stretch;margin-top:6px}
 .trk-review{padding:28px;display:flex;flex-direction:column;gap:12px}
 .trk-review .review{padding:0;box-shadow:none;background:none;gap:14px}
 .review__lock{display:flex;gap:10px;align-items:flex-start;margin:0;padding:12px 14px;border-radius:12px;background:var(--cream-2);font:400 14px/1.5 var(--f-sans);color:var(--navy)}
@@ -155,23 +153,15 @@ a.trk-sup:hover{border-color:var(--navy);background:var(--cream-2)}
 .stars__off{color:var(--dis)}
 .review__quote{margin:0;padding-left:14px;border-left:3px solid var(--wine);font:400 17px/1.5 var(--f-display);color:var(--navy)}
 
-/* Bộ điều khiển mô phỏng */
-.demo-ctl{border:1px dashed var(--gray);border-radius:14px;padding:0 16px;background:#fff;text-align:left}
-.demo-ctl[open]{padding-bottom:14px}
-.demo-ctl summary{display:flex;align-items:center;gap:8px;padding:12px 0;cursor:pointer;font:600 13px/1.4 var(--f-sans);color:var(--navy)}
-.demo-ctl summary span{font-weight:400;color:var(--gray)}
-.demo-ctl summary .ic{width:16px;height:16px}
-.demo-ctl p{margin:0 0 10px;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
-.demo-ctl__btns{display:flex;flex-wrap:wrap;gap:8px}
 
 @media (max-width:1100px){
-  .trk-bottom{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .trk-bottom{grid-template-columns:minmax(0,1fr) 340px}
   .trk-dl div{grid-template-columns:160px minmax(0,1fr)}
 }
 @media (max-width:900px){
   .trk-banner{grid-template-columns:auto minmax(0,1fr);padding:28px}
   .trk-banner__eta{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 12px}
-  .trk-ship,.trk-bottom{grid-template-columns:1fr}
+  .trk-bottom,.trk-live{grid-template-columns:1fr}
 }
 /* F3 · Mobile: 1 cột — trạng thái → thời gian dự kiến → tiến trình (timeline dọc) → giao nhận → chi tiết → hỗ trợ & đánh giá */
 @media (max-width:767px){
@@ -183,11 +173,8 @@ a.trk-sup:hover{border-color:var(--navy);background:var(--cream-2)}
   .trk-banner__eta strong{font-size:28px}
   #trk-root > .trk-eta{order:2}
   #trk-root > .trk-banner{order:1}
-  #trk-root > .trk-sample{order:0}
-  #trk-root > .trk-progress{order:3}
-  #trk-root > .trk-ship{order:4}
-  #trk-root > .trk-bottom{order:5}
-  #trk-root > .trk-demo{order:6}
+  #trk-root >   #trk-root > .trk-progress{order:3}
+  #trk-root > *{order:4}
   .trk-progress{padding:20px}
   .trk-steps{grid-template-columns:1fr;gap:0}
   .trk-steps::before,.trk-steps::after{top:24px;left:23px;right:auto;width:4px;height:calc(100% - 48px)}
@@ -216,3 +203,62 @@ a.trk-sup:hover{border-color:var(--navy);background:var(--cream-2)}
   .trk-map .dpin__label{font-size:11px;padding:4px 8px;left:auto;right:50px}
   .trk-map .dpin:first-of-type .dpin__label{right:auto;left:50px}
 }
+
+/* =====================================================================
+   Lượt bổ sung · 1.1 GPS & tài xế (chỉ khi đang giao) · 1.2 bố cục · 2 điều khiển trạng thái
+   ===================================================================== */
+.trk-dl--grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px}
+.trk-dl--grid div:nth-last-child(2):nth-child(odd){border-bottom:1px solid var(--line)}
+.trk-dl--grid div{grid-template-columns:170px minmax(0,1fr)}
+.trk-live{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:24px;align-items:stretch}
+.trk-live .card{padding:24px;display:flex;flex-direction:column;gap:14px}
+.trk-live__head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.trk-live .trk-map{padding:24px}
+.trk-live .trk-map__frame{min-height:260px;aspect-ratio:776/380;flex:none}
+.trk-live .rider{transition:left 1s ease,top 1s ease}
+.trk-move{display:flex;gap:10px;align-items:flex-start;margin:0;font:400 14px/1.5 var(--f-sans);color:var(--gray)}
+.trk-move .ic{flex:none;width:18px;height:18px;margin-top:2px}.trk-move .ic path{stroke:var(--wine)}
+.trk-move b{color:var(--navy);font-weight:600}
+.trk-nogps{flex:1;display:flex;gap:14px;align-items:flex-start;padding:20px;border-radius:16px;background:var(--cream-2);border:1px dashed var(--line)}
+.trk-nogps > .ic{flex:none;width:28px;height:28px}.trk-nogps > .ic path{stroke:var(--gray)}
+.trk-nogps strong{display:block;font:600 15px/1.4 var(--f-sans);color:var(--navy)}
+.trk-nogps p{margin:4px 0 0;font:400 14px/1.55 var(--f-sans);color:var(--gray)}
+.trk-nogps--sm{flex:none}
+.trk-driver__row{display:flex;align-items:center;gap:14px}
+.trk-driver__av{flex:none;width:60px;height:60px;border-radius:50%;background:var(--navy);color:var(--gold-l);display:grid;place-items:center;overflow:hidden}
+.trk-driver__av img{width:100%;height:100%;object-fit:cover}
+.trk-driver__av .ic{width:26px;height:26px}.trk-driver__av .ic path{stroke:var(--gold-l)}
+.trk-driver__txt strong{display:block;font:600 17px/1.35 var(--f-sans);color:var(--navy)}
+.trk-driver__txt small{display:block;font:400 14px/1.4 var(--f-sans);color:var(--gray)}
+.trk-driver__acts .btn{width:100%;gap:8px}
+.trk-driver__acts .btn--navy .ic path{stroke:#fff}
+.trk-review{padding:28px}
+.trk-support .review__lock{margin-top:4px}
+@media (max-width:900px){.trk-dl--grid{grid-template-columns:1fr}.trk-dl--grid div:nth-last-child(2):nth-child(odd){border-bottom:1px solid var(--line)}}
+@media (max-width:767px){
+  .trk-live .card,.trk-live .trk-map,.trk-review{padding:20px}
+  .trk-live .trk-map__frame{min-height:0}
+  .trk-dl--grid div{grid-template-columns:1fr}
+}
+/* 5 · Khung Đánh giá đơn hàng gọn: nằm cùng cột phải (400px) với Hỗ trợ ở cuối trang; Chi tiết đơn giữ nguyên chiều rộng */
+.trk-side .trk-review{padding:22px 24px;gap:10px}
+.trk-review .review{gap:12px}
+.trk-review .review__stars{gap:8px}
+.trk-review .review__stars .ic{width:30px;height:30px}
+.trk-review .review textarea{min-height:88px}
+.trk-review .review__tags{gap:6px}
+@media (max-width:767px){.trk-side .trk-review{padding:20px 18px}}
+
+/* 4 · Lộ trình giao hàng: đoạn đã đi (đỏ rượu, liền) + đoạn còn lại (navy, nét đứt); tài xế trượt mượt giữa các điểm */
+.trk-route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.trk-route polyline{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.trk-route [data-route-rest]{stroke:var(--navy);stroke-width:3;stroke-dasharray:2 7;opacity:.55}
+.trk-route [data-route-done]{stroke:var(--wine);stroke-width:5}
+.trk-live .trk-map__frame .dpin,.trk-live .rider{z-index:2}
+.trk-live .rider{transition:left 1.6s cubic-bezier(.4,0,.2,1),top 1.6s cubic-bezier(.4,0,.2,1)}
+.trk-move-bar{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.trk-move-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--navy),var(--wine));transition:width 1.6s ease}
+.trk-driver__status{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:var(--cream-2);font:600 13px/1.4 var(--f-sans);color:var(--navy)}
+.trk-dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(41,128,82,.5);animation:trk-dot 1.6s infinite}
+@keyframes trk-dot{70%{box-shadow:0 0 0 8px rgba(41,128,82,0)}100%{box-shadow:0 0 0 0 rgba(41,128,82,0)}}
+@media (prefers-reduced-motion:reduce){.trk-live .rider,.trk-move-bar i{transition:none}.trk-dot{animation:none}}
