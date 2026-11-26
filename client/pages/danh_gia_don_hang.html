@@ -38,27 +38,8 @@
     </section>
 
     <div class="order__cols">
-      <form class="order__left review card" id="review" novalidate>
-        <span class="t-eyebrow c-wine">Đánh giá đơn hàng</span>
-        <h2 class="t-h3">Bữa ăn của bạn thế nào?</h2>
-        <p class="t-body c-gray">Hãy dành chút thời gian cho Fiabesco biết trải nghiệm của bạn nhé.</p>
-        <div class="review__stars" role="radiogroup" aria-label="Chấm điểm">
-          <button type="button" role="radio" aria-checked="false" data-star="1" aria-label="1 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="2" aria-label="2 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="3" aria-label="3 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="4" aria-label="4 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="5" aria-label="5 sao"><i data-icon="star"></i></button>
-          <strong id="star-text">Chạm để chọn số sao</strong>
-        </div>
-        <div class="review__tags" id="tags">
-          <button type="button" class="chip chip--sm" aria-pressed="false">Món ngon</button><button type="button" class="chip chip--sm" aria-pressed="false">Giao nhanh</button><button type="button" class="chip chip--sm" aria-pressed="false">Đóng gói đẹp</button><button type="button" class="chip chip--sm" aria-pressed="false">Tài xế thân thiện</button><button type="button" class="chip chip--sm" aria-pressed="false">Đúng giờ</button>
-        </div>
-        <label class="field"><span class="field__label sr-only">Nhận xét</span><textarea class="textarea" name="text" rows="4" placeholder="Chia sẻ cảm nhận của bạn về món ăn và người giao hàng…"></textarea></label>
-        <p class="review__err" id="review-err" hidden>Vui lòng chọn số sao trước khi gửi đánh giá.</p>
-        <div class="review__gift">
-          <span class="review__gift-ic"><i data-icon="gift"></i></span>
-          <div class="grow"><span class="t-eyebrow c-goldl">Quà cho lần sau</span><p class="t-body-s">Giảm 10% cho đơn giao hàng tiếp theo, áp dụng đến hết 31/12/2026.</p></div>
-          <button type="button" class="review__code" data-copy="FIABESCO10" aria-label="Sao chép mã FIABESCO10">FIABESCO10</button>
-        </div>
-        <div class="result__actions"><a class="btn btn--outline" href="trang_chu.html">Về trang chủ</a><button class="btn btn--navy" type="submit">Gửi đánh giá</button></div>
-      </form>
-      <aside class="summary card" style="gap:16px">
+      <!-- G · Đổi vị trí: Chi tiết đơn hàng (giữ chiều rộng 400px) bên trái, Đánh giá bên phải -->
+      <aside class="summary card summary--first" style="gap:16px">
         <h2 class="t-h4">Chi tiết đơn hàng</h2>
         <div class="sum-row" style="font-size:14px"><span>Giao đến</span><span id="to">68 Lê Lợi, Q.1 · Lầu 5</span></div>
         <div class="sum-row" style="font-size:14px"><span>Người nhận</span><span id="who">Minh Anh · 0901 234 567</span></div>
@@ -72,6 +53,26 @@
         <button class="btn btn--outline btn--block" type="button" id="reorder">Đặt lại đơn này</button>
         <p class="t-caption c-gray" style="text-align:center">Cần hỗ trợ về đơn đã giao? Gọi 0123 456 789.</p>
       </aside>
+      <form class="order__left review card review--wide" id="review" novalidate>
+        <span class="t-eyebrow c-wine">Đánh giá đơn hàng</span>
+        <h2 class="t-h3">Bữa ăn của bạn thế nào?</h2>
+        <p class="t-body c-gray">Hãy dành chút thời gian cho Fiabesco biết trải nghiệm của bạn nhé.</p>
+        <div class="review__stars" role="radiogroup" aria-label="Chấm điểm">
+          <button type="button" role="radio" aria-checked="false" data-star="1" aria-label="1 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="2" aria-label="2 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="3" aria-label="3 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="4" aria-label="4 sao"><i data-icon="star"></i></button><button type="button" role="radio" aria-checked="false" data-star="5" aria-label="5 sao"><i data-icon="star"></i></button>
+          <strong id="star-text" hidden></strong>
+        </div>
+        <div class="review__tags" id="tags">
+          <button type="button" class="chip chip--sm" aria-pressed="false">Món ngon</button><button type="button" class="chip chip--sm" aria-pressed="false">Giao nhanh</button><button type="button" class="chip chip--sm" aria-pressed="false">Đóng gói đẹp</button><button type="button" class="chip chip--sm" aria-pressed="false">Tài xế thân thiện</button><button type="button" class="chip chip--sm" aria-pressed="false">Đúng giờ</button>
+        </div>
+        <label class="field"><span class="field__label sr-only">Nhận xét</span><textarea class="textarea" name="text" rows="4" placeholder="Chia sẻ cảm nhận của bạn về món ăn và người giao hàng…"></textarea></label>
+        <p class="review__err" id="review-err" hidden>Vui lòng chọn số sao trước khi gửi đánh giá.</p>
+        <div class="review__gift">
+          <span class="review__gift-ic"><i data-icon="gift"></i></span>
+          <div class="grow"><span class="t-eyebrow c-goldl">Quà cho lần sau</span><p class="t-body-s">Giảm 10% cho đơn giao hàng tiếp theo, áp dụng đến hết 31/12/2026.</p></div>
+          <button type="button" class="review__code" data-copy="FIABESCO10" aria-label="Sao chép mã FIABESCO10">FIABESCO10</button>
+        </div>
+        <div class="result__actions"><a class="btn btn--outline" href="trang_chu.html">Về trang chủ</a><button class="btn btn--navy" type="submit">Gửi đánh giá</button></div>
+      </form>
     </div>
   </main>
   <footer data-footer></footer>
@@ -79,6 +80,7 @@
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/don_hang_store.js"></script>
   <script src="../js/popups.js"></script>
   <script src="../js/pages/ket_qua_don_hang.js"></script>
 </body>

@@ -34,9 +34,9 @@ document.addEventListener('fb:ready', () => {
         <label class="checkbox"><input type="checkbox" ${off.has(i) ? '' : 'checked'} data-sel="${i}"><span class="checkbox__box">${icon('check')}</span></label>
         <img class="cart-item__img" src="${d.img}" alt="">
         <div class="cart-item__info"><strong class="t-title">${d.name}</strong><span class="t-body-s c-gray">${it.opt}</span>
-          ${it.combo ? '' : `<a class="cart-item__edit" href="chi_tiet_mon.html?id=${it.id}">${icon('edit')}Sửa lựa chọn</a>`}</div>
+          <a class="cart-item__edit" href="${it.combo ? 'thuc_don.html#combo-block' : `chi_tiet_mon.html?id=${it.id}`}">${icon('edit')}Sửa lựa chọn</a></div>
         <div class="stepper stepper--sm"><button data-dec="${i}" aria-label="Giảm">${icon('minus')}</button><output>${it.qty}</output><button data-inc="${i}" aria-label="Tăng">${icon('plus')}</button></div>
-        <div class="cart-item__price"><span class="t-price c-wine">${money(it.qty * it.unit)}</span>${it.qty > 1 ? `<span class="t-caption c-gray">${vnd(it.unit)} / phần</span>` : ''}</div>
+        <div class="cart-item__price"><span class="t-price c-wine money">${money(it.qty * it.unit)}</span>${it.qty > 1 ? `<span class="t-caption c-gray money">${vnd(it.unit)} / phần</span>` : ''}</div>
         <button class="cart-item__del" data-del="${i}" aria-label="Xóa món">${icon('trash')}</button></div>`;
     }).join('');
     $('#all').checked = off.size === 0;
@@ -46,13 +46,15 @@ document.addEventListener('fb:ready', () => {
     $('#fee').textContent = money(r.fee);
     $('#disc').textContent = (r.disc ? '−' : '') + money(r.disc);
     $('#total').textContent = money(r.total);
-    $('#points').textContent = `Bạn sẽ nhận +${Math.round(r.total / 10000)} điểm thành viên`;
+    $('#points').textContent = `Bạn sẽ nhận +${FB.pointsFor ? FB.pointsFor(r.total) : Math.round(r.total / 10000)} điểm thành viên`;
     // E12 – chưa đạt giá trị đơn tối thiểu (chỉ áp dụng giao hàng)
     const lack = mode === 'ship' && r.sub < MIN_ORDER && r.sel.length > 0;
     $('#min-alert').hidden = !lack;
     if (lack) { $('#min-text').textContent = `Thêm ${vnd(MIN_ORDER - r.sub)}đ để đạt đơn giao hàng tối thiểu ${vnd(MIN_ORDER)}đ`; $('#min-bar').style.width = (r.sub / MIN_ORDER * 100) + '%'; }
     $('#go').classList.toggle('is-disabled', lack || r.sel.length === 0);
-    try { sessionStorage.setItem('fb_checkout', JSON.stringify({ items: r.sel, sub: r.sub, fee: r.fee, disc: r.disc, total: r.total, mode, coupon, note: $('#note').value })); } catch (e) {}
+    // keys: khóa (id|lựa chọn) của các món được chọn → trang Thanh toán sửa món vẫn đồng bộ đúng dòng trong giỏ
+    const keys = r.sel.map(it => it.id + '|' + it.opt);
+    try { sessionStorage.setItem('fb_checkout', JSON.stringify({ items: r.sel, keys, sub: r.sub, fee: r.fee, disc: r.disc, total: r.total, mode, coupon, note: $('#note').value })); } catch (e) {}
   }
   window.FB_CART_RENDER = render;
   document.addEventListener('cart:change', () => render());
@@ -85,6 +87,14 @@ document.addEventListener('fb:ready', () => {
     render();
   });
   $('#coupon-rm').addEventListener('click', () => { coupon = null; showCoupon(); render(); });
+  /* C4 · Đóng thông báo mã không hợp lệ: nút X, phím Esc. Chỉ ẩn thông báo — giữ nguyên mã
+     vừa nhập để sửa tiếp, không đổi logic kiểm tra mã. (Trước đây "X" chỉ là icon trang trí.) */
+  const hideCouponErr = () => { if ($('#coupon-err').hidden) return; $('#coupon-err').hidden = true; $('#coupon').classList.remove('is-error'); const inp = $('#coupon').code; inp.focus(); inp.select(); };
+  $('#coupon-err-x').addEventListener('click', hideCouponErr);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#coupon-err').hidden && !document.querySelector('.modal.is-open')) hideCouponErr(); });
+  $('#coupon').code.addEventListener('input', () => { if (!$('#coupon-err').hidden) { $('#coupon-err').hidden = true; $('#coupon').classList.remove('is-error'); } });
+  // C2 · Dòng điểm thành viên → popup thành viên / giới thiệu chương trình
+  if (FB.bindPoints) FB.bindPoints($('.points'), () => calc().total);
   showCoupon(); render();
   // E09 theo thiết kế: mã FREESHIP đang áp dụng đã hết hạn
   if (FB.demo === 'coupon-expired') {

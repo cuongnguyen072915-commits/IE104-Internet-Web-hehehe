@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/pages/gio_hang.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
+  <link rel="stylesheet" href="../css/tuy_chinh_mon.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="gio_hang">
   <!-- Frame: PC – 04 Giỏ hàng (+ E07 giỏ trống, E09 mã không hợp lệ, E12 chưa đạt đơn tối thiểu) -->
@@ -46,13 +47,13 @@
         <div class="seg" id="mode"><button class="is-active" data-mode="ship">Giao hàng</button><button data-mode="pickup">Tự đến lấy</button></div>
         <form class="coupon" id="coupon"><label class="coupon__input"><i data-icon="coupon-tag"></i><input name="code" placeholder="Nhập mã ưu đãi" autocomplete="off" aria-label="Mã ưu đãi"></label><button class="coupon__btn" type="submit">Áp dụng</button></form>
         <div class="coupon-ok" id="coupon-ok" hidden><span class="row" style="gap:8px"><i data-icon="check"></i><b id="coupon-label">FREESHIP – Miễn phí giao hàng</b></span><button id="coupon-rm">Bỏ</button></div>
-        <div class="coupon-err" id="coupon-err" hidden><i data-icon="close-large"></i><span id="coupon-msg"></span></div>
+        <div class="coupon-err" id="coupon-err" role="alert" hidden><span id="coupon-msg"></span><button type="button" class="coupon-err__x" id="coupon-err-x" aria-label="Đóng thông báo mã ưu đãi"><i data-icon="close-large"></i></button></div>
         <hr class="divider">
         <div class="sum-row"><span id="sub-label">Tạm tính (4 phần)</span><span id="sub">509.000 VND</span></div>
         <div class="sum-row"><span>Phí giao hàng</span><span id="fee">25.000 VND</span></div>
         <div class="sum-row"><span>Giảm giá</span><span id="disc" class="c-green">−25.000 VND</span></div>
         <hr class="divider">
-        <div class="between"><span class="t-title">Tổng thanh toán</span><span class="t-price-l c-wine" id="total">509.000 VND</span></div>
+        <div class="between sum-total"><span class="t-title">Tổng thanh toán</span><span class="t-price-l c-wine money" id="total">509.000 VND</span></div>
         <a class="btn btn--navy btn--block" id="go" href="thanh_toan.html">Tiến hành thanh toán <i data-icon="arrow-right"></i></a>
         <a class="btn btn--outline btn--block" href="thuc_don.html">Tiếp tục mua hàng</a>
         <div class="points"><i data-icon="gift"></i><span id="points">Bạn sẽ nhận +51 điểm thành viên</span></div>
@@ -76,8 +77,10 @@
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
+  <script src="../js/data/chi_tiet_mon.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/popups.js"></script>
+  <script src="../js/tuy_chinh_mon.js"></script>
   <script src="../js/pages/gio_hang.js"></script>
 </body>
 </html>

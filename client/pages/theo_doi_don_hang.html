@@ -5,66 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#002842">
   <title>Theo dõi đơn hàng – Fiabesco Palace</title>
+  <meta name="description" content="Theo dõi trạng thái đơn giao hàng tại Fiabesco Palace: đã xác nhận, bếp đang chuẩn bị, đang giao, đã nhận món.">
   <link rel="icon" href="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png">
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/pc-components.css">
   <link rel="stylesheet" href="../css/pages/theo_doi_don_hang.css">
+  <link rel="stylesheet" href="../css/pages/danh_gia_don_hang.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="theo_doi_don_hang">
-  <!-- Frame: PC – 06 Theo dõi đơn hàng -->
+  <!-- Frame: PC – 06 Theo dõi đơn hàng — thiết kế lại "Premium Food Delivery Tracking" (mục F, G).
+       Toàn bộ nội dung do js/pages/theo_doi_don_hang.js dựng từ dữ liệu đơn (js/don_hang_store.js).
+       Không hiển thị đơn giả khi không có dữ liệu. -->
   <header data-header></header>
-  <main class="site-main container order" style="gap:24px">
-    <section class="ok-banner">
-      <div class="row" style="gap:24px">
-        <span class="ok-banner__icon"><i data-icon="check"></i></span>
-        <div class="stack" style="gap:6px"><span class="t-eyebrow c-goldl">Đặt hàng thành công</span><h1 class="t-h2" id="thanks" style="color:#FFFFFF">Cảm ơn bạn, Minh Anh!</h1><p class="t-body" style="opacity:.8" id="order-meta">Mã đơn #FB2611-0248 · Đã thanh toán qua ZaloPay · 499.000 VND</p></div>
-      </div>
-      <div class="eta"><span class="t-caption c-goldl">Dự kiến giao lúc</span><strong id="eta">19:20</strong><span class="t-caption" style="opacity:.8" id="eta-left">còn khoảng 14 phút</span></div>
-    </section>
-
-    <section class="track card">
-      <div class="track__step is-done"><span class="track__dot"><i data-icon="receipt"></i></span><strong>Đã xác nhận</strong><small id="t1">18:42</small></div>
-      <span class="track__line is-on"></span>
-      <div class="track__step is-done"><span class="track__dot"><i data-icon="chef-hat"></i></span><strong>Bếp đang chuẩn bị</strong><small id="t2">18:45</small></div>
-      <span class="track__line is-on"></span>
-      <div class="track__step is-now"><span class="track__dot"><i data-icon="delivery-truck"></i></span><strong>Đang giao hàng</strong><small id="t3">19:05</small></div>
-      <span class="track__line"></span>
-      <div class="track__step"><span class="track__dot"><i data-icon="home"></i></span><strong>Đã nhận món</strong><small id="t4">Dự kiến 19:20</small></div>
-    </section>
-
-    <div class="order__cols">
-      <div class="order__left" style="gap:20px">
-        <div class="dmap">
-          <img src="../assets/template-20261120T115451Z-1-001 - Copy/template/delivery-route-map.svg" alt="Bản đồ tuyến giao hàng">
-          <div class="dpin" style="left:15.46%;top:60.53%"><span class="dpin__dot"><i data-icon="chef-hat"></i></span><span class="dpin__label">Fiabesco Palace</span></div>
-          <div class="dpin" style="left:69.59%;top:69.74%"><span class="dpin__dot"><i data-icon="home"></i></span><span class="dpin__label">Nhà bạn</span></div>
-          <span class="rider" id="rider"><i data-icon="delivery-truck"></i></span>
-        </div>
-        <div class="driver card">
-          <span class="driver__av">M</span>
-          <div class="stack grow"><strong class="t-title">Trần Văn Minh</strong><span class="t-caption c-gray">Honda Vision · 59-X1 234.56 · ★ 4.9</span></div>
-          <a class="icon-btn" style="border:1px solid var(--navy)" href="sms:0901234567" aria-label="Nhắn tin tài xế"><i data-icon="chat"></i></a>
-          <a class="icon-btn" style="background:var(--navy);color:#fff" href="tel:0901234567" aria-label="Gọi tài xế"><i data-icon="phone"></i></a>
-        </div>
-      </div>
-      <aside class="summary card" style="gap:16px">
-        <h2 class="t-h4">Chi tiết đơn hàng</h2>
-        <div class="sum-row t-body-s" style="font-size:14px"><span>Giao đến</span><span id="to">68 Lê Lợi, Q.1 · Lầu 5</span></div>
-        <div class="sum-row" style="font-size:14px"><span>Người nhận</span><span id="who">Minh Anh · 0901 234 567</span></div>
-        <hr class="divider">
-        <div class="stack" style="gap:16px" id="lines"></div>
-        <hr class="divider">
-        <div class="sum-row" style="font-size:14px"><span>Tạm tính</span><span id="sub">509.000 VND</span></div>
-        <div class="sum-row" style="font-size:14px"><span>Phí giao hàng</span><span id="fee">25.000 VND</span></div>
-        <div class="sum-row" style="font-size:14px"><span>Ưu đãi</span><span class="c-green" id="disc">−35.000 VND</span></div>
-        <div class="between"><span class="t-title">Đã thanh toán</span><span class="t-price-l c-wine" id="total">499.000 VND</span></div>
-        <a class="btn btn--outline btn--block" href="lien_he.html">Liên hệ hỗ trợ</a>
-        <a class="btn btn--navy btn--block" href="danh_gia_don_hang.html">Đã nhận món – Đánh giá</a>
-        <p class="t-caption c-gray" style="text-align:center">Đơn đang giao nên không thể hủy. Cần hỗ trợ? Gọi 0123 456 789.</p>
-      </aside>
+  <main class="site-main container trk" id="noi-dung-chinh">
+    <div id="trk-root" aria-live="polite">
+      <div class="trk-skel" aria-busy="true" aria-label="Đang tải đơn hàng"><i></i><i></i><i></i></div>
     </div>
   </main>
   <footer data-footer></footer>
@@ -72,6 +30,7 @@
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/don_hang_store.js"></script>
   <script src="../js/popups.js"></script>
   <script src="../js/pages/theo_doi_don_hang.js"></script>
 </body>

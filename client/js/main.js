@@ -163,6 +163,32 @@
     document.addEventListener('keydown',e=>{if(e.key==='Escape' && nav.classList.contains('is-open')){close();toggle.focus();}});
     window.addEventListener('resize',syncViewport);
     syncViewport();
+    /* A2: khi chữ menu dài ra (Google Dịch, cỡ chữ lớn…) và không còn vừa một hàng
+       giữa logo và cụm icon → chuyển menu xuống hàng 2 (.is-nav-wrap, xem github-sync.css). */
+    const navList = $('.site-nav__list', el);
+    let navRaf = 0;
+    const fitNav = () => {
+      cancelAnimationFrame(navRaf);
+      navRaf = requestAnimationFrame(() => {
+        el.classList.toggle('is-nav-wrap', false);
+        if (!window.matchMedia('(min-width: 1024px)').matches) return;
+        const links = $$('.site-nav__link', navList); if (!links.length) return;
+        const brandR = $('.brand', el).getBoundingClientRect(), actR = $('.header-actions', el).getBoundingClientRect();
+        const first = links[0].getBoundingClientRect(), last = links[links.length - 1].getBoundingClientRect();
+        // Mục menu giữ đúng khoảng cách thiết kế và cách logo/cụm icon ≥ 20px; vi phạm → xuống hàng 2
+        const rects = links.map(a => a.getBoundingClientRect());
+        const gap = parseFloat(getComputedStyle(navList).columnGap) || 8;
+        const cramped = rects.some((r, i) => i && r.left - rects[i - 1].right < gap - 1);
+        const tooWide = navList.scrollWidth > nav.clientWidth + 1 || first.left < brandR.right + 20 || last.right > actR.left - 20
+          || cramped || rects.some(r => r.height > 48);
+        el.classList.toggle('is-nav-wrap', tooWide);
+      });
+    };
+    window.addEventListener('resize', fitNav);
+    if (document.fonts) document.fonts.ready.then(fitNav);
+    new MutationObserver(fitNav).observe(navList, { subtree: true, childList: true, characterData: true });
+    new MutationObserver(fitNav).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'lang'] });
+    fitNav();
     // Tài khoản: popup Đăng nhập/Đăng ký & menu tài khoản do popups.js xử lý (Luồng 1)
   }
 

@@ -8,8 +8,28 @@ document.addEventListener('fb:ready', () => {
   let pickup = data.mode === 'pickup';
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  $('#count').textContent = `Đơn hàng (${data.items.length} món)`;
-  $('#lines').innerHTML = data.items.map(it => { const d = FB_DATA.byId(it.id) || {}; return `<div class="line-item"><img src="${d.img}" alt=""><div class="stack"><strong style="font:600 15px/1.4 var(--f-sans)">${d.name}</strong><span class="t-caption c-gray">× ${it.qty}</span></div><span class="price">${FB.vnd(it.qty * it.unit)}</span></div>`; }).join('');
+  const keyOf = it => it.id + '|' + it.opt;
+  if (!Array.isArray(data.keys)) data.keys = data.items.map(keyOf);
+  function renderLines() {
+    $('#count').textContent = `Đơn hàng (${data.items.length} món)`;
+    $('#lines').innerHTML = data.items.map((it, k) => { const d = FB_DATA.byId(it.id) || {}; return `<div class="line-item"><img src="${d.img}" alt=""><div class="stack"><strong style="font:600 15px/1.4 var(--f-sans)">${esc(d.name)}</strong><span class="t-caption c-gray">× ${it.qty}${it.opt ? ' · ' + esc(it.opt) : ''}</span>
+      <button type="button" class="line-item__edit" data-line="${k}" aria-label="Chỉnh sửa lựa chọn ${esc(d.name)}">${icon('edit')}Chỉnh sửa</button></div><span class="price money">${FB.vnd(it.qty * it.unit)}</span></div>`; }).join('');
+  }
+  renderLines();
+  /* C3 · Chỉnh sửa lựa chọn ngay tại Thanh toán: dùng popup chung, lưu vào giỏ rồi cập nhật tổng.
+     Hủy/đóng popup → không thay đổi gì. */
+  $('#lines').addEventListener('click', e => {
+    const b = e.target.closest('[data-line]'); if (!b || !FB.editCartLine) return;
+    const it = data.items[+b.dataset.line]; const idx = Cart.get().findIndex(x => keyOf(x) === keyOf(it));
+    if (idx < 0) { FB.toast('Không tìm thấy món trong giỏ', 'Vui lòng quay lại giỏ hàng để chỉnh sửa.', 'Về giỏ hàng', 'gio_hang.html', 'navy'); return; }
+    FB.editCartLine(idx, (newKey, oldKey) => {
+      data.keys = [...new Set(data.keys.map(k => (k === oldKey ? newKey : k)))];
+      const cart = Cart.get(); data.items = cart.filter(x => data.keys.includes(keyOf(x)));
+      data.sub = data.items.reduce((s, x) => s + x.qty * x.unit, 0);
+      renderLines(); totals();
+      try { sessionStorage.setItem('fb_checkout', JSON.stringify(data)); } catch (er) {}
+    });
+  });
 
   function totals() {
     const fee = pickup ? 0 : 25000;
@@ -21,13 +41,31 @@ document.addEventListener('fb:ready', () => {
     $('#row-coupon').hidden = !c; if (c) { $('#coupon-name').textContent = 'Mã ' + data.coupon; $('#disc').textContent = '−' + money(disc); }
     $('#row-bonus').hidden = !bonus;
     $('#total').textContent = money(total);
+    const pts = FB.pointsFor ? FB.pointsFor(total) : Math.round(total / 10000);
+    $('#co-points-text').textContent = `Bạn sẽ nhận +${pts} điểm thành viên`;
     return total;
   }
 
   $$('#when .choice').forEach(c => c.addEventListener('click', () => { $$('#when .choice').forEach(x => x.classList.toggle('is-active', x === c)); $('#sched').classList.toggle('is-on', c.dataset.when === 'later'); }));
   $$('#sched .chip').forEach(c => c.addEventListener('click', () => $$('#sched .chip').forEach(x => x.classList.toggle('is-active', x === c))));
-  $$('#pays .pay').forEach(p => p.addEventListener('click', () => { $$('#pays .pay').forEach(x => x.classList.toggle('is-active', x === p)); totals(); }));
-  totals();
+  const syncCard = () => { const on = $('.pay.is-active').dataset.pay === 'Thẻ quốc tế'; $('#card-fields').hidden = !on; if (!on) $('#cc-err').hidden = true; };
+  $$('#pays .pay').forEach(p => p.addEventListener('click', () => { $$('#pays .pay').forEach(x => x.classList.toggle('is-active', x === p)); totals(); syncCard(); }));
+  totals(); syncCard();
+  if (FB.bindPoints) FB.bindPoints($('#co-points'), () => totals());
+  // Ô thẻ: chỉ định dạng hiển thị, không lưu ở đâu cả
+  $('#cc-num').addEventListener('input', e => { const v = e.target.value.replace(/\D/g, '').slice(0, 19); e.target.value = v.replace(/(\d{4})(?=\d)/g, '$1 '); });
+  $('#cc-exp').addEventListener('input', e => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v.length > 2 ? v.slice(0, 2) + '/' + v.slice(2) : v; });
+  $('#cc-cvv').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4); });
+  function cardCheck() {
+    const n = $('#cc-num').value.replace(/\s/g, ''), ex = $('#cc-exp').value, cv = $('#cc-cvv').value;
+    if (!n && !ex && !cv) return ''; // demo: các ô không bắt buộc
+    if (n && (n.length < 13 || !luhn(n))) return 'Số thẻ chưa hợp lệ (demo: dùng thẻ thử nghiệm 4111 1111 1111 1111).';
+    if (ex && !/^(0[1-9]|1[0-2])\/\d{2}$/.test(ex)) return 'Ngày hết hạn theo dạng MM/YY.';
+    if (cv && !/^\d{3,4}$/.test(cv)) return 'Mã bảo mật gồm 3–4 chữ số.';
+    return '';
+  }
+  const luhn = n => { let s = 0; for (let i = 0; i < n.length; i++) { let d = +n[n.length - 1 - i]; if (i % 2) { d *= 2; if (d > 9) d -= 9; } s += d; } return s % 10 === 0; };
+  const clearCard = () => { ['#cc-num', '#cc-exp', '#cc-cvv'].forEach(s => { $(s).value = ''; }); };
 
   const form = $('#co');
   const setErr = (key, msg) => { const f = $(`[data-f="${key}"]`, form); const l = $('.field__label', f); f.classList.toggle('is-error', !!msg); l.textContent = l.dataset.l + (msg ? ' — ' + msg : ''); };
@@ -177,25 +215,244 @@ document.addEventListener('fb:ready', () => {
     if (a.dataset.act === 'retry') finish();
   });
 
-  function finish() {
+  /* =================================================================
+     ĐẶT ĐƠN + THANH TOÁN (D1–D5)
+     - Mỗi lần thanh toán chỉ có MỘT đơn (sessionStorage 'fb_pending_order'); đổi phương thức
+       dùng lại đơn đó, không tạo đơn trùng; nút bị khóa trong lúc xử lý.
+     - Đơn chỉ sang "Đặt hàng thành công" khi: tiền mặt, hoặc PaymentAPI trả về PAID.
+     - Chưa có cổng thật → luồng "Mô phỏng thanh toán" (js/don_hang_store.js), ghi rõ trên giao diện.
+     ================================================================= */
+  const O = window.FB_ORDERS, PAYAPI = O && O.PaymentAPI;
+  const PENDING = 'fb_pending_order';
+  const IMG = '../assets/template-20261120T115451Z-1-001 - Copy/template/';
+  const LOGO = { 'ZaloPay': 'payment-zalopay.png', 'Apple Pay': 'payment-apple-pay.png', 'VietQR': 'payment-vietqr.png', 'Thẻ quốc tế': 'payment-visa-mastercard.png' };
+  let submitting = false, current = null;
+  const payBtn = $('#pay-btn');
+  const lock = on => { submitting = on; payBtn.disabled = on; payBtn.setAttribute('aria-busy', on); payBtn.textContent = on ? 'Đang xử lý…' : 'Xác nhận & thanh toán'; };
+  const getPending = () => { try { const id = sessionStorage.getItem(PENDING); const o = id && O.get(id); return o && o.status === 'PENDING_PAYMENT' && o.pay.status !== 'PAID' ? o : null; } catch (e) { return null; } };
+
+  function orderPayload(method) {
     const address = pickup ? null : readAddress();
     const total = totals(), fee = pickup ? 0 : 25000;
-    const order = {
-      name: form.name.value.trim(), phone: form.phone.value.trim(), email: form.email.value.trim(),
-      addr: pickup ? PICKUP_ADDR : address.full, // chuỗi hiển thị (tương thích trang theo dõi đơn)
-      address,                                   // các thành phần địa chỉ, để sửa/dùng lại
-      deliveryArea: address ? address.deliveryArea : null,
-      pickup, apt: form.apt.value.trim(), pay: $('.pay.is-active').dataset.pay,
-      total, items: data.items, sub: data.sub, fee, disc: data.sub + fee - total
+    const bonusEl = $('.pay.is-active'); const bonus = bonusEl && bonusEl.dataset.bonus ? +bonusEl.dataset.bonus : 0;
+    const later = $('#when .choice.is-active').dataset.when === 'later';
+    return {
+      method, customer: { name: form.name.value.trim(), phone: form.phone.value.trim(), email: form.email.value.trim() },
+      addr: pickup ? PICKUP_ADDR : address.full, address, deliveryArea: address ? address.deliveryArea : null,
+      pickup, apt: form.apt.value.trim(), note: data.note || '', when: later ? 'later' : 'now', slot: later ? ($('#sched .chip.is-active') || {}).textContent || '' : '',
+      items: data.items, keys: data.keys, sub: data.sub, fee, bonus, disc: data.sub + fee - total, total, coupon: data.coupon || null
     };
-    order.code = 'FB2611-0248'; order.placedAt = Date.now();
-    try { sessionStorage.setItem('fb_order', JSON.stringify(order)); } catch (e) {}
-    if (address) {
-      try { localStorage.setItem(SAVE_KEY, JSON.stringify({ street: address.street, provinceId: address.provinceId, areaId: address.deliveryArea ? address.deliveryArea.id : '', wardId: address.wardId, apt: order.apt })); } catch (e) {}
-    }
-    Cart.set([]);
-    FB.payProcessing(order.pay, order.total, () => { location.href = 'dat_hang_thanh_cong.html'; });
   }
+  function saveAddr(p) {
+    if (p.address) { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ street: p.address.street, provinceId: p.address.provinceId, areaId: p.address.deliveryArea ? p.address.deliveryArea.id : '', wardId: p.address.wardId, apt: p.apt })); } catch (e) {} }
+  }
+  /** Đơn đã được xác nhận (tiền mặt / đã thanh toán) → bỏ các món đã đặt khỏi giỏ, sang trang cảm ơn */
+  function done(o) {
+    const keys = data.keys || [];
+    try { Cart.set(keys.length ? Cart.get().filter(x => !keys.includes(keyOf(x))) : []); sessionStorage.removeItem(PENDING); sessionStorage.removeItem('fb_checkout'); } catch (e) {}
+    location.href = 'dat_hang_thanh_cong.html?ma=' + encodeURIComponent(o.id);
+  }
+
+  async function finish() {
+    if (submitting) return; // chặn bấm nhiều lần
+    if (!O) { FB.toast('Không tải được mô-đun đơn hàng', 'Vui lòng tải lại trang.', '', '', 'navy'); return; }
+    lock(true);
+    const method = $('.pay.is-active').dataset.pay;
+    const p = orderPayload(method); saveAddr(p);
+    let o = getPending();
+    if (o) { // cập nhật đơn đang chờ bằng dữ liệu mới nhất, giữ nguyên mã đơn
+      Object.assign(o, { customer: p.customer, addr: p.addr, address: p.address, deliveryArea: p.deliveryArea, pickup: p.pickup, apt: p.apt, note: p.note, when: p.when, slot: p.slot, items: p.items, sub: p.sub, fee: p.fee, coupon: p.coupon });
+      O.put(o);
+      o = method === 'Tiền mặt' ? O.toCash(o.id, p.total) : O.setMethod(o.id, method, p.total, p.bonus);
+    } else o = O.create(p);
+    if (!o) { lock(false); return; }
+    if (o.status !== 'PENDING_PAYMENT') { // D5 · Tiền mặt: giữ quy trình cũ
+      FB.payProcessing ? FB.payProcessing('Fiabesco Palace', o.total, () => done(o)) : done(o); return;
+    }
+    try { sessionStorage.setItem(PENDING, o.id); } catch (e) {}
+    current = o;
+    if (method === 'VietQR') await openQR(o); else await openGateway(o);
+    lock(false);
+  }
+
+  /* ---------- Popup kiểm tra trạng thái ---------- */
+  function statusPopup(html, cls) {
+    const id = 'co-pay-status'; let el = document.getElementById(id); if (el) el.remove();
+    el = document.createElement('div'); el.className = 'modal'; el.id = id; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+    el.innerHTML = `<div class="pp-box pp-box--480 ${cls || ''}"><div class="pp-pad pp-center">${html}</div></div>`;
+    document.body.appendChild(el); FB.hydrateIcons(el); FB.openModal(id);
+    setTimeout(() => { const f = el.querySelector('[data-close],button,a'); f && f.focus({ preventScroll: true }); }, 60);
+    return el;
+  }
+  const closeX = () => `<button type="button" class="pp-x" data-close aria-label="Đóng">${icon('close')}</button>`;
+  const MSG = {
+    PENDING: ['Đang chờ xác nhận thanh toán', 'Chưa nhận được kết quả từ cổng thanh toán. Nếu bạn đã thanh toán, vui lòng đợi thêm ít phút rồi kiểm tra lại.', 'clock'],
+    FAILED: ['Thanh toán không thành công', 'Giao dịch đã bị từ chối. Bạn chưa bị trừ tiền — hãy thử lại hoặc chọn phương thức khác.', 'alert-triangle'],
+    CANCELED: ['Giao dịch đã bị hủy', 'Bạn đã hủy giao dịch trên cổng thanh toán. Đơn hàng vẫn được giữ để bạn thanh toán lại.', 'alert-triangle'],
+    EXPIRED: ['Mã thanh toán đã hết hạn', 'Đã quá thời gian thanh toán cho mã này. Hãy tạo mã mới để tiếp tục — nếu đã chuyển tiền, vui lòng gọi hotline 0123 456 789.', 'clock'],
+    UNDERPAID: ['Số tiền chuyển chưa đủ', 'Nhà hàng nhận được khoản chuyển nhỏ hơn số tiền cần thanh toán. Vui lòng chuyển bổ sung phần còn thiếu hoặc gọi hotline 0123 456 789 để được hỗ trợ.', 'alert-triangle'],
+    WRONG_CONTENT: ['Nội dung chuyển khoản chưa khớp', 'Hệ thống chưa đối chiếu được khoản chuyển với đơn này do sai nội dung. Nhân viên sẽ kiểm tra thủ công — vui lòng gọi hotline 0123 456 789 và cung cấp mã đơn.', 'alert-triangle'],
+    ERROR: ['Chưa kiểm tra được trạng thái', 'Kết nối đang gián đoạn. Vui lòng thử kiểm tra lại.', 'wifi-off']
+  };
+  async function checkPayment(o) {
+    statusPopup(`<span class="pp-spin" role="progressbar" aria-label="Đang kiểm tra"></span><h3 class="t-h3">Đang kiểm tra trạng thái thanh toán…</h3>
+      <p class="t-body c-gray">Fiabesco đang đối chiếu giao dịch ${esc(o.pay.ref || '')} với ${esc(o.pay.label)}. Vui lòng không tắt trình duyệt.</p>`, 'tc-lock-pp');
+    let r; try { r = await PAYAPI.check(o.id); } catch (e) { r = { status: 'ERROR' }; }
+    FB.closeModal('co-pay-status');
+    if (r.status === 'PAID') { statusPopup(`<span class="pp-badge pp-badge--green">${icon('check')}</span><h3 class="t-h3">Thanh toán đã được xác nhận</h3><p class="t-body c-gray">Đang chuyển tới trang xác nhận đơn hàng…</p>`); setTimeout(() => done(r.order), 900); return; }
+    const [t, dsc, ic] = MSG[r.status] || MSG.PENDING;
+    const retry = ['FAILED', 'CANCELED', 'EXPIRED'].includes(r.status);
+    const el = statusPopup(`${closeX()}<span class="pp-badge ${r.status === 'PENDING' ? '' : 'pp-badge--soft'}">${icon(ic)}</span>
+      <h3 class="t-h3">${t}</h3><p class="t-body c-gray">${dsc}</p>
+      <span class="pp-tag ${r.status === 'PENDING' ? '' : 'pp-tag--wine'}">Mã đơn #${esc(o.id)}</span>
+      <div class="pp-actions">${retry ? `<button type="button" class="btn btn--outline" data-pp-act="methods">Đổi phương thức</button><button type="button" class="btn btn--wine" data-pp-act="retry">${r.status === 'EXPIRED' ? 'Tạo mã mới' : 'Thử lại'}</button>`
+        : `<button type="button" class="btn btn--outline" data-close>Đóng</button><button type="button" class="btn btn--navy" data-pp-act="recheck">Kiểm tra lại</button>`}</div>`);
+    el.addEventListener('click', async e => {
+      const a = e.target.closest('[data-pp-act]'); if (!a) return; FB.closeModal(el);
+      if (a.dataset.ppAct === 'recheck') checkPayment(O.get(o.id));
+      if (a.dataset.ppAct === 'methods') backToMethods();
+      if (a.dataset.ppAct === 'retry') { const n = O.get(o.id); n.pay.status = 'UNPAID'; n.pay.ref = null; n.pay.expiresAt = null; O.put(n); n.pay.method === 'VietQR' ? openQR(n) : openGateway(n); }
+    });
+  }
+
+  /* ---------- Bộ điều khiển mô phỏng (CHỈ DEMO) ---------- */
+  function demoCtl(o, opts) {
+    return `<details class="demo-ctl"><summary>${icon('sparkle')}Bộ điều khiển mô phỏng <span>· chỉ dùng cho demo đồ án</span></summary>
+      <p>Giả lập kết quả mà ${esc(opts.who)} gửi về máy chủ. Trang chỉ chuyển sang “Đặt hàng thành công” sau khi bạn bấm “${esc(opts.check)}” và kết quả là thành công.</p>
+      <div class="demo-ctl__btns">${opts.results.map(([k, l]) => `<button type="button" class="chip chip--sm" data-demo="${k}">${esc(l)}</button>`).join('')}</div>
+      <p class="demo-ctl__state">Kết quả máy chủ hiện tại: <b data-demo-state>${esc(o.pay.status)}</b></p></details>`;
+  }
+  function bindDemo(root, o, after) {
+    root.addEventListener('click', e => {
+      const b = e.target.closest('[data-demo]'); if (!b) return;
+      const k = b.dataset.demo; const n = O.get(o.id);
+      if (k === 'EXPIRED') { n.pay.expiresAt = Date.now() - 1; O.put(n); } else PAYAPI.demoResolve(o.id, k);
+      const s = $('[data-demo-state]', root); if (s) s.textContent = k === 'EXPIRED' ? 'PENDING (đã quá hạn)' : k;
+      FB.toast('Đã ghi kết quả mô phỏng', 'Bấm nút kiểm tra để xác nhận trạng thái thanh toán.', '', '', 'navy');
+      after && after(k);
+    });
+  }
+
+  /* ---------- D1 · ZaloPay / D2 · Apple Pay / D4 · Thẻ: màn hình cổng thanh toán ---------- */
+  const main = $('main.order'), head = $('.order__head'), box = $('#paybox');
+  function showPayScreen(on) {
+    form.hidden = on; head.hidden = on; box.hidden = !on; main.classList.toggle('is-paying', on);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function backToMethods() {
+    showPayScreen(false); form.classList.remove('is-qr'); $('#qr-panel').hidden = true; clearInterval(qrTimer);
+    $('#pay-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  const applePaySupported = () => { try { return !!(window.ApplePaySession && ApplePaySession.canMakePayments && ApplePaySession.canMakePayments()); } catch (e) { return false; } };
+  async function openGateway(o) {
+    let r; try { r = await PAYAPI.start(o.id); } catch (e) { FB.toast('Không khởi tạo được giao dịch', 'Vui lòng thử lại.', '', '', 'navy'); return; }
+    o = O.get(o.id); const m = o.pay.method;
+    const last4 = m === 'Thẻ quốc tế' ? $('#cc-num').value.replace(/\s/g, '').slice(-4) : ''; clearCard(); // không giữ thông tin thẻ
+    const ap = m === 'Apple Pay' ? applePaySupported() : null;
+    const steps = {
+      'ZaloPay': ['Bấm “Mở cổng thanh toán ZaloPay” để chuyển sang cổng ZaloPay.', 'Xác nhận giao dịch trong ứng dụng ZaloPay (quét mã hoặc xác thực).', 'Quay lại trang này — Fiabesco sẽ kiểm tra trạng thái và xác nhận đơn.'],
+      'Apple Pay': ['Dùng Safari trên iPhone, iPad hoặc Mac đã thêm thẻ vào Wallet.', 'Xác thực bằng Face ID / Touch ID trên bảng thanh toán của Apple.', 'Đơn hàng chỉ được xác nhận khi Apple Pay và ngân hàng báo thành công.'],
+      'Thẻ quốc tế': ['Ngân hàng phát hành có thể yêu cầu xác thực 3-D Secure (OTP).', 'Hoàn tất xác thực trên trang của ngân hàng.', 'Fiabesco chỉ xác nhận đơn khi cổng thanh toán báo giao dịch thành công.']
+    }[m];
+    const results = m === 'Apple Pay' ? [['PAID', 'Apple Pay: Thành công'], ['FAILED', 'Apple Pay: Bị từ chối'], ['CANCELED', 'Khách đóng bảng thanh toán']]
+      : m === 'Thẻ quốc tế' ? [['PAID', 'Ngân hàng: Chấp thuận'], ['FAILED', 'Ngân hàng: Từ chối'], ['CANCELED', 'Khách hủy xác thực 3-D Secure']]
+      : [['PAID', 'ZaloPay: Thành công'], ['FAILED', 'ZaloPay: Thất bại'], ['CANCELED', 'Khách hủy trên ZaloPay']];
+    box.innerHTML = `<div class="paybox__card card">
+      <span class="paybox__demo">${icon('alert-triangle')}Mô phỏng thanh toán — chưa kết nối cổng ${esc(m === 'Thẻ quốc tế' ? 'thanh toán thẻ' : m)} thật, không phát sinh giao dịch</span>
+      <span class="paybox__logo"><img src="${IMG + LOGO[m]}" alt="${esc(o.pay.label)}"></span>
+      <h1 class="t-h2 paybox__title">${m === 'Thẻ quốc tế' ? 'Thanh toán bằng thẻ VISA / Mastercard' : 'Thanh toán qua ' + esc(m)}</h1>
+      <dl class="paybox__info">
+        <div><dt>Tổng tiền thanh toán</dt><dd class="paybox__amount money">${money(o.total)}</dd></div>
+        <div><dt>Mã đơn hàng</dt><dd>#${esc(o.id)}</dd></div>
+        <div><dt>Mã giao dịch</dt><dd>${esc(r.ref)}</dd></div>
+        ${last4 ? `<div><dt>Thẻ</dt><dd>•••• ${esc(last4)}</dd></div>` : ''}
+      </dl>
+      ${m === 'Apple Pay' ? `<div class="paybox__alert${ap ? '' : ' is-warn'}">${icon(ap ? 'shield-check' : 'alert-triangle')}<span>${ap
+        ? 'Thiết bị này hỗ trợ Apple Pay, nhưng nhà hàng chưa cấu hình Apple Pay merchant với đơn vị xử lý thanh toán — chưa thể mở bảng thanh toán thật.'
+        : 'Trình duyệt hoặc thiết bị này không hỗ trợ Apple Pay. Vui lòng mở trang bằng Safari trên thiết bị Apple, hoặc chọn phương thức khác.'}</span></div>` : ''}
+      <ol class="paybox__steps">${steps.map((s, i) => `<li><b>${i + 1}</b><span>${esc(s)}</span></li>`).join('')}</ol>
+      <div class="paybox__actions">
+        ${m === 'ZaloPay' ? `<button type="button" class="btn btn--navy" data-gw="open">Mở cổng thanh toán ZaloPay ${icon('arrow-right')}</button>` : ''}
+        ${m === 'Thẻ quốc tế' ? `<button type="button" class="btn btn--navy" data-gw="open">Tiếp tục xác thực thẻ ${icon('arrow-right')}</button>` : ''}
+        <button type="button" class="btn btn--wine" data-gw="check">Tôi đã thanh toán – Kiểm tra trạng thái</button>
+        <div class="paybox__row"><button type="button" class="btn btn--outline" data-gw="back">${icon('arrow-left')}Chọn phương thức khác</button><button type="button" class="btn btn--outline" data-gw="cancel">Hủy giao dịch</button></div>
+      </div>
+      ${m === 'ZaloPay' ? '<p class="paybox__note">Tìm hiểu thêm về Zalo tại <a href="https://zalo.me/vi/" target="_blank" rel="noopener noreferrer">zalo.me</a> (trang thông tin, không phải nơi xác nhận giao dịch).</p>' : ''}
+      ${demoCtl(o, { who: m === 'Thẻ quốc tế' ? 'ngân hàng / cổng thanh toán thẻ' : (m === 'Apple Pay' ? 'Apple Pay & đơn vị xử lý thanh toán' : 'ZaloPay Gateway'), check: 'Tôi đã thanh toán – Kiểm tra trạng thái', results })}
+    </div>`;
+    FB.hydrateIcons(box); showPayScreen(true);
+    bindDemo(box, o);
+    box.onclick = e => {
+      const a = e.target.closest('[data-gw]'); if (!a) return;
+      const act = a.dataset.gw; const cur = O.get(o.id);
+      if (act === 'back') return backToMethods();
+      if (act === 'cancel') { PAYAPI.demoResolve(o.id, 'CANCELED', 'Khách hủy'); FB.toast('Đã hủy giao dịch', 'Đơn hàng vẫn được giữ — bạn có thể chọn phương thức khác.', '', '', 'navy'); return backToMethods(); }
+      if (act === 'check') return checkPayment(cur);
+      if (act === 'open') { // Tích hợp thật: location.href = payUrl (do backend lấy từ cổng). Demo: mở bảng mô phỏng.
+        const d = $('.demo-ctl', box); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        FB.toast('Chưa có cổng thanh toán thật', 'Dùng “Bộ điều khiển mô phỏng” để giả lập kết quả, rồi bấm Kiểm tra trạng thái.', '', '', 'navy');
+      }
+    };
+    setTimeout(() => { const h = $('.paybox__title', box); h.tabIndex = -1; h.focus({ preventScroll: true }); }, 80);
+  }
+
+  /* ---------- D3 · VietQR (tái sử dụng tạo mã của trang Đặt cọc) ---------- */
+  const P = window.FB_DAT_COC; let qrTimer = 0;
+  function qrSVG(text) {
+    const qr = FB_QR.create(text, 'M'), n = qr.getModuleCount(), q = 2; let d = '';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c + q} ${r + q}h1v1h-1z`;
+    return `<svg viewBox="0 0 ${n + q * 2} ${n + q * 2}" shape-rendering="crispEdges" aria-hidden="true"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#002842"/></svg>`;
+  }
+  async function openQR(o) {
+    const panel = $('#qr-panel');
+    if (panel.parentElement !== $('.order__left', form)) $('.order__left', form).prepend(panel); // nằm trong cột trái, thay các mục 1–3
+    if (!P || !window.FB_QR) { FB.toast('Không tạo được mã VietQR', 'Thiếu cấu hình chuyển khoản — vui lòng chọn phương thức khác.', '', '', 'navy'); return; }
+    try { await PAYAPI.start(o.id); } catch (e) { return; }
+    o = O.get(o.id);
+    const content = P.transferContent(o.id); // "FIAB <mã đơn>"
+    const B = P.BANK, fmtAcc = a => String(a).replace(/^(\d{4})(\d{4})(\d+)$/, '$1 $2 $3');
+    panel.innerHTML = `<h2 class="num-title t-h4" id="qr-title"><b>${icon('credit-card')}</b>Chuyển khoản VietQR</h2>
+      ${B.demo ? `<p class="qr-demo">${icon('alert-triangle')}<span><strong>Mô phỏng thanh toán:</strong> tài khoản nhận tiền đang là cấu hình minh họa của đồ án (BANK.demo = true). Vui lòng <u>không chuyển tiền thật</u>.</span></p>` : ''}
+      <div class="qr-grid">
+        <div class="tc-qrbox">${B.demo ? '<span class="tc-demo">Mã minh họa</span>' : ''}<div class="tc-qr" role="img" aria-label="Mã VietQR thanh toán đơn ${esc(o.id)}">${qrSVG(P.buildVietQR({ amount: o.total, content }))}</div>
+          <span class="tc-expiry">${icon('clock')}Mã hết hạn sau <b data-qr-left>15:00</b></span></div>
+        <dl class="tc-transfer">
+          <div><dt>Ngân hàng</dt><dd>${esc(B.bankName)}</dd></div>
+          <div><dt>Chủ tài khoản</dt><dd>${esc(B.accountName)}</dd></div>
+          <div class="tc-transfer__copy"><div><dt>Số tài khoản</dt><dd class="tc-num">${esc(fmtAcc(B.accountNo))}</dd></div><button type="button" class="tc-copy" data-qcopy="${esc(B.accountNo)}">${icon('copy')}Sao chép</button></div>
+          <div class="tc-transfer__copy"><div><dt>Số tiền</dt><dd class="tc-num c-wine money">${money(o.total)}</dd></div><button type="button" class="tc-copy" data-qcopy="${o.total}">${icon('copy')}Sao chép</button></div>
+          <div class="tc-transfer__copy"><div><dt>Nội dung chuyển khoản</dt><dd class="c-wine">${esc(content)}</dd></div><button type="button" class="tc-copy" data-qcopy="${esc(content)}">${icon('copy')}Sao chép</button></div>
+          <p class="tc-warn">Giữ nguyên số tiền và nội dung chuyển khoản để hệ thống tự đối chiếu đúng đơn #${esc(o.id)}.</p>
+        </dl>
+      </div>
+      ${demoCtl(o, { who: 'ngân hàng (đối soát giao dịch)', check: 'Tôi đã chuyển khoản', results: [['PAID', 'Đã nhận đủ tiền'], ['UNDERPAID', 'Chuyển thiếu tiền'], ['WRONG_CONTENT', 'Sai nội dung'], ['EXPIRED', 'Quá thời gian']] })}
+      <div class="qr-actions"><button type="button" class="btn btn--outline" data-qr="back">${icon('arrow-left')}Quay lại phương thức thanh toán</button>
+        <button type="button" class="btn btn--wine" data-qr="paid">Tôi đã chuyển khoản</button></div>`;
+    FB.hydrateIcons(panel);
+    form.classList.add('is-qr'); panel.hidden = false; panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    bindDemo(panel, o);
+    panel.onclick = async e => {
+      const c = e.target.closest('[data-qcopy]');
+      if (c) { let ok = false; try { await navigator.clipboard.writeText(c.dataset.qcopy); ok = true; } catch (er) { const ta = document.createElement('textarea'); ta.value = c.dataset.qcopy; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try { ok = document.execCommand('copy'); } catch (x) {} ta.remove(); }
+        if (ok) { c.classList.add('is-done'); c.lastChild.textContent = 'Đã chép'; setTimeout(() => { c.classList.remove('is-done'); c.lastChild.textContent = 'Sao chép'; }, 1600); } return; }
+      const a = e.target.closest('[data-qr]'); if (!a) return;
+      if (a.dataset.qr === 'back') return backToMethods();
+      if (a.dataset.qr === 'paid') return checkPayment(O.get(o.id));
+    };
+    clearInterval(qrTimer);
+    const tick = () => { const n = O.get(o.id); const left = Math.max(0, (n.pay.expiresAt || 0) - Date.now()); const s = Math.ceil(left / 1000);
+      const el = $('[data-qr-left]', panel); if (el) el.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+      panel.classList.toggle('is-expired', !left); if (!left) clearInterval(qrTimer); };
+    tick(); qrTimer = setInterval(tick, 1000);
+  }
+
+  // Quay lại trang khi đơn còn chờ thanh toán (ví dụ trở về từ cổng): hiện lại màn hình & kiểm tra trạng thái
+  (function resume() {
+    const o = getPending(); if (!o || !['PENDING'].includes(o.pay.status)) return;
+    current = o;
+    if (o.pay.method === 'VietQR') openQR(o).then(() => FB.params.get('pay') === 'return' && checkPayment(O.get(o.id)));
+    else openGateway(o).then(() => checkPayment(O.get(o.id)));
+  })();
 
   form.addEventListener('submit', e => {
     e.preventDefault(); let n = 0;
@@ -209,6 +466,7 @@ document.addEventListener('fb:ready', () => {
     if (n) { $('#err-sum').scrollIntoView({ behavior: 'smooth', block: 'center' }); if (av.first) av.first.focus({ preventScroll: true }); return; }
     renderShipTo();
     if (!pickup) { const a = readAddress(); if (isOutOfZone(a) || FB.demo === 'out-of-zone') { outOfZone(a.full); return; } }
+    if ($('.pay.is-active').dataset.pay === 'Thẻ quốc tế') { const ce = cardCheck(); $('#cc-err').hidden = !ce; $('#cc-err').textContent = ce; if (ce) { $('#cc-num').focus(); return; } }
     if (FB.demo === 'payment-failed') { payFailed(); return; }
     finish();
   });

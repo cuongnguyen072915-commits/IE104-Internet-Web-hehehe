@@ -18,12 +18,12 @@ window.FB_DATA = (function () {
     { id: 'combo-dong-am', name: 'Combo Đông Ấm', price: 249000, desc: '2 người · Súp, risotto, trà', img: '../assets/template-20261120T115451Z-1-001 - Copy/template/combo-dong-am.jpg' }
   ];
   const categories = [
-    { id: 'all', name: 'Tất cả', count: 42, img: '../assets/template-20261120T115451Z-1-001 - Copy/template/category-pasta.png' },
-    { id: 'khai-vi', name: 'Khai vị', count: 8, img: '../assets/template-20261120T115451Z-1-001 - Copy/template/category-appetizer.png' },
-    { id: 'sup', name: 'Súp', count: 5, img: '../assets/template-20261120T115451Z-1-001 - Copy/template/category-soup.png' },
-    { id: 'mi-y', name: 'Mì Ý', count: 10, img: '../assets/template-20261120T115451Z-1-001 - Copy/template/category-pasta.png' },
-    { id: 'risotto', name: 'Risotto', count: 6, img: '../assets/template-20261120T115451Z-1-001 - Copy/template/category-risotto.png' },
-    { id: 'salad', name: 'Salad', count: 4, img: IMG + 'dish-caprese-burrata.jpg' },
+    { id: 'all', name: 'Tất cả', count: 42, img: IMG + 'dish-lasagna-top-view.jpg' },
+    { id: 'khai-vi', name: 'Khai vị', count: 8, img: IMG + 'dish-bruschetta.jpg' },
+    { id: 'sup', name: 'Súp', count: 5, img: IMG + 'dish-minestrone-soup.jpg' },
+    { id: 'mi-y', name: 'Mì Ý', count: 10, img: IMG + 'dish-spaghetti-bolognese.jpg' },
+    { id: 'risotto', name: 'Risotto', count: 6, img: IMG + 'risotto-funghi.jpg' },
+    { id: 'salad', name: 'Salad', count: 4, img: IMG + 'salad-caesar.jpg' },
     { id: 'nuong', name: 'Món nướng', count: 5, img: IMG + 'dish-baked-pasta.jpg' },
     { id: 'trang-mieng', name: 'Tráng miệng', count: 4, img: IMG + 'dish-tiramisu.jpg' },
     { id: 'do-uong', name: 'Thức uống & Rượu', count: 9, img: IMG + 'drink-red-wine.jpg' }

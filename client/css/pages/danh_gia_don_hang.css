@@ -21,3 +21,18 @@
 .review .result__actions{display:flex;gap:12px}
 .review .result__actions .btn{flex:1}
 @media (max-width:640px){.review{padding:24px 20px}.review__gift{flex-wrap:wrap}.review .result__actions{flex-direction:column}}
+
+/* G · Chi tiết đơn (400px, bên trái) ↔ Đánh giá (co giãn, bên phải) */
+.order__left.review--wide{width:auto;flex:1 1 0;min-width:0}
+.summary--first{position:sticky;top:120px}
+.review.is-locked{opacity:.85}
+.review.is-locked .review__stars button{cursor:not-allowed}
+.review__lock{display:flex;gap:10px;align-items:flex-start;margin:0;padding:12px 14px;border-radius:12px;background:var(--cream-2);font:400 14px/1.5 var(--f-sans);color:var(--navy)}
+.review__lock .ic{width:18px;height:18px;flex:none;margin-top:2px}
+.review__done{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.stars-big{font-size:26px;letter-spacing:.06em;color:var(--gold)}
+.stars__off{color:var(--dis)}
+.review__quote{margin:0;padding-left:14px;border-left:3px solid var(--wine);font:400 17px/1.5 var(--f-display);color:var(--navy)}
+.review__stars strong[hidden]{display:none}
+.review__stars button.is-on .ic path{fill:currentColor;stroke:currentColor}
+@media (max-width:1100px){.summary--first{position:static}}

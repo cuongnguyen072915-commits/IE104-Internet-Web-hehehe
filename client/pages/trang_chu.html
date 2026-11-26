@@ -11,14 +11,27 @@
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/pc-components.css">
   <link rel="stylesheet" href="../css/pages/trang_chu.css">
+  <link rel="stylesheet" href="../css/tim_kiem.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
+  <link rel="stylesheet" href="../css/tuy_chinh_mon.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="trang_chu">
   <!-- Frame: PC – 01 Trang chủ -->
   <header data-header></header>
 
   <main class="site-main" id="noi-dung-chinh">
+    <!-- A7 · Thanh tìm kiếm chung (js/tim_kiem.js) -->
+    <section class="gsearch" aria-label="Tìm kiếm trên website">
+      <div class="container">
+        <form class="gsearch__form" id="gsearch" role="search" autocomplete="off" novalidate>
+          <i data-icon="search"></i>
+          <input id="gsearch-input" type="search" name="q" placeholder="Bạn đang tìm món ăn, ưu đãi hay thông tin gì?" aria-label="Tìm món ăn, ưu đãi hoặc thông tin" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="gsearch-pop" maxlength="80">
+          <button class="gsearch__btn" type="submit">Tìm kiếm</button>
+          <div class="gsearch__pop" id="gsearch-pop" role="listbox" aria-label="Gợi ý tìm kiếm" hidden></div>
+        </form>
+      </div>
+    </section>
     <!-- Hero -->
     <section class="hero">
       <div class="container hero__inner">
@@ -128,7 +141,7 @@
               <span class="t-eyebrow c-goldl">Ưu đãi hôm nay</span>
               <strong class="t-h1 c-white">Giảm 15%</strong>
               <span class="t-body" style="color:rgba(255,255,255,.8)">Cho combo gia đình từ 4 người</span>
-              <span class="code c-goldl">MÃ: FIABESCO15</span>
+              <span class="code c-goldl code--copy" role="button" tabindex="0" data-copy-code="FIABESCO15" aria-label="Sao chép mã giảm giá FIABESCO15" title="Nhấn để sao chép mã">MÃ: FIABESCO15</span>
             </div>
             <img class="offer__img offer__img--gold" src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-baking-dish.jpg" alt="">
           </a>
@@ -137,7 +150,7 @@
               <span class="t-eyebrow c-wine">Giao hàng tận nơi</span>
               <strong class="t-h1 c-wine">Freeship</strong>
               <span class="t-body c-gray">Cho đơn từ 300.000đ trong bán kính 5km</span>
-              <span class="code c-wine">MÃ: FREESHIP</span>
+              <span class="code c-wine code--copy" role="button" tabindex="0" data-copy-code="FREESHIP" aria-label="Sao chép mã giảm giá FREESHIP" title="Nhấn để sao chép mã">MÃ: FREESHIP</span>
             </div>
             <img class="offer__img" src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-chicken-risotto.jpg" alt="">
           </a>
@@ -200,7 +213,7 @@
           </div>
           <div class="reviews__sum">
             <strong>4.8</strong>
-            <div class="stack" style="gap:4px"><span class="stars">★★★★★</span><span class="t-caption c-gray">Từ 2.000+ đánh giá trên Google &amp; Foody</span></div>
+            <div class="stack" style="gap:4px"><span class="stars">★★★★★</span><span class="t-caption c-gray">Điểm trung bình · đánh giá minh họa</span></div>
             <div class="row" style="gap:12px">
               <button class="icon-btn reviews__nav" data-dir="-1" aria-label="Trước"><i data-icon="arrow-left"></i></button>
               <button class="icon-btn reviews__nav reviews__nav--fill" data-dir="1" aria-label="Sau"><i data-icon="arrow-right"></i></button>
@@ -209,6 +222,7 @@
         </div>
         <div class="reviews__viewport"><div class="reviews__track" id="reviews-track"></div></div>
         <div class="dots" id="reviews-dots"></div>
+        <p class="reviews__note">Các đánh giá trên là nội dung minh họa do nhóm biên soạn cho đồ án, không phải đánh giá đã xác minh từ Google hay Foody.</p>
       </div>
     </section>
 
@@ -269,8 +283,12 @@
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
+  <script src="../js/data/chi_tiet_mon.js"></script>
+  <script src="../js/data/blog.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/popups.js"></script>
+  <script src="../js/tuy_chinh_mon.js"></script>
   <script src="../js/pages/trang_chu.js"></script>
+  <script src="../js/tim_kiem.js"></script>
 </body>
 </html>

@@ -253,7 +253,9 @@
     const add = e.target.closest('.dish__add'); if (!add) return;
     const card = add.closest('.dish'); if (!card) return;
     e.preventDefault(); e.stopPropagation();
-    const id = card.dataset.id; Cart.add(id); openAdded(id);
+    const id = card.dataset.id;
+    // A3: mở popup tùy chỉnh (js/tuy_chinh_mon.js) — chỉ thêm vào giỏ khi người dùng xác nhận
+    if (FB.openCustomize) FB.openCustomize(id); else { Cart.add(id); openAdded(id); }
   }, true);
 
   // Món yêu thích (localStorage) – đồng bộ trái tim trên mọi thẻ món
@@ -303,7 +305,7 @@
   }
   // Ảnh/tên combo trong giỏ: main/gio_hang tra FB_DATA.byId → bổ sung tra combo
   if (D.byId && !D.__comboPatched) { const base = D.byId; D.byId = id => base(id) || (D.combos || []).find(c => c.id === id); D.__comboPatched = true; }
-  document.addEventListener('click', e => { const b = e.target.closest('.combo__more,[data-combo]'); if (!b) return; e.preventDefault(); e.stopImmediatePropagation(); openCombo(b.dataset.combo || b.closest('[data-combo]')?.dataset.combo); }, true);
+  document.addEventListener('click', e => { const b = e.target.closest('.combo__more,[data-combo]'); if (!b) return; e.preventDefault(); e.stopImmediatePropagation(); FB.openCombo(b.dataset.combo || b.closest('[data-combo]')?.dataset.combo); }, true);
 
   // Chọn địa chỉ giao
   const ADDRS = [['home', 'Nhà riêng', '12 Nguyễn Huệ, P. Bến Nghé, Quận 1, TP. Hồ Chí Minh', '1,2 km', 'Quận 1'], ['work', 'Công ty', '268 Lý Thường Kiệt, P. 14, Quận 10, TP. Hồ Chí Minh', '3,4 km', 'Quận 10'], ['parent', 'Nhà ba mẹ', '45 Phan Xích Long, P. 2, Phú Nhuận, TP. Hồ Chí Minh', '4,1 km', 'Phú Nhuận']];
@@ -429,8 +431,17 @@
       if (e.target.closest('[data-bulk-del]')) { const idx = checked(); if (idx.length) openRemove(idx, () => { $('#del-sel').dataset.ppOk = '1'; $('#del-sel').click(); bar.classList.remove('is-on'); }); }
       if (e.target.closest('[data-bulk-size]')) {
         const idx = checked(); if (!idx.length) return; const list = Cart.get();
-        idx.forEach(i => { const it = list[i]; const d = D.byId(it.id); if (!d || it.combo) return; const big = /Phần lớn/.test(it.opt); it.opt = big ? it.opt.replace('Phần lớn', 'Phần tiêu chuẩn') : (/Phần tiêu chuẩn/.test(it.opt) ? it.opt.replace('Phần tiêu chuẩn', 'Phần lớn') : 'Phần lớn · ' + it.opt); it.unit += big ? -60000 : 60000; });
-        Cart.set(list); rerenderCart(); FB.toast('Đã đổi khẩu phần', `${idx.length} món đã chọn`, '', '', 'navy');
+        const C = FB.Custom;
+        idx.forEach(i => {
+          const it = list[i]; const d = D.byId(it.id); if (!d || it.combo) return;
+          if (C) { // đổi qua lại giữa 2 khẩu phần đầu tiên mà món hỗ trợ, giá tính lại theo dữ liệu
+            const o = C.optionsFor(it.id); if (!o || o.sizes.length < 2) return;
+            const s = C.selOf(it); s.size = s.size === o.sizes[0].label ? o.sizes[1].label : o.sizes[0].label;
+            list[i] = { ...C.makeItem(it.id, it.qty, s) }; return;
+          }
+          const big = /Phần lớn/.test(it.opt); it.opt = big ? it.opt.replace('Phần lớn', 'Phần tiêu chuẩn') : (/Phần tiêu chuẩn/.test(it.opt) ? it.opt.replace('Phần tiêu chuẩn', 'Phần lớn') : 'Phần lớn · ' + it.opt); it.unit += big ? -60000 : 60000;
+        });
+        Cart.set(FB.Custom ? FB.Custom.mergeCart(list) : list); rerenderCart(); FB.toast('Đã đổi khẩu phần', `${idx.length} món đã chọn`, '', '', 'navy');
       }
     });
     // Thùng rác từng món & "Xóa đã chọn" → popup xác nhận
@@ -441,7 +452,7 @@
       if (ds && !ds.dataset.ppOk) { e.preventDefault(); e.stopImmediatePropagation(); const idx = checked(); if (idx.length) openRemove(idx, () => { ds.dataset.ppOk = '1'; ds.click(); }); return; }
       if (ds) delete ds.dataset.ppOk;
       const ed = e.target.closest('#items .cart-item__edit');
-      if (ed) { const row = ed.closest('.cart-item'); if (row && openInlineEdit(row)) { e.preventDefault(); e.stopImmediatePropagation(); } }
+      if (ed) { const row = ed.closest('.cart-item'); if (row && (FB.openInlineEdit || openInlineEdit)(row)) { e.preventDefault(); e.stopImmediatePropagation(); } }
     }, true);
   }
 
@@ -477,10 +488,16 @@
       <span class="pp-badge pp-badge--wine">!</span>
       <h3 class="t-h3">Hủy đơn hàng #${esc(o.code || 'FB2611-0248')}?</h3>
       <span class="pp-tag pp-tag--green">${I('clock')}Nhà hàng chưa bắt đầu chế biến món</span>
-      <p class="t-body c-gray">${o.pay === 'Tiền mặt' ? 'Đơn thanh toán khi nhận hàng nên bạn không bị trừ tiền.' : `Nếu hủy bây giờ, số tiền đã thanh toán qua ${esc(o.pay || 'ZaloPay')} sẽ được hoàn lại trong 1–3 ngày làm việc.`} Bạn không thể khôi phục đơn sau khi hủy.</p>
+      <p class="t-body c-gray">${o.pay === 'Tiền mặt' || o.paid === false ? 'Đơn chưa phát sinh thanh toán nên bạn không bị trừ tiền.' : `Nếu hủy bây giờ, số tiền đã thanh toán qua ${esc(o.pay || 'ZaloPay')} sẽ được hoàn lại trong 1–3 ngày làm việc.`} Bạn không thể khôi phục đơn sau khi hủy.</p>
       <div class="pp-actions"><button type="button" class="btn btn--outline" data-close>Giữ đơn</button><button type="button" class="btn btn--wine" data-ok>Hủy đơn</button></div>
     </div>`, 'pp-box--500');
     $('#pp-cancel [data-ok]').addEventListener('click', () => {
+      // Đơn trong FB_ORDERS: chỉ hủy khi luồng trạng thái cho phép (chưa chuẩn bị món)
+      if (o.id && window.FB_ORDERS) {
+        const r = FB_ORDERS.transition(o.id, 'CANCELED', 'Khách hủy đơn');
+        if (!r.ok) { close('pp-cancel'); FB.toast('Không thể hủy đơn', r.error, '', '', 'navy'); return; }
+        location.href = 'don_hang_da_huy.html?ma=' + encodeURIComponent(o.id); return;
+      }
       try { const cur = JSON.parse(sessionStorage.getItem('fb_order') || '{}'); cur.canceled = true; cur.canceledAt = Date.now(); sessionStorage.setItem('fb_order', JSON.stringify(cur)); } catch (e) {}
       location.href = 'don_hang_da_huy.html';
     });
@@ -520,13 +537,13 @@
       // Thẻ món nổi bật → Xem nhanh món; "Đặt món ngay" → Chọn vị trí giao hàng
       document.addEventListener('click', e => {
         const link = e.target.closest('#featured-grid .dish__media,#featured-grid .dish__name');
-        if (link) { e.preventDefault(); e.stopImmediatePropagation(); openQuickView(link.closest('.dish').dataset.id); return; }
+        if (link) { e.preventDefault(); e.stopImmediatePropagation(); FB.openQuickView(link.closest('.dish').dataset.id); return; }
         const order = e.target.closest('a.btn[href="thuc_don.html"]');
         if (order && /Đặt món ngay/i.test(order.textContent) && !store.get(ADDR_KEY, null)) { e.preventDefault(); e.stopImmediatePropagation(); openLocation('thuc_don.html'); }
       }, true);
     }
     const p = FB.params.get('popup');   // xem nhanh từng popup: ?popup=login|register|welcome|location|recruit|quick|combo|address|thanks
-    ({ login: () => openAuth('login'), register: () => openAuth('register'), welcome: openWelcome, location: () => openLocation(), recruit: openRecruit, quick: () => openQuickView(FB.params.get('id') || 'burrata'), combo: () => openCombo(FB.params.get('id') || 'combo-an-y'), address: openAddress, thanks: openThanks, processing: () => payProcessing('ZaloPay', 499000) })[p]?.();
+    ({ login: () => openAuth('login'), register: () => openAuth('register'), welcome: openWelcome, location: () => openLocation(), recruit: openRecruit, quick: () => FB.openQuickView(FB.params.get('id') || 'burrata'), combo: () => FB.openCombo(FB.params.get('id') || 'combo-an-y'), address: openAddress, thanks: openThanks, processing: () => payProcessing('ZaloPay', 499000) })[p]?.();
   });
 
   Object.assign(FB, { Fav, openAuth, openWelcome, openQuickView, openLocation, openRecruit, openAdded, openCombo, openAddress, openRemove, payProcessing, openCancelOrder, openThanks, store, getUser, renderAccount });

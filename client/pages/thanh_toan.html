@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/pages/thanh_toan.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
+  <link rel="stylesheet" href="../css/tuy_chinh_mon.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="thanh_toan">
   <!-- Frame: PC – 05 Thanh toán (+ E08 ngoài vùng giao, E10 lỗi nhập, E11 thanh toán thất bại) -->
@@ -81,6 +82,16 @@
             <button type="button" class="pay is-active" data-pay="ZaloPay" data-bonus="10000"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-zalopay.png" alt="ZaloPay"></span><span class="pay__text"><strong>Ví ZaloPay</strong><small>Liên kết ví, thanh toán 1 chạm</small></span><span class="pill pill--wine">Giảm 10k</span></button>
             <button type="button" class="pay" data-pay="VietQR"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-vietqr.png" alt="VietQR"></span><span class="pay__text"><strong>Chuyển khoản VietQR</strong><small>Quét mã QR từ mọi ứng dụng ngân hàng</small></span></button>
             <button type="button" class="pay" data-pay="Thẻ quốc tế"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-visa-mastercard.png" alt="VISA / Mastercard"></span><span class="pay__text"><strong>Thẻ VISA / Mastercard</strong><small>Thẻ tín dụng &amp; ghi nợ quốc tế</small></span></button>
+            <div class="card-fields" id="card-fields" hidden>
+              <p class="card-fields__demo"><i data-icon="alert-triangle"></i><span><strong>Chế độ demo giao diện:</strong> không nhập thẻ thật. Các ô dưới đây không bắt buộc, không được lưu và không được gửi đi. Khi tích hợp thật, các ô này được thay bằng form bảo mật (hosted fields) của đơn vị xử lý thanh toán.</span></p>
+              <div class="co-grid co-grid--card">
+                <label class="field card-fields__num"><span class="field__label">Số thẻ</span><span class="field__box"><input id="cc-num" inputmode="numeric" autocomplete="off" maxlength="23" placeholder="4111 1111 1111 1111 (thẻ thử nghiệm)" aria-describedby="cc-hint"></span></label>
+                <label class="field"><span class="field__label">Ngày hết hạn</span><span class="field__box"><input id="cc-exp" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/YY"></span></label>
+                <label class="field"><span class="field__label">Mã bảo mật (CVV)</span><span class="field__box"><input id="cc-cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="•••"></span></label>
+              </div>
+              <p class="card-fields__hint" id="cc-hint"><i data-icon="lock"></i>Thông tin thẻ chỉ được xử lý bởi cổng thanh toán. Fiabesco Palace không lưu số thẻ hay CVV.</p>
+              <p class="card-fields__err" id="cc-err" role="alert" hidden></p>
+            </div>
             <button type="button" class="pay" data-pay="Apple Pay"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-apple-pay.png" alt="Apple Pay"></span><span class="pay__text"><strong>Apple Pay</strong><small>Thanh toán bằng Face ID / Touch ID</small></span></button>
             <button type="button" class="pay" data-pay="Tiền mặt"><span class="radio"></span><span class="pay__logo"><img src="../assets/template-20261120T115451Z-1-001 - Copy/template/payment-cash.png" alt="Tiền mặt"></span><span class="pay__text"><strong>Tiền mặt khi nhận hàng</strong><small>Vui lòng chuẩn bị tiền lẻ</small></span></button>
           </div>
@@ -96,21 +107,31 @@
         <div class="sum-row" id="row-coupon"><span id="coupon-name">Mã FREESHIP</span><span class="c-green" id="disc"></span></div>
         <div class="sum-row" id="row-bonus"><span>Ưu đãi ZaloPay</span><span class="c-green">−10.000 VND</span></div>
         <hr class="divider">
-        <div class="between"><span class="t-title">Tổng thanh toán</span><span class="t-price-l c-wine" id="total"></span></div>
+        <div class="between sum-total"><span class="t-title">Tổng thanh toán</span><span class="t-price-l c-wine money" id="total"></span></div>
         <div class="ship-to" id="ship-to" hidden><span class="t-caption c-gray">Giao đến</span><span class="t-body-s" id="ship-to-text"></span><span class="t-caption c-gray" id="ship-to-area" hidden></span></div>
+        <div class="points" id="co-points"><i data-icon="gift"></i><span id="co-points-text">Bạn sẽ nhận +0 điểm thành viên</span></div>
         <div class="terms" id="terms"><label class="checkbox"><input type="checkbox" name="terms" checked><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-caption c-gray">Tôi đồng ý với Điều khoản dịch vụ và Chính sách đổi trả của Fiabesco Palace.</span></label></div>
         <button class="btn btn--wine btn--block" type="submit" id="pay-btn">Xác nhận &amp; thanh toán</button>
         <div class="secure"><i data-icon="lock"></i>Mã hóa SSL 256-bit · Không lưu thông tin thẻ</div>
       </aside>
+      <!-- D3 · Khối VietQR hiển thị ngay trong trang (cột trái) -->
+      <section class="co-card card qr-panel" id="qr-panel" hidden aria-labelledby="qr-title"></section>
     </form>
+    <!-- D1/D2/D4 · Màn hình cổng thanh toán (ZaloPay, Apple Pay, Thẻ) — thay nội dung thanh toán cũ -->
+    <section class="paybox" id="paybox" hidden aria-live="polite"></section>
   </main>
   <footer data-footer></footer>
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
+  <script src="../js/data/chi_tiet_mon.js"></script>
   <script src="../js/data/dia_chi_tphcm.js"></script>
+  <script src="../js/data/thanh_toan_dat_coc.js"></script>
+  <script src="../js/vendor/qrcode.js"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/don_hang_store.js"></script>
   <script src="../js/popups.js"></script>
+  <script src="../js/tuy_chinh_mon.js"></script>
   <script src="../js/pages/thanh_toan.js"></script>
 </body>
 </html>

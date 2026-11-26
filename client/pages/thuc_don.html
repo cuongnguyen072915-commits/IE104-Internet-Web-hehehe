@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/pages/thuc_don.css">
   <link rel="stylesheet" href="../css/github-sync.css">
   <link rel="stylesheet" href="../css/popups.css">
+  <link rel="stylesheet" href="../css/tuy_chinh_mon.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="thuc_don">
   <!-- Frame: PC – 02 Thực đơn (+ E04 ngoài giờ, E05 tìm kiếm không có kết quả) -->
@@ -37,7 +38,6 @@
           <button class="tool-pill" id="to-filter"><i data-icon="filter"></i><span>Lọc theo</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
           <div class="dd"><button class="tool-pill" data-dd="sort"><i data-icon="grid"></i><span>Sắp xếp: Phổ biến</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
             <div class="dd__menu dd__menu--right" data-menu="sort"><button class="is-active" data-sort="pop">Phổ biến</button><button data-sort="asc">Giá tăng dần</button><button data-sort="desc">Giá giảm dần</button></div></div>
-          <a class="tool-pill" href="mon_yeu_thich.html"><i data-icon="heart"></i><span>Yêu thích</span></a>
         </div>
       </div>
 
@@ -66,7 +66,10 @@
         <div class="menu-main">
           <div id="combo-block">
             <div class="sec-head"><div class="stack" style="gap:6px"><h2 class="t-h3">Combo hấp dẫn</h2><p class="t-body-s c-gray">Tiết kiệm đến 20% khi đặt theo nhóm</p></div>
-              <a class="link-arrow c-wine" href="khuyen_mai.html">Xem tất cả <i data-icon="arrow-right"></i></a></div>
+              <div class="combo-head__side">
+                <a class="fav-link" href="mon_yeu_thich.html"><i data-icon="heart"></i><span>Món yêu thích</span></a>
+                <a class="link-arrow c-wine combo-head__all" href="khuyen_mai.html">Xem tất cả <i data-icon="arrow-right"></i></a>
+              </div></div>
             <div class="combos" id="combos"></div>
           </div>
           <div class="sec-head" style="padding-top:16px"><div class="stack" style="gap:6px"><h2 class="t-h3" id="list-title">Bán chạy</h2><p class="t-body-s c-gray" id="list-meta">Hiển thị 6 / 42 món · Bộ lọc: 100–200k, Thuần chay</p></div></div>
@@ -82,7 +85,6 @@
             <button class="btn btn--outline" id="reset">Xóa bộ lọc &amp; tìm lại</button>
           </div>
           <nav class="pager" id="pager" aria-label="Phân trang">
-            <button class="is-active">1</button><button>2</button><button>3</button><button disabled>…</button><button>5</button><button aria-label="Trang sau"><i data-icon="chevron-right"></i></button>
           </nav>
         </div>
       </div>
@@ -92,8 +94,10 @@
   <script src="../js/icons.js"></script>
   <script src="../js/data.js"></script>
   <script src="../js/data/mon_an.js"></script>
+  <script src="../js/data/chi_tiet_mon.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/popups.js"></script>
+  <script src="../js/tuy_chinh_mon.js"></script>
   <script src="../js/pages/thuc_don.js"></script>
   <script src="../js/pages/thuc_don_phan_trang.js"></script>
 </body>

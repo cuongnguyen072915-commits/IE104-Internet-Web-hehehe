@@ -265,3 +265,19 @@
 }
 /* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
 @media (max-width:600px){.intro{padding-block:64px}.featured{padding-bottom:72px}.steps3,.experience{padding-block:64px}.journal{padding-bottom:64px}}
+
+/* A5 · Mã giảm giá bấm để sao chép */
+.code--copy{position:relative;cursor:copy;transition:background .2s,transform .15s}
+.code--copy:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
+.offer--white .code--copy:hover{background:var(--wine-bg)}
+.code--copy::after{content:"Sao chép";font:600 10px/1 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;opacity:.75;padding-left:8px;border-left:1px solid currentColor}
+.code--copy.is-copied::after{content:"Đã chép ✓";opacity:1}
+.code--copy:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+/* A6 · Sao chưa đạt + ghi chú dữ liệu minh họa */
+.stars__off{color:var(--dis,#b8bec4)}
+.reviews__note{margin:-24px 0 0;max-width:720px;text-align:center;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
+@media (max-width:767px){.reviews__note{margin-top:-8px;font-size:12px}}
+
+/* A8 · Nút "ĐẶT BÀN NGAY" (khung Đặt bàn): mũi tên trắng, giữ hình dạng/kích thước/hover */
+.cta-book .btn--wine .ic path,.quick-book .btn--wine .ic path{stroke:#FFFFFF}

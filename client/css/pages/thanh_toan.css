@@ -3,6 +3,104 @@
 
 /* Bổ sung các quy tắc chỉ dành cho trang Thanh toán ở bên dưới. */
 
+/* =====================================================================
+   D · Các phương thức thanh toán (js/pages/thanh_toan.js + js/don_hang_store.js)
+   ===================================================================== */
+#co[hidden],.order__head[hidden],.paybox[hidden],.qr-panel[hidden],.card-fields[hidden],.card-fields__err[hidden]{display:none!important}
+#pay-btn:disabled{opacity:.6;cursor:progress}
+.line-item .stack{gap:2px}
+.line-item__edit{align-self:flex-start;display:inline-flex;align-items:center;gap:5px;margin-top:2px;font:600 12px/1.4 var(--f-sans);color:var(--wine)}
+.line-item__edit .ic{width:12px;height:12px}
+.line-item__edit:hover{text-decoration:underline}
+.summary .points{margin-top:-4px}
+
+/* D4 · Ô thông tin thẻ (demo) */
+.card-fields{display:flex;flex-direction:column;gap:14px;margin:-4px 0 4px;padding:18px 20px;border-radius:16px;background:var(--cream-2);border:1px dashed var(--gold)}
+.card-fields__demo{display:flex;gap:10px;margin:0;font:400 13px/1.55 var(--f-sans);color:var(--navy)}
+.card-fields__demo .ic{flex:none;width:18px;height:18px;margin-top:1px}.card-fields__demo .ic path{stroke:var(--wine)}
+.co-grid--card{grid-template-columns:2fr 1fr 1fr}
+.card-fields__hint{display:flex;align-items:center;gap:8px;margin:0;font:400 12px/1.5 var(--f-sans);color:var(--gray)}
+.card-fields__hint .ic{width:14px;height:14px;flex:none}.card-fields__hint .ic path{stroke:var(--green)}
+.card-fields__err{margin:0;font:600 13px/1.5 var(--f-sans);color:var(--wine)}
+
+/* D3 · VietQR trong trang: ẩn mục 1–3, điều khoản & nút xác nhận; giữ tóm tắt + tổng tiền */
+#co.is-qr .order__left > .co-card:not(.qr-panel),#co.is-qr #terms,#co.is-qr #pay-btn,#co.is-qr .line-item__edit,#co.is-qr .summary > .between a{display:none}
+.qr-panel{gap:20px}
+.qr-panel .num-title b .ic{width:16px;height:16px}
+.qr-demo{display:flex;gap:10px;margin:0;padding:12px 14px;border-radius:12px;background:#fff6e5;border:1px solid rgba(204,166,97,.7);font:400 13px/1.55 var(--f-sans);color:var(--navy)}
+.qr-demo .ic{flex:none;width:18px;height:18px}.qr-demo .ic path{stroke:var(--wine)}
+.qr-grid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:start}
+.qr-panel .tc-qrbox{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px}
+.qr-panel .tc-qr{width:232px;height:232px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 6px 18px rgba(0,40,66,.06)}
+.qr-panel .tc-qr svg{display:block;width:100%;height:100%}
+.qr-panel .tc-demo{position:absolute;top:-10px;left:50%;transform:translateX(-50%);z-index:1;padding:3px 10px;border-radius:999px;background:var(--navy);color:var(--gold-l);font:600 10px/1.4 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.qr-panel .tc-expiry{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:var(--wine-bg);border:1px solid rgba(160,30,50,.25);color:var(--wine);font:400 13px/1 var(--f-sans)}
+.qr-panel .tc-expiry .ic{width:15px;height:15px}.qr-panel .tc-expiry .ic path{stroke:currentColor}
+.qr-panel .tc-expiry b{font:700 15px/1 var(--f-sans);font-variant-numeric:tabular-nums}
+.qr-panel.is-expired .tc-qr{opacity:.25;filter:grayscale(1)}
+.qr-panel .tc-transfer{display:flex;flex-direction:column;gap:12px;margin:0}
+.qr-panel .tc-transfer dt{font:400 13px/1.4 var(--f-sans);color:var(--gray)}
+.qr-panel .tc-transfer dd{margin:0;font:600 17px/1.4 var(--f-sans);color:var(--navy);word-break:break-word}
+.qr-panel .tc-transfer dd.c-wine{color:var(--wine)}
+.qr-panel .tc-num{font:400 19px/1.3 var(--f-price)!important;letter-spacing:.02em}
+.qr-panel .tc-transfer__copy{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.qr-panel .tc-copy{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:999px;background:var(--cream);font:600 13px/1 var(--f-sans);color:var(--navy);flex:none;transition:background .2s}
+.qr-panel .tc-copy:hover{background:#f6e7cf}
+.qr-panel .tc-copy .ic{width:15px;height:15px}
+.qr-panel .tc-copy.is-done{background:var(--green-bg);color:var(--green)}
+.qr-panel .tc-warn{margin:0;padding:12px 14px;border-radius:10px;background:var(--wine-bg);color:var(--wine);font:400 13px/1.5 var(--f-sans)}
+.qr-actions{display:flex;gap:12px;flex-wrap:wrap}
+.qr-actions .btn{flex:1 1 220px}
+.qr-actions .btn--wine{text-transform:uppercase}
+
+/* Bộ điều khiển mô phỏng (demo) */
+.demo-ctl{border:1px dashed var(--gray);border-radius:14px;padding:0 16px;background:#fff;text-align:left}
+.demo-ctl[open]{padding-bottom:14px}
+.demo-ctl summary{display:flex;align-items:center;gap:8px;padding:12px 0;cursor:pointer;font:600 13px/1.4 var(--f-sans);color:var(--navy)}
+.demo-ctl summary span{font-weight:400;color:var(--gray)}
+.demo-ctl summary .ic{width:16px;height:16px}
+.demo-ctl p{margin:0 0 10px;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
+.demo-ctl__btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.demo-ctl__state b{color:var(--navy)}
+
+/* D1/D2/D4 · Màn hình cổng thanh toán (chỉ còn Header + khối này) */
+.order.is-paying{align-items:center}
+.paybox{width:100%;display:flex;justify-content:center}
+.paybox__card{width:640px;max-width:100%;padding:40px 44px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.paybox__demo{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#fff6e5;border:1px solid rgba(204,166,97,.7);font:600 12px/1.4 var(--f-sans);color:var(--navy)}
+.paybox__demo .ic{width:15px;height:15px;flex:none}.paybox__demo .ic path{stroke:var(--wine)}
+.paybox__logo{width:132px;height:132px;border-radius:32px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-card);display:grid;place-items:center}
+.paybox__logo img{width:96px;height:72px;object-fit:contain}
+.paybox__title{margin:0}
+.paybox__info{width:100%;margin:0;padding:6px 20px;border-radius:18px;background:var(--cream-2);border:1px solid var(--line);text-align:left}
+.paybox__info div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.paybox__info div:last-child{border-bottom:0}
+.paybox__info dt{font:400 15px/1.4 var(--f-sans);color:var(--gray)}
+.paybox__info dd{margin:0;font:600 15px/1.4 var(--f-sans);color:var(--navy);text-align:right;overflow-wrap:anywhere}
+.paybox__amount{font:400 26px/1.1 var(--f-price)!important;color:var(--wine)!important}
+.paybox__alert{display:flex;gap:10px;width:100%;padding:12px 14px;border-radius:12px;background:var(--green-bg);text-align:left;font:400 14px/1.5 var(--f-sans);color:var(--navy)}
+.paybox__alert.is-warn{background:var(--wine-bg)}
+.paybox__alert .ic{flex:none;width:18px;height:18px;margin-top:2px}
+.paybox__steps{list-style:none;margin:0;padding:0;width:100%;display:flex;flex-direction:column;gap:10px;text-align:left}
+.paybox__steps li{display:flex;gap:12px;align-items:flex-start;font:400 14px/1.55 var(--f-sans);color:var(--navy)}
+.paybox__steps b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold-l);display:grid;place-items:center;font:400 14px/1 var(--f-price)}
+.paybox__actions{width:100%;display:flex;flex-direction:column;gap:10px}
+.paybox__actions .btn{width:100%}
+.paybox__actions .btn--navy .ic path,.paybox__actions .btn--wine .ic path{stroke:#fff}
+.paybox__row{display:flex;gap:10px}
+.paybox__row .btn{flex:1}
+.paybox__note{margin:0;font:400 13px/1.5 var(--f-sans);color:var(--gray)}
+.paybox__note a{color:var(--wine);text-decoration:underline}
+.paybox .demo-ctl{width:100%}
+
+@media (max-width:768px){
+  .co-grid--card{grid-template-columns:1fr 1fr}.card-fields__num{grid-column:1/-1}
+  .qr-grid{grid-template-columns:1fr;justify-items:center}.qr-panel .tc-transfer{width:100%}
+  .paybox__card{padding:28px 20px}.paybox__row{flex-direction:column}
+  .paybox__logo{width:104px;height:104px;border-radius:26px}
+}
+@media (max-width:400px){.qr-panel .tc-qr{width:200px;height:200px}.qr-panel .tc-transfer__copy{flex-wrap:wrap}}
+
 /* ---- Địa chỉ giao hàng: số nhà/đường + tỉnh/thành + khu vực cũ + phường/xã ---- */
 /* Khoảng cách giữa các hàng = khoảng cách giữa hàng "Họ và tên" và "Email" (.co-card gap 22px). */
 .addr{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;border:0;min-width:0}

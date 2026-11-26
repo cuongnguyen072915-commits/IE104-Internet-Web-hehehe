@@ -336,3 +336,34 @@ body[data-design-system] .ic > svg {display:block;width:100%;height:100%;max-wid
   .pc-header .pp-chip__badge {background:#FFFFFF;box-shadow:inset 0 0 0 calc(1.8px * 24 / 22) var(--color-primary);}
   .pc-header .header-actions .header-action .pp-chip__badge .ic {color:var(--color-primary);}
 }
+
+/* =====================================================================
+   A1 · Logo: thu khoảng cách giữa "FiabescoPalace" và "Italy on Every Plate"
+   Font Carattere có vùng descender lớn → kéo dòng tagline lên sát chữ, giữ nguyên
+   cỡ chữ/tỷ lệ logo. Áp dụng cho header (Desktop + Mobile) và drawer menu.
+   ===================================================================== */
+.pc-header .brand__text {line-height:1;}
+.pc-header .brand__name {line-height:.95;}
+.pc-header .brand__tagline {margin-top:-3px;line-height:1.2;}
+@media(max-width:767px) {
+  .pc-header .brand__tagline {margin-top:-2px;}
+}
+
+/* =====================================================================
+   A2 · Header khi trình duyệt dịch trang (chữ dài hơn)
+   main.js đo menu; nếu không đủ chỗ trên một hàng (thường khi bật Google Dịch)
+   header nhận class .is-nav-wrap → menu xuống hàng thứ 2 toàn chiều rộng, các mục
+   tự xuống dòng, không bóp chữ, không đè logo/icon. Giao diện bình thường không đổi.
+   ===================================================================== */
+@media(min-width:1024px) {
+  .pc-header .brand,.pc-header .header-actions,.pc-header .site-nav__link {flex-shrink:0;}
+  .pc-header.is-nav-wrap .site-header__inner {flex-wrap:wrap;row-gap:0;}
+  .pc-header.is-nav-wrap .header-actions {order:1;margin-left:auto;}
+  .pc-header.is-nav-wrap .site-nav,.pc-header.is-nav-wrap .site-nav.is-open {order:2;flex:1 0 100%;
+    border-top:1px solid var(--color-border-light);}
+  .pc-header.is-nav-wrap .site-nav__list {flex-wrap:wrap;row-gap:2px;column-gap:clamp(14px,1.6vw,24px);padding:6px 0;}
+  .pc-header.is-nav-wrap .site-nav__link {font-size:13px;min-height:34px;padding:6px 0;}
+  /* Thanh thông tin trên cùng: cho phép xuống dòng thay vì tràn */
+  .pc-header .pc-topbar__inner {height:auto;min-height:30px;flex-wrap:wrap;row-gap:2px;}
+  .pc-header .pc-topbar__group {flex-wrap:wrap;column-gap:20px;row-gap:2px;min-width:0;}
+}

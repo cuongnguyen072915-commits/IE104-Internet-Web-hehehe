@@ -1,0 +1,109 @@
+/* =====================================================================
+   FIABESCO PALACE — css/tuy_chinh_mon.css (MỚI)
+   Đi cùng js/tuy_chinh_mon.js: popup tùy chỉnh món/combo, ô chọn topping hình tròn,
+   panel sửa món, dòng & popup điểm thành viên, định dạng số tiền.
+   Nạp SAU popups.css. Không thay đổi global.css / layout.css.
+   ===================================================================== */
+
+/* ---------- Số tiền: chữ số + "VND" luôn đi liền, không chồng/không gãy (C1) ---------- */
+.money{white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ---------- A4 · Ô chọn topping hình tròn, dấu tick ở giữa ---------- */
+.fb-tick{
+  box-sizing:border-box;flex:0 0 22px;width:22px;height:22px;min-width:22px;aspect-ratio:1;
+  border-radius:50%;border:1.5px solid var(--dis,#b8bec4);background:#fff;
+  display:inline-grid;place-items:center;transition:background .2s,border-color .2s,box-shadow .2s;
+}
+.fb-tick .ic{width:12px!important;height:12px!important;opacity:0;transform:scale(.6);transition:opacity .15s,transform .15s}
+.fb-tick .ic path{stroke:#fff}
+/* Ô topping: input ẩn nhưng vẫn nhận bàn phím; viền focus vẽ trên vòng tròn, không vẽ hình chữ nhật */
+.cz-tops{display:flex;flex-direction:column}
+.cz-top{position:relative;display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;color:var(--navy);font:400 15px/1.5 var(--f-sans)}
+.cz-top + .cz-top{border-top:1px dashed var(--line)}
+.cz-top input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.cz-top__name{flex:1 1 auto;min-width:0}
+.cz-top__price{flex:none;font-style:normal;font:400 16px/1.2 var(--f-price);color:var(--wine);white-space:nowrap}
+.cz-top:hover .fb-tick{border-color:var(--navy)}
+.cz-top input:checked + .fb-tick{background:var(--navy);border-color:var(--navy)}
+.cz-top input:checked + .fb-tick .ic{opacity:1;transform:none}
+body[data-design-system] .cz-top input:focus-visible{outline:none}
+.cz-top input:focus-visible + .fb-tick{box-shadow:0 0 0 3px rgba(160,30,50,.35)}
+
+/* Ô topping cũ (.pp-opt / .top) — sửa ô bị kéo giãn thành hình chữ nhật do "span{flex:1}" */
+.pp-opt .checkbox__box,.top .checkbox__box{flex:0 0 22px!important;width:22px!important;height:22px!important;border-radius:50%!important;aspect-ratio:1}
+
+/* ---------- Popup tùy chỉnh món & combo ---------- */
+.cz .cz__media{background:var(--cream)}
+.cz__body{gap:14px}
+.cz__body .t-h3{padding-right:40px}
+.cz-base,.cz-total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font:400 14px/1.5 var(--f-sans);color:var(--gray)}
+.cz-base b{font:400 20px/1.2 var(--f-price);color:var(--wine)}
+.cz-head{display:flex;justify-content:space-between;align-items:baseline}
+.cz-head small{font:400 13px/1.4 var(--f-sans);color:var(--gray)}
+.cz-sizes .pp-size{min-width:0}
+.cz-sizes .pp-size small{white-space:normal}
+.cz-none{font:400 14px/1.55 var(--f-sans);color:var(--gray);padding:10px 14px;border-radius:12px;background:var(--cream-2)}
+.cz-note{display:flex;flex-direction:column;gap:8px}
+.cz-note input{height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font:400 14px/1.4 var(--f-sans);color:var(--navy)}
+.cz-note input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(0,40,66,.08)}
+.cz-total{padding-top:12px;border-top:1px solid var(--line);color:var(--navy);font-weight:600}
+.cz-total b{font:400 24px/1.2 var(--f-price);color:var(--wine)}
+.cz-total + .cz-total{border-top:0;padding-top:0}
+.cz-total:not(.cz-total--main) b{font-size:17px}
+.cz-cta{text-transform:uppercase;letter-spacing:.06em}
+/* Món trong combo */
+.cz-cis{display:flex;flex-direction:column;gap:10px}
+.cz-ci{display:flex;flex-direction:column;gap:8px}
+.cz-ci__opt{padding:0 14px;border-radius:14px;border:1px solid var(--line);background:#fff}
+.cz-ci__opt[open]{padding-bottom:12px}
+.cz-ci__opt summary{display:flex;align-items:center;gap:8px;padding:10px 0;cursor:pointer;font:600 13px/1.4 var(--f-sans);color:var(--wine);list-style:none}
+.cz-ci__opt summary::-webkit-details-marker{display:none}
+.cz-ci__opt summary .ic{width:14px;height:14px}
+.cz-ci__note{margin-left:auto;font-weight:400;color:var(--gray)}
+.cz-ci__opt .pp-eyebrow{display:block;margin:6px 0 8px;font-size:11px}
+.cz-ci__fixed{margin:0;font:400 12px/1.4 var(--f-sans);color:var(--gray);padding-left:4px}
+.cz-ci .pp-combo-item small{overflow-wrap:anywhere}
+
+/* ---------- Dòng điểm thành viên (Giỏ hàng / Thanh toán) ---------- */
+.points--btn{cursor:pointer;transition:background .2s,transform .2s}
+.points--btn:hover{background:var(--navy-2,#0b3a5a)}
+.points--btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.points--btn > span:not(.points__go){flex:1;min-width:0}
+.points__go{margin-left:auto;display:inline-flex;flex:none}
+.points__go .ic{width:16px!important;height:16px!important}
+.points__go .ic path{stroke:#FFFFFF}
+
+/* ---------- Popup điểm thành viên ---------- */
+.pt-hero{display:grid;grid-template-columns:auto 1fr;gap:14px 16px;align-items:center;padding:22px 24px;border-radius:22px;color:#fff;
+  background:radial-gradient(120% 140% at 100% 0%,#0b3a5a 0%,var(--navy) 60%);margin-top:8px}
+.pt-hero__av{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid var(--gold);color:var(--gold-l);display:grid;place-items:center;font:400 20px/1 var(--f-price)}
+.pt-hero__info{display:flex;flex-direction:column;gap:4px;min-width:0}
+body[data-design-system] .pt-hero__name{font:400 22px/1.2 var(--f-display);color:#fff;margin:0;padding-right:36px;overflow-wrap:anywhere}
+.pt-hero__tier{display:inline-flex;align-items:center;gap:6px;font:400 14px/1.4 var(--f-sans)}
+.pt-hero__tier .ic{width:15px;height:15px;color:var(--gold)}
+.pt-hero__tier .ic path{fill:var(--gold);stroke:var(--gold)}
+.pt-hero__pts{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pt-hero__pts b{font:400 28px/1.1 var(--f-display);white-space:nowrap}
+.pt-hero__pts span{font:400 13px/1.4 var(--f-sans);opacity:.85}
+.pt-bar{grid-column:1/-1;height:8px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden}
+.pt-bar i{display:block;height:100%;border-radius:inherit;background:var(--gold)}
+.pt-hero__note{grid-column:1/-1;margin:0;font:400 14px/1.4 var(--f-sans)}
+.pt-expect{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:var(--cream-2);border:1px solid rgba(204,166,97,.6);font:600 14px/1.4 var(--f-sans);color:var(--navy)}
+.pt-expect span{display:inline-flex;align-items:center;gap:8px}
+.pt-expect .ic{width:18px;height:18px;color:var(--wine)}
+.pt-expect b{font:400 20px/1 var(--f-price);color:var(--wine);white-space:nowrap}
+.pt-perks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;text-align:left;width:100%}
+.pt-perks li{display:flex;gap:10px;align-items:flex-start;font:400 14px/1.5 var(--f-sans);color:var(--navy)}
+.pt-perks .ic{flex:none;width:16px;height:16px;margin-top:3px}
+.pt-perks .ic path{stroke:var(--wine)}
+.pt-program{width:100%;text-align:left;border:1px solid var(--line);border-radius:14px;padding:0 16px}
+.pt-program[open]{padding-bottom:14px}
+.pt-program summary{cursor:pointer;padding:12px 0;font:600 14px/1.4 var(--f-sans);color:var(--wine)}
+.pt-program .pt-perks{margin-bottom:8px}
+
+@media (max-width:640px){
+  .cz-total b{font-size:21px}
+  .cz-ci__note{display:none}
+  .pt-hero{padding:18px}
+  .pt-hero__pts b{font-size:24px}
+}

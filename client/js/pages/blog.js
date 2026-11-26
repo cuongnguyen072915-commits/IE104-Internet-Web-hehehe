@@ -44,14 +44,39 @@ document.addEventListener('fb:ready', () => {
       return;
     }
     document.title = `${p.title} – Fiabesco Palace`;
-    box.innerHTML = `<img class="bl-article__img" src="${p.img}" alt="${esc(p.title)}">
-      <span class="bl-eyebrow">${esc(p.crumb)}</span>
-      <h1 class="t-h1 bl-article__title">${esc(p.title)}</h1>
-      <p class="bl-article__meta">Fiabesco Palace <span aria-hidden="true">•</span> ${p.mins} phút đọc <span aria-hidden="true">•</span> ${esc(p.date)}</p>
-      <div class="bl-article__body">${p.body.map(t => `<p>${esc(t)}</p>`).join('')}</div>
-      <blockquote class="bl-quote"><p>“${esc(p.quote)}”</p></blockquote>`;
+    const secs = p.sections || [];
+    const slug = (s, i) => 'muc-' + (i + 1);
+    box.innerHTML = `<header class="bl-article__head">
+        <span class="bl-eyebrow">${esc(p.crumb)}</span>
+        <h1 class="t-h1 bl-article__title">${esc(p.title)}</h1>
+        <p class="bl-article__sub">${esc(p.sub)}</p>
+        <p class="bl-article__meta">Fiabesco Palace <span aria-hidden="true">•</span> ${p.mins} phút đọc <span aria-hidden="true">•</span> ${esc(p.date)}</p>
+      </header>
+      <figure class="bl-article__cover"><img class="bl-article__img" src="${p.img}" alt="${esc(p.title)}"></figure>
+      <div class="bl-article__body">
+        ${p.lead ? `<p class="bl-lead">${esc(p.lead)}</p>` : ''}
+        ${p.body.map(t => `<p>${esc(t)}</p>`).join('')}
+        ${secs.map((s, i) => `<section class="bl-sec" id="${slug(s, i)}"><h2 class="bl-sec__h">${esc(s.h)}</h2>${s.p.map(t => `<p>${esc(t)}</p>`).join('')}
+          ${s.img ? `<figure class="bl-fig"><img src="${s.img}" alt="${esc(s.cap || s.h)}" loading="lazy"><figcaption>${esc(s.cap || '')}</figcaption></figure>` : ''}</section>`).join('')}
+        <blockquote class="bl-quote"><p>“${esc(p.quote)}”</p></blockquote>
+        ${p.tips && p.tips.length ? `<aside class="bl-tips"><h2>Gợi ý thưởng thức</h2><ul>${p.tips.map(t => `<li>${I('check')}<span>${esc(t)}</span></li>`).join('')}</ul></aside>` : ''}
+        ${p.editorial ? '<p class="bl-editorial">Nội dung mẫu biên tập phục vụ đồ án — mang tính chia sẻ trải nghiệm, không phải tài liệu chuyên môn.</p>' : ''}
+      </div>`;
+    // Mục lục (Desktop: thanh bên)
+    const toc = $('#bl-toc');
+    if (toc && secs.length) {
+      toc.innerHTML = `<span class="bl-toc__t">Trong bài viết</span><ol>${secs.map((s, i) => `<li><a href="#${slug(s, i)}">${esc(s.h)}</a></li>`).join('')}</ol>
+        <a class="btn btn--navy btn--block bl-toc__cta" href="thuc_don.html">Khám phá thực đơn ${I('arrow-right')}</a>`;
+      toc.hidden = false;
+      const links = $$('a[href^="#muc-"]', toc);
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) links.forEach(a => a.classList.toggle('is-on', a.getAttribute('href') === '#' + en.target.id)); }), { rootMargin: '-30% 0px -60% 0px' });
+        secs.forEach((s, i) => { const el = document.getElementById(slug(s, i)); if (el) io.observe(el); });
+      }
+    }
+    FB.hydrateIcons(document);
     // Bài liên quan: ưu tiên cùng chủ đề, đủ 2 bài
-    const rel = [...POSTS.filter(x => x.id !== p.id && x.cat === p.cat), ...POSTS.filter(x => x.id !== p.id && x.cat !== p.cat)].slice(0, 2);
+    const rel = [...POSTS.filter(x => x.id !== p.id && x.cat === p.cat), ...POSTS.filter(x => x.id !== p.id && x.cat !== p.cat)].slice(0, 3);
     if (rel.length) {
       $('#bl-related-grid').innerHTML = rel.map(r => `<a class="bl-rel" href="${url(r)}"><img src="${r.img}" alt="" loading="lazy"><strong>${esc(r.title)}</strong></a>`).join('');
       $('#bl-related').hidden = false;
