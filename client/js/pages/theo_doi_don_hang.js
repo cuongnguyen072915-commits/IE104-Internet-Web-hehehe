@@ -55,7 +55,7 @@ document.addEventListener('fb:ready', () => {
     let eta = o.eta || O.computeEta(o);
     const J = journey(o); if (J) eta = { from: J.arrival, to: J.arrival, updatedAt: J.at };
     const placed = O.statusAt(o, 'ORDER_PLACED') || o.createdAt;
-    const pay = PAY_STATE[o.pay.status] || [o.pay.status, ''];
+    const pay = o.pay.method === 'Tiền mặt' && o.pay.status === 'UNPAID' ? ['Trả tiền mặt khi nhận hàng', ''] : (PAY_STATE[o.pay.status] || [o.pay.status, '']);
     const fillPct = Math.max(0, reached) / (O.STEPS.length - 1) * 100;
     const prevReached = prev && prev.status ? stepState(prev).reached : reached;
     const prevPct = Math.max(0, prevReached) / (O.STEPS.length - 1) * 100;

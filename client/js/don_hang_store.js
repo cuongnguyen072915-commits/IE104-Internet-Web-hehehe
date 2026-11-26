@@ -48,8 +48,10 @@ window.FB_ORDERS = (function () {
   const saveAll = m => { try { localStorage.setItem(KEY, JSON.stringify(m)); localStorage.setItem(CHANNEL, String(Date.now())); } catch (e) {} };
   const get = id => (id ? all()[id] || null : null);
   function put(o) {
+    // Tách bạch: orderStatus (trạng thái đơn) ↔ paymentStatus (trạng thái thanh toán)
+    o.orderStatus = o.status; o.paymentStatus = o.pay.status; o.paymentMethod = PAY_CODE[o.pay.method] || o.pay.method;
     o.updatedAt = Date.now(); const m = all(); m[o.id] = o; saveAll(m);
-    try { localStorage.setItem(LAST, o.id); } catch (e) {}
+    if (o.status !== 'PENDING_PAYMENT') { try { localStorage.setItem(LAST, o.id); } catch (e) {} }
     syncLegacy(o); return o;
   }
   const lastId = () => { try { return localStorage.getItem(LAST); } catch (e) { return null; } };
@@ -116,6 +118,7 @@ window.FB_ORDERS = (function () {
   }
 
   /* ---------- Tạo đơn ---------- */
+  const PAY_CODE = { 'ZaloPay': 'ZALOPAY', 'VietQR': 'VIETQR', 'Thẻ quốc tế': 'CARD', 'Apple Pay': 'APPLE_PAY', 'Tiền mặt': 'CASH' };
   const PAY_LABEL = { 'ZaloPay': 'Ví ZaloPay', 'VietQR': 'Chuyển khoản VietQR', 'Thẻ quốc tế': 'Thẻ VISA / Mastercard', 'Apple Pay': 'Apple Pay', 'Tiền mặt': 'Tiền mặt khi nhận hàng' };
   function create(data) {
     const cash = data.method === 'Tiền mặt';
@@ -126,7 +129,7 @@ window.FB_ORDERS = (function () {
       customer: data.customer, addr: data.addr, address: data.address || null, deliveryArea: data.deliveryArea || null, apt: data.apt || '',
       pickup: !!data.pickup, note: data.note || '', when: data.when || 'now', slot: data.slot || '',
       items: data.items, sub: data.sub, fee: data.fee, disc: data.disc, bonus: data.bonus || 0, coupon: data.coupon || null, total: data.total,
-      pay: { method: data.method, label: PAY_LABEL[data.method] || data.method, status: cash ? 'COD' : 'UNPAID', ref: null, paidAt: null },
+      pay: { method: data.method, label: PAY_LABEL[data.method] || data.method, status: 'UNPAID', ref: null, paidAt: null },
       // Đơn đặt thành công khởi tạo ở trạng thái "Đã xác nhận" (CONFIRMED); đơn trả trước chờ cổng thanh toán xác nhận
       status: cash ? 'CONFIRMED' : 'PENDING_PAYMENT',
       history: cash ? [{ status: 'ORDER_PLACED', at: now }, { status: 'CONFIRMED', at: now }] : [{ status: 'PENDING_PAYMENT', at: now }],
@@ -146,7 +149,7 @@ window.FB_ORDERS = (function () {
   /** Thanh toán tiền mặt khi đơn đang chờ (người dùng đổi sang tiền mặt) */
   function toCash(id, total) {
     const o = get(id); if (!o || o.status !== 'PENDING_PAYMENT') return null;
-    o.pay = { method: 'Tiền mặt', label: PAY_LABEL['Tiền mặt'], status: 'COD', ref: null, paidAt: null };
+    o.pay = { method: 'Tiền mặt', label: PAY_LABEL['Tiền mặt'], status: 'UNPAID', ref: null, paidAt: null };
     if (total != null) { o.total = total; o.bonus = 0; o.disc = o.sub + o.fee - total; o.expectedPoints = Math.round(total / 10000); }
     put(o); transition(id, 'ORDER_PLACED', 'Khách chọn thanh toán tiền mặt khi nhận hàng');
     return transition(id, 'CONFIRMED').order;

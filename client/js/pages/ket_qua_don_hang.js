@@ -20,7 +20,7 @@ document.addEventListener('fb:ready', () => {
 
   const first = (o.customer.name || '').trim().split(/\s+/).slice(-2).join(' ');
   const cash = o.pay.method === 'Tiền mặt';
-  const payState = { COD: 'Thanh toán khi nhận hàng', PAID: 'Đã thanh toán', PENDING: 'Đang chờ xác nhận', UNPAID: 'Chưa thanh toán', FAILED: 'Thanh toán thất bại', CANCELED: 'Đã hủy giao dịch', EXPIRED: 'Hết hạn thanh toán' };
+  const payState = { COD: 'Thanh toán khi nhận hàng', CASH_UNPAID: 'Chưa thanh toán · trả tiền mặt khi nhận hàng', PAID: 'Đã thanh toán', PENDING: 'Đang chờ xác nhận', UNPAID: 'Chưa thanh toán', FAILED: 'Thanh toán thất bại', CANCELED: 'Đã hủy giao dịch', EXPIRED: 'Hết hạn thanh toán' };
   const reorder = () => { const items = Cart.get(); (o.items || []).forEach(it => items.push({ ...it })); Cart.set(FB.Custom ? FB.Custom.mergeCart(items) : items); location.href = 'gio_hang.html'; };
   const table = rows => { $('#r-table').innerHTML = rows.map(([k, v, cls]) => `<div><dt>${k}</dt><dd class="${cls || ''}">${v}</dd></div>`).join(''); };
 
@@ -34,7 +34,7 @@ document.addEventListener('fb:ready', () => {
     $('#ok-card').removeAttribute('aria-busy');
     $('#r-desc').textContent = `Cảm ơn ${first || 'bạn'}! Fiabesco Palace đã ghi nhận đơn hàng #${o.id}${cash ? '' : ' và khoản thanh toán của bạn'}. Chúng tôi sẽ thông báo ngay khi nhà hàng xác nhận và bắt đầu chuẩn bị món.`;
     table([['Mã đơn hàng', '#' + esc(o.id)], ['Thời gian đặt', O.fmtTime(o.createdAt)], ['Phương thức thanh toán', esc(o.pay.label)],
-      ['Trạng thái thanh toán', payState[o.pay.status] || o.pay.status, o.pay.status === 'PAID' ? 'is-green' : ''], ['Tổng số tiền', `<span class="money">${money(o.total)}</span>`, 'is-money']]);
+      ['Trạng thái thanh toán', (cash && o.pay.status === 'UNPAID' ? payState.CASH_UNPAID : payState[o.pay.status]) || o.pay.status, o.pay.status === 'PAID' ? 'is-green' : ''], ['Tổng số tiền', `<span class="money">${money(o.total)}</span>`, 'is-money']]);
     // Thời gian dự kiến: chỉ lấy từ dữ liệu đơn; chưa xác nhận → "Đang cập nhật"
     const eta = o.eta || O.computeEta(o);
     $('#r-eta-label').textContent = o.pickup ? 'Thời gian nhận món dự kiến' : 'Thời gian giao hàng dự kiến';

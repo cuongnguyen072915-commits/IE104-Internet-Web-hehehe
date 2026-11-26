@@ -448,7 +448,7 @@ document.addEventListener('fb:ready', () => {
       <div class="paybox__actions">
         ${m === 'ZaloPay' ? `<button type="button" class="btn btn--navy" data-gw="open">Mở cổng thanh toán ZaloPay ${icon('arrow-right')}</button>` : ''}
         ${m === 'Thẻ quốc tế' ? `<button type="button" class="btn btn--navy" data-gw="open">Tiếp tục xác thực thẻ ${icon('arrow-right')}</button>` : ''}
-        <button type="button" class="btn btn--success" data-gw="check">Tôi đã thanh toán – Kiểm tra trạng thái</button>
+        <button type="button" class="btn btn--success" data-gw="check">Tôi đã thanh toán</button>
         <div class="paybox__row"><button type="button" class="btn btn--outline" data-gw="back">${icon('arrow-left')}Chọn phương thức khác</button><button type="button" class="btn btn--cancel" data-gw="cancel">Hủy giao dịch</button></div>
       </div>
       ${m === 'ZaloPay' ? '<p class="paybox__note">Tìm hiểu thêm về Zalo tại <a href="https://zalo.me/vi/" target="_blank" rel="noopener noreferrer">zalo.me</a> (trang thông tin, không phải nơi xác nhận giao dịch).</p>' : ''}
@@ -468,7 +468,17 @@ document.addEventListener('fb:ready', () => {
         });
         return;
       }
-      if (act === 'check') return checkPayment(cur);
+      if (act === 'check') {
+        /* ZaloPay / Apple Pay — luồng TRÌNH DIỄN nội bộ: "Tôi đã thanh toán" → popup đang xử lý → ghi nhận PAID
+           trong dữ liệu mô phỏng (pay.simulated = true) → trang Đặt hàng thành công. Không phải xác nhận tiền thật;
+           khi tích hợp cổng thật phải thay bằng kết quả xác thực (IPN/callback) của nhà cung cấp. */
+        if (m === 'ZaloPay' || m === 'Apple Pay') {
+          if (a.disabled || submitting) return; a.disabled = true; submitting = true;
+          const run = () => { const n = O.get(o.id); if (n) { n.pay.simulated = true; O.put(n); } const r = PAYAPI.demoResolve(o.id, 'PAID'); done(r || O.get(o.id)); };
+          return FB.payProcessing ? FB.payProcessing(m, cur.total, run) : run();
+        }
+        return checkPayment(cur);
+      }
       if (act === 'open') { // Tích hợp thật: location.href = payUrl (do backend lấy từ cổng). Chưa có cổng → thông báo cho khách.
         FB.toast('Cổng thanh toán chưa sẵn sàng', 'Vui lòng thử lại sau hoặc chọn phương thức thanh toán khác.', '', '', 'navy');
       }
@@ -529,7 +539,7 @@ document.addEventListener('fb:ready', () => {
     const o = getPending(); if (!o || !['PENDING'].includes(o.pay.status)) return;
     current = o;
     if (o.pay.method === 'VietQR') openQR(o).then(() => FB.params.get('pay') === 'return' && checkPayment(O.get(o.id)));
-    else openGateway(o).then(() => checkPayment(O.get(o.id)));
+    else openGateway(o).then(() => FB.params.get('pay') === 'return' && checkPayment(O.get(o.id)));
   })();
 
   form.addEventListener('submit', e => {
