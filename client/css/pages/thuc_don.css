@@ -307,12 +307,13 @@ body[data-page="thuc_don"] .qm .combo-head__all::before{content:"";position:abso
 .qm .ccard__name{font:400 22px/1.2 var(--f-display)}
 
 /* ---------- Dải trích dẫn đỏ rượu ---------- */
-.qm-quote{position:relative;margin:4px 0 0;padding:28px 24px 26px;border-radius:26px;background:var(--wine);color:#fff;text-align:center;
-  display:flex;flex-direction:column;align-items:center;gap:8px;overflow:hidden}
+.qm-quote{position:relative;margin:4px 0 0;padding:38px 24px 36px;border-radius:26px;background:var(--wine);color:#fff;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;overflow:hidden}
+/* Nhịp dọc: ★ —16px— câu Ý —20px— câu dịch —16px— "Tục ngữ Ý" */
 .qm-quote::before{content:"";position:absolute;inset:10px;border:1px solid rgba(237,199,133,.35);border-radius:18px;pointer-events:none}
 .qm-quote__star{color:var(--gold-l);font-size:16px;line-height:1}
-.qm-quote blockquote{margin:0;font:400 clamp(30px,3.2vw,42px)/1.15 var(--f-logo)}
-.qm-quote figcaption{display:flex;flex-direction:column;align-items:center;gap:4px}
+.qm-quote blockquote{margin:16px 0 0;font:400 clamp(30px,3.2vw,42px)/1.15 var(--f-logo)}
+.qm-quote figcaption{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:20px}
 .qm-quote figcaption span{font:italic 400 15px/1.5 var(--f-sans);color:rgba(255,255,255,.9)}
 .qm-quote figcaption small{font:600 11px/1.4 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-l)}
 
@@ -392,7 +393,7 @@ body[data-page="thuc_don"] .qm .dish__fav .ic{width:16px;height:16px}
   .qm-eyebrow{letter-spacing:.16em;font-size:11px}
   .qm-eyebrow--line::after{width:40px}
   body[data-design-system] .qm-chapter .t-h3{font-size:30px}
-  .qm-quote{padding:30px 18px 26px;border-radius:20px}
+  .qm-quote{padding:34px 18px 32px;border-radius:20px}
   body[data-page="thuc_don"] .qm .dish{grid-template-columns:84px minmax(0,1fr) auto;column-gap:14px;padding:18px 0}
   body[data-page="thuc_don"] .qm .dish__media{width:84px;height:84px}
   body[data-page="thuc_don"] .qm .dish__tag{bottom:-9px;height:19px;padding:0 7px;gap:3px;font-size:8px;letter-spacing:.08em}
@@ -476,3 +477,215 @@ body[data-design-system] .qm-sig__cta{margin-top:4px}
   body[data-page="thuc_don"] .qm .dish-grid{gap:40px}
 }
 @media (prefers-reduced-motion:reduce){.qm-slides__track,.qm-sig__art img{transition:none}}
+
+/* =====================================================================
+   ITALIAN EDITORIAL MENU — 3 chương Pizza · Tráng miệng · Đồ uống (.qm-group--ed, do thuc_don.js dựng)
+   Không khung card / không nền trắng: ảnh tròn lớn đặt thẳng trên nền kem, 3 cột Desktop.
+   Markup vẫn là FB.dishCard (.dish / .dish__fav / .dish__add) → yêu thích, "+", phân trang không đổi.
+   ===================================================================== */
+.qm-group--ed{--ed-d:200px;--ed-gap:36px;--ed-lg:15px;--ed-line:rgba(160,30,50,.28)}
+.qm-ed__head{gap:10px;padding-bottom:30px}
+.qm-ed__chap{display:flex;align-items:center;gap:18px;font:600 12.5px/1.4 var(--f-sans);letter-spacing:2px;text-transform:uppercase;color:var(--wine)}
+.qm-ed__chap::after{content:"";flex:1;height:1px;background:rgba(160,30,50,.28)}
+.qm-ed__row{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:22px;row-gap:2px}
+body[data-design-system] .qm-group--ed .qm-group__title{font:700 clamp(32px,3.2vw,44px)/1.08 var(--f-display);color:var(--navy);letter-spacing:-.01em}
+.qm-ed__accent{font:400 clamp(23px,2.1vw,27px)/1.1 var(--f-logo);color:var(--wine)}
+
+body[data-page="thuc_don"] .qm .qm-group--ed .qm-group__list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--ed-gap);row-gap:52px;border-top:0;padding-top:4px}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish{display:flex;flex-direction:column;align-items:center;padding:0;border:0;text-align:center}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__media{flex:none;width:var(--ed-d);height:var(--ed-d);margin:8px auto 0;border-radius:50%;
+  box-shadow:0 0 0 7px var(--cream),0 0 0 8px rgba(204,166,97,.75),0 22px 34px -16px rgba(0,40,66,.45);transition:box-shadow .3s ease}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__media img{transition:transform .3s ease}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish:hover .dish__media img{transform:scale(1.04)}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish:hover .dish__media{box-shadow:0 0 0 7px var(--cream),0 0 0 9px var(--gold),0 24px 36px -16px rgba(0,40,66,.5)}
+/* Badge: viên thuốc đỏ rượu chồng lên mép trên-trái ảnh tròn (mọi loại nhãn cùng 1 kiểu) */
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__tag{left:calc(var(--ed-d) * .146 - 30px);right:auto;top:calc(var(--ed-d) * .146 - 12px);bottom:auto;transform:none;height:24px;padding:0 12px;
+  border-radius:999px;background:var(--wine);color:#fff;font:700 10.5px/1 var(--f-sans);letter-spacing:.12em;box-shadow:0 0 0 2px #fff,0 4px 10px rgba(0,40,66,.18)}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__tag::before{content:none}
+/* Trái tim yêu thích: mép trên-phải ảnh tròn (góc 45°) */
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__fav{left:calc(50% + var(--ed-d) * .354 - 17px);top:calc(8px + var(--ed-d) * .146 - 17px);width:34px;height:34px}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__body{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;width:100%;margin-top:30px;padding:0}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__name{align-self:auto;font:700 17px/1.35 var(--f-sans);color:var(--navy);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__desc{max-width:300px;font-size:13px;line-height:1.5;color:#657582}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__foot{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:300px;margin-top:auto;padding-top:12px}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__price{align-self:auto;font:400 18px/1.2 var(--f-price);color:var(--wine);white-space:nowrap}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__add{width:38px;height:38px;flex:none}
+body[data-page="thuc_don"] .qm .qm-group--ed .dish__add .ic{width:18px;height:18px}
+
+@media (max-width:1100px){.qm-group--ed{--ed-d:180px;--ed-gap:24px}}
+@media (max-width:900px){
+  .qm-group--ed{--ed-d:170px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .qm-group__list{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}
+}
+@media (max-width:600px){
+  .qm-group--ed{--ed-d:clamp(112px,34vw,150px);--ed-gap:16px;--ed-lg:11px}
+  .qm-ed__head{padding-bottom:22px}
+  .qm-ed__chap{font-size:11px;letter-spacing:1.5px;gap:12px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .qm-group__list{row-gap:34px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__media{box-shadow:0 0 0 5px var(--cream),0 0 0 6px rgba(204,166,97,.75),0 16px 26px -14px rgba(0,40,66,.45)}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__tag{left:calc(var(--ed-d) * .146 - 26px);top:calc(var(--ed-d) * .146 - 10px);height:20px;padding:0 8px;font-size:9px;letter-spacing:.08em}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__fav{left:calc(50% + var(--ed-d) * .354 - 14px);top:calc(8px + var(--ed-d) * .146 - 14px);width:28px;height:28px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__body{margin-top:22px;gap:4px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__name{font-size:14.5px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__desc{font-size:12px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__foot{gap:6px;padding-top:8px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__price{font-size:15px}
+  body[data-page="thuc_don"] .qm .qm-group--ed .dish__add{width:34px;height:34px}
+}
+@media (prefers-reduced-motion:reduce){body[data-page="thuc_don"] .qm .qm-group--ed .dish__media,body[data-page="thuc_don"] .qm .qm-group--ed .dish__media img{transition:none}}
+
+/* ---------- Đường kẻ vùng ảnh — CHỈ Pizza · Tráng miệng · Đồ uống ----------
+   Cùng màu / độ dày với đường kẻ cạnh nhãn chương (1px, đỏ rượu mờ).
+   • Dọc (::before): giữa 2 ảnh liền kề, đặt ở chính giữa khe cột, cao đúng vùng ảnh (đỉnh ảnh → đường ngang).
+   • Ngang (::after): ngay dưới hàng ảnh, trước tên món; nối liền qua khe cột trong 1 hàng, không vượt quá món đầu / cuối hàng.
+   Dựng theo vị trí cột thực tế (nth-child) nên không lệch khi số món thay đổi (6 / 12 / hàng lẻ). */
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::before,
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::after{
+  content:"";position:absolute;pointer-events:none;background:var(--ed-line)}
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::before{
+  top:8px;left:calc(var(--ed-gap) / -2);width:1px;height:calc(var(--ed-d) + var(--ed-lg))}
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::after{
+  top:calc(8px + var(--ed-d) + var(--ed-lg));left:calc(var(--ed-gap) / -2);right:calc(var(--ed-gap) / -2);height:1px}
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:last-child::after{right:0}
+/* 3 cột */
+@media (min-width:901px){
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1)::before{content:none}
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1)::after{left:0}
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n)::after{right:0}
+}
+/* 2 cột (Tablet / Mobile): 1 đường dọc giữa 2 ảnh */
+@media (max-width:900px){
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1)::before{content:none}
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1)::after{left:0}
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n)::after{right:0}
+}
+
+/* ---------- "Xem tất cả" / "Thu gọn" từng chương (chế độ "Xem tất cả" của thanh danh mục) ---------- */
+.qm-more{display:flex;justify-content:center;margin-top:34px}
+.qm-group--ed .qm-more{margin-top:44px}
+/* Nút dùng đúng class của link "Xem tất cả" khu Combo (.link-arrow.c-wine) — ở đây chỉ bỏ kiểu mặc định của <button> */
+.qm-more__btn{padding:4px 2px;border:0;background:none;cursor:pointer}
+.qm-more__btn:focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:4px}
+/* "Thu gọn": cùng mũi tên, xoay lên trên */
+.qm-more__btn[aria-expanded="true"] .ic{transform:rotate(-90deg)}
+.qm-more__btn[aria-expanded="true"]:hover .ic{transform:rotate(-90deg) translateX(4px)}
+.qm .qm-new{animation:qmIn .45s ease both}
+@keyframes qmIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (max-width:600px){.qm-more{margin-top:26px}.qm-group--ed .qm-more{margin-top:32px}}
+@media (prefers-reduced-motion:reduce){.qm .qm-new{animation:none}}
+
+/* =====================================================================
+   POPUP CHI TIẾT MÓN — TRANG THỰC ĐƠN (js/pages/thuc_don_popup.js · #pp-menu-dish)
+   Split-screen: trái navy + ảnh tròn · phải trắng + tùy chỉnh. Trang chủ không nạp file JS này.
+   ===================================================================== */
+.pp-box.mz{display:grid;grid-template-columns:44fr 56fr;width:1000px;height:min(700px,calc(100vh - 48px));max-height:none;padding:0;overflow:hidden;border-radius:16px}
+.mz__art{position:relative;display:flex;flex-direction:column;justify-content:center;gap:34px;padding:56px 40px 40px;background:var(--navy);color:#fff;overflow:hidden}
+.mz__badge{position:absolute;left:26px;top:24px;z-index:2;display:inline-flex;align-items:center;height:26px;padding:0 14px;border-radius:999px;background:var(--wine);color:#fff;font:700 11px/1 var(--f-sans);letter-spacing:.14em;text-transform:uppercase}
+.mz__plate{position:relative;width:min(260px,72%);aspect-ratio:1;margin:0 auto}
+.mz__plate img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;box-shadow:0 26px 50px rgba(0,0,0,.45)}
+.mz__ring{position:absolute;inset:-14px;border:1px solid rgba(237,199,133,.6);border-radius:50%;pointer-events:none}
+.mz__ring--b{inset:-30px;border-color:rgba(237,199,133,.22)}
+.mz__intro{display:flex;flex-direction:column;gap:8px}
+.mz__it{margin:0;font:400 26px/1.15 var(--f-logo);color:#edc785}
+.mz__desc{margin:0;font:400 14px/1.65 var(--f-sans);color:rgba(255,255,255,.8);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.mz__body{position:relative;display:flex;flex-direction:column;min-height:0;background:#fff}
+.mz .mz__x{top:18px;right:18px;background:var(--cream);box-shadow:none}
+.mz .mz__x:hover{background:#f3e4c8}
+.mz__scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:22px;padding:34px 34px 20px}
+.mz__chap{padding-right:52px;font:600 11.5px/1.4 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--wine)}
+.mz__head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:-14px}
+.mz__name{margin:0;font:700 clamp(24px,2.4vw,30px)/1.15 var(--f-display);color:var(--navy)}
+.mz__price{flex:none;font:400 19px/1.2 var(--f-price);color:var(--wine);white-space:nowrap}
+
+.mz-sec{display:flex;flex-direction:column;gap:10px}
+.mz-sec__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.mz-sec__t{font:700 12px/1.4 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}
+.mz-sec__head small{font:500 12px/1.4 var(--f-sans);color:#657582}
+.mz-sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.mz-size{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border:1px solid #dbcfba;border-radius:10px;background:#fff;color:var(--navy);text-align:left;transition:background .2s,border-color .2s,color .2s}
+.mz-size strong{font:600 15px/1.35 var(--f-sans)}
+.mz-size small{font:400 12px/1.4 var(--f-sans);color:#657582}
+.mz-size em{margin-top:4px;font:400 15px/1.2 var(--f-price);font-style:normal;color:var(--wine)}
+.mz-size:hover{border-color:var(--navy)}
+.mz-size.is-active{background:var(--navy);border-color:var(--navy);color:#fff}
+.mz-size.is-active small{color:rgba(255,255,255,.72)}
+.mz-size.is-active em{color:var(--gold-l)}
+.mz-size:focus-visible,.mz-pill:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+
+.mz-tops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mz-top{position:relative;display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 12px;border:1px solid #e6dccb;border-radius:8px;background:#fff;cursor:pointer;transition:border-color .2s,background .2s}
+.mz-top input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.mz-top__tick{flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid #b8bec4;display:flex;align-items:center;justify-content:center;color:#fff;transition:background .2s,border-color .2s}
+.mz-top__tick .ic{width:12px;height:12px;opacity:0;transition:opacity .15s}
+.mz-top__name{flex:1;min-width:0;font:500 13.5px/1.35 var(--f-sans);color:var(--navy)}
+.mz-top__price{flex:none;font:500 13px/1.2 var(--f-sans);font-style:normal;color:var(--wine)}
+.mz-top:hover{border-color:var(--navy)}
+.mz-top:has(input:checked){border-color:var(--navy);background:#f5f7f9}
+.mz-top input:checked + .mz-top__tick{background:var(--navy);border-color:var(--navy)}
+.mz-top input:checked + .mz-top__tick .ic{opacity:1}
+.mz-top input:focus-visible + .mz-top__tick{outline:2px solid var(--wine);outline-offset:2px}
+
+.mz-quick{display:flex;flex-wrap:wrap;gap:8px}
+.mz-pill{height:32px;padding:0 14px;border:1px solid #dbcfba;border-radius:999px;background:#fff;color:var(--navy);font:500 13px/1 var(--f-sans);transition:background .2s,border-color .2s,color .2s}
+.mz-pill:hover{border-color:var(--navy)}
+.mz-pill.is-active{background:var(--navy);border-color:var(--navy);color:#fff}
+.mz-note{position:relative}
+.mz-note textarea{display:block;width:100%;min-height:78px;resize:vertical;padding:12px 14px 24px;border:1px solid #e6dccb;border-radius:10px;background:#fffaf2;color:var(--navy);font:400 14px/1.5 var(--f-sans)}
+.mz-note textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(0,40,66,.08)}
+.mz-note small{position:absolute;right:12px;bottom:8px;font:400 11px/1 var(--f-sans);color:#657582;pointer-events:none}
+.mz-none{margin:0;padding:12px 14px;border-radius:10px;background:#fffaf2;font:400 13.5px/1.5 var(--f-sans);color:#657582}
+.mz__link{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font:600 13px/1.4 var(--f-sans);color:var(--navy);text-decoration:underline;text-underline-offset:3px}
+.mz__link .ic{width:14px;height:14px}
+.mz__link:hover{color:var(--wine)}
+
+.mz__foot{flex:none;display:flex;align-items:center;gap:14px;padding:16px 34px 22px;border-top:1px solid #efe7d8;background:#fff}
+.mz-qty{gap:10px;padding:5px}
+.mz-qty button{width:38px;height:38px}
+.mz-qty output{min-width:22px;font-size:20px}
+body[data-design-system] .mz .mz__cta{flex:1;min-width:0;min-height:52px;height:52px;padding:0 20px;border-radius:999px;background:var(--wine);color:#fff;
+  font:700 14px/1.2 var(--f-sans);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+body[data-design-system] .mz .mz__cta:hover{background:#86182a}
+
+/* Tablet */
+@media (max-width:1024px){
+  .pp-box.mz{grid-template-columns:40fr 60fr;width:100%}
+  .mz__art{padding:56px 28px 32px;gap:28px}
+  .mz__plate{width:min(210px,76%)}
+  .mz__it{font-size:23px}
+  .mz__scroll{padding:30px 26px 18px}
+  .mz__foot{padding:14px 26px 18px}
+}
+@media (max-width:860px){
+  .mz-tops{grid-template-columns:minmax(0,1fr)}
+  body[data-design-system] .mz .mz__cta{font-size:13px;letter-spacing:.03em}
+}
+/* Mobile: bottom sheet — ảnh + giới thiệu gọn phía trên, tùy chọn cuộn bên dưới, nút thêm luôn ở đáy */
+@media (max-width:767px){
+  .mz-modal{align-items:flex-end;padding:0}
+  .pp-box.mz{display:flex;flex-direction:column;width:100%;height:auto;max-height:92vh;max-height:92dvh;border-radius:22px 22px 0 0}
+  .mz__art{flex:none;display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:20px;padding:30px 60px 24px 26px}
+  .mz__badge{left:14px;top:12px;height:22px;padding:0 10px;font-size:9.5px}
+  .mz__plate{width:100%}
+  .mz__ring{inset:-8px}.mz__ring--b{inset:-16px}
+  .mz__it{font-size:21px}
+  .mz__desc{font-size:12.5px;line-height:1.55}
+  .mz__body{position:static;flex:1;min-height:0}
+  .mz .mz__x{top:12px;right:12px;width:40px;height:40px}
+  .mz__scroll{padding:22px 20px 16px;gap:20px}
+  .mz__head{margin-top:-12px}
+  .mz__name{font-size:22px}
+  .mz__price{font-size:17px}
+  .mz__foot{gap:10px;padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
+  .mz-qty{gap:6px;padding:4px}
+  .mz-qty button{width:34px;height:34px}
+  .mz-qty output{font-size:18px}
+  body[data-design-system] .mz .mz__cta{min-height:48px;height:48px;padding:0 14px;font-size:12.5px;letter-spacing:.02em}
+}
+@media (max-width:400px){
+  .mz__art{grid-template-columns:92px minmax(0,1fr);gap:16px;padding:28px 56px 20px 20px}
+  .mz-sizes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mz-size{padding:10px 12px}
+  body[data-design-system] .mz .mz__cta{font-size:11.5px;padding:0 10px}
+}

@@ -176,17 +176,79 @@ document.addEventListener('fb:ready', () => {
 
   /* ---------- Danh sách món ---------- */
   // Tên tiếng Ý của từng chương (1 nhãn nhỏ duy nhất, chỉ trình bày)
-  const IT = { 'khai-vi': 'Antipasti', sup: 'Zuppe', 'mi-y': 'Pasta', risotto: 'Risotti', salad: 'Insalate', nuong: 'Secondi & Pizze', 'trang-mieng': 'Dolci', 'do-uong': 'Bevande' };
+  const IT = { 'khai-vi': 'Antipasti', sup: 'Zuppe', 'mi-y': 'Pasta', risotto: 'Risotti', salad: 'Insalate', nuong: 'Secondi', pizza: 'Pizze', 'trang-mieng': 'Dolci', 'do-uong': 'Bevande' };
   const CHAPTERS = D.categories.filter(c => c.id !== 'all');
+  /* Pizza: dữ liệu xếp pizza trong danh mục "Món nướng" (nuong). Chỉ TÁCH KHI HIỂN THỊ thành 1 chương riêng ngay sau
+     "Món nướng" — không đổi dữ liệu → thanh danh mục, bộ lọc, "Xem tất cả", phân trang giữ nguyên (chọn "Món nướng" = cả 2 chương). */
+  const isPizza = d => d.cat === 'nuong' && /pizza|calzone/i.test(d.id + ' ' + d.name);
+  const PIZZA = { id: 'pizza', name: 'Pizza Napoletana' };
+  // Thứ tự chương (số La Mã) theo đúng thứ tự hiển thị của thực đơn
+  const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+  const ORDER = CHAPTERS.flatMap(c => c.id === 'nuong' ? ['nuong', 'pizza'] : [c.id]);
+  const chapterOf = d => (isPizza(d) ? 'pizza' : d.cat);
+  const chapterLabel = id => { const k = ORDER.indexOf(id); return k < 0 ? '' : `Capitolo ${ROMAN[k]}${IT[id] ? ' · ' + IT[id] : ''}`; };
+  /* Phong cách "Italian Editorial Menu" (ảnh tròn lớn, 3 cột) cho các chương: Khai vị, Pizza, Tráng miệng, Đồ uống */
+  const EDITORIAL = {
+    'khai-vi': { title: 'Khai vị', accent: 'Per cominciare' },
+    pizza: { title: 'Pizza Napoletana', accent: 'Dal forno a legna' },
+    'trang-mieng': { title: 'Tráng miệng', accent: 'Per finire in dolcezza' },
+    'do-uong': { title: 'Đồ uống', accent: 'Un sorso d’Italia' }
+  };
+  const BADGE = { 'best seller': 'Bán chạy', 'mới': 'Món mới' }; // nhãn hiển thị — chỉ khi món có tag trong dữ liệu
+  const badgeOf = t => (t ? BADGE[t.trim().toLowerCase()] || t : '');
+  // Cho popup chi tiết món của Trang Thực đơn (js/pages/thuc_don_popup.js)
+  FB.menuChapter = d => ({ id: chapterOf(d), label: chapterLabel(chapterOf(d)) });
+  /* Chế độ "Xem tất cả": mỗi chương hiện tối đa PREVIEW món đầu (sau lọc / sắp xếp) + nút "Xem tất cả" / "Thu gọn".
+     Trạng thái mở rộng RIÊNG từng chương (Set id chương). Chọn 1 danh mục trên thanh ngang → hiện toàn bộ, không giới hạn.
+     Món bị giới hạn KHÔNG được dựng vào DOM (không ẩn bằng hidden) → phân trang (thuc_don_phan_trang.js) không ghi đè. */
+  const PREVIEW = 6;
+  const open = new Set();
+  let shown = new Map(); // id chương → { c, items } của lần render gần nhất (để mở/thu từng chương mà không dựng lại cả lưới)
+  const limited = () => state.cat === 'all';
+  const cardsHTML = (c, items) => items.map(d => (EDITORIAL[c.id] ? dishCard(d, { tag: badgeOf(d.tag) }) : dishCard(d))).join('');
+  const visibleOf = (c, items) => (limited() && !open.has(c.id) ? items.slice(0, PREVIEW) : items);
+  function moreHTML(c, items) {
+    if (!limited() || items.length <= PREVIEW) return '';
+    const on = open.has(c.id);
+    // Cùng kiểu với link "Xem tất cả" ở đầu khu Combo (.link-arrow.c-wine)
+    return `<div class="qm-more"><button type="button" class="link-arrow c-wine qm-more__btn" data-more="${esc(c.id)}" aria-expanded="${on}" aria-controls="gl-${esc(c.id)}"
+      aria-label="${on ? 'Thu gọn' : `Xem tất cả ${items.length} món`} ${esc(EDITORIAL[c.id] ? EDITORIAL[c.id].title : c.name)}">${on ? 'Thu gọn' : 'Xem tất cả'} ${icon('arrow-right')}</button></div>`;
+  }
   function groupHTML(c, items) {
+    const ed = EDITORIAL[c.id];
+    const list = `<div class="qm-group__list" id="gl-${esc(c.id)}">${cardsHTML(c, visibleOf(c, items))}</div>${moreHTML(c, items)}`;
+    if (ed) return `<section class="qm-group qm-group--ed" data-group="${esc(c.id)}" aria-labelledby="g-${esc(c.id)}">
+      <header class="qm-group__head qm-ed__head">
+        <span class="qm-ed__chap" lang="it">${esc(chapterLabel(c.id))}</span>
+        <div class="qm-ed__row"><h3 class="qm-group__title" id="g-${esc(c.id)}">${esc(ed.title)}</h3><span class="qm-ed__accent" lang="it">${esc(ed.accent)}</span></div>
+      </header>
+      ${list}
+    </section>`;
     return `<section class="qm-group" data-group="${esc(c.id)}" aria-labelledby="g-${esc(c.id)}">
       <header class="qm-group__head">
         ${IT[c.id] ? `<span class="qm-group__it" lang="it">${IT[c.id]}</span>` : ''}
         <h3 class="qm-group__title" id="g-${esc(c.id)}">${esc(c.name)}</h3>
       </header>
-      <div class="qm-group__list">${items.map(d => dishCard(d)).join('')}</div>
+      ${list}
     </section>`;
   }
+  // Mở / thu 1 chương: chỉ dựng lại danh sách + nút của chương đó; các chương khác giữ nguyên
+  $('#grid').addEventListener('click', e => {
+    const b = e.target.closest('[data-more]'); if (!b) return;
+    const id = b.dataset.more, g = shown.get(id), sec = b.closest('.qm-group'); if (!g || !sec) return;
+    const opening = !open.has(id);
+    opening ? open.add(id) : open.delete(id);
+    const listEl = $('.qm-group__list', sec), before = listEl.children.length;
+    listEl.innerHTML = cardsHTML(g.c, visibleOf(g.c, g.items));
+    if (opening) [...listEl.children].slice(before).forEach(x => x.classList.add('qm-new')); // hiệu ứng xuất hiện nhẹ cho các món mới
+    $('.qm-more', sec).outerHTML = moreHTML(g.c, g.items);
+    FB.initReveal(); // trái tim yêu thích tự tô lại (popups.js quan sát DOM)
+    $('[data-more]', sec).focus({ preventScroll: true });
+    if (!opening) { const top = sec.getBoundingClientRect().top; if (top < 0) sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); } // thu gọn khi đã cuộn xa → về đầu chương
+    syncMeta();
+  });
+  // Dòng "Hiển thị X / N món" theo số món đang dựng (giữ phần tổng & bộ lọc)
+  const syncMeta = () => { const m = $('#list-meta'); if (m) m.textContent = m.textContent.replace(/^Hiển thị [\d–]+/, 'Hiển thị ' + $$('#grid .dish').length); };
   function render() {
     let list = applyFilters(D.dishes.slice());
     if (state.sort === 'asc') list.sort((a, b) => a.price - b.price);
@@ -197,15 +259,20 @@ document.addEventListener('fb:ready', () => {
     $('#list-title').textContent = searching ? `Kết quả cho “${state.q}”` : 'Toàn bộ thực đơn';
     $('#list-title').hidden = !searching && state.cat !== 'all';
     const f = filterLabel();
-    $('#list-meta').textContent = `Hiển thị ${list.length} / ${D.categories.find(c => c.id === state.cat).count} món` + (f ? ' · Bộ lọc: ' + f : '');
+    // Tổng = số món thật khớp danh mục / tìm kiếm / bộ lọc (count trong categories là số cũ, không khớp 96 món)
+    $('#list-meta').textContent = `Hiển thị ${list.length} / ${list.length} món` + (f ? ' · Bộ lọc: ' + f : '');
     // Nhóm theo danh mục (giữ thứ tự sắp xếp bên trong từng nhóm); không dựng nhóm rỗng; mỗi món chỉ thuộc 1 nhóm
     const known = new Set(CHAPTERS.map(c => c.id));
-    const groups = CHAPTERS.filter(c => state.cat === 'all' || c.id === state.cat).map(c => [c, list.filter(d => d.cat === c.id)]);
+    const groups = CHAPTERS.filter(c => state.cat === 'all' || c.id === state.cat).flatMap(c => c.id === 'nuong'
+      ? [[c, list.filter(d => d.cat === 'nuong' && !isPizza(d))], [PIZZA, list.filter(isPizza)]] // Món nướng → 2 chương: Nướng + Pizza
+      : [[c, list.filter(d => d.cat === c.id)]]);
     const other = list.filter(d => !known.has(d.cat)); if (other.length) groups.push([{ id: 'khac', name: 'Món khác' }, other]);
     // "Xem tất cả" = xổ TOÀN BỘ món, chia theo từng danh mục (không cắt chương sang trang khác) → tắt phân trang.
     // Chọn 1 danh mục → chỉ nhóm đó; phân trang 12 món/trang vẫn áp dụng khi nhóm vượt 12 món.
     $('#grid').dataset.paginate = state.cat === 'all' ? 'off' : 'on'; // đặt TRƯỚC khi dựng lưới (thuc_don_phan_trang.js đọc khi lưới đổi)
-    $('#grid').innerHTML = groups.filter(g => g[1].length).map(g => groupHTML(g[0], g[1])).join('');
+    const live = groups.filter(g => g[1].length);
+    shown = new Map(live.map(([c, items]) => [c.id, { c, items }]));
+    $('#grid').innerHTML = live.map(g => groupHTML(g[0], g[1])).join('');
     const empty = list.length === 0;
     $('#empty').hidden = !empty; $('#pager').hidden = empty; $('#grid').hidden = empty;
     $('#search').classList.toggle('is-error', empty && searching);
@@ -227,7 +294,8 @@ document.addEventListener('fb:ready', () => {
     if (bar && a) { const l = a.offsetLeft - bar.offsetLeft, r = l + a.offsetWidth; if (l < bar.scrollLeft || r > bar.scrollLeft + bar.clientWidth) bar.scrollTo({ left: Math.max(0, l - 16), behavior: 'smooth' }); } // chỉ cuộn trong thanh, không cuộn trang
   }
 
-  $('#cats').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.cat = b.dataset.cat; syncSide(); render(); });
+  // Đổi danh mục trên thanh ngang → về trạng thái mặc định (mọi chương thu gọn 6 món khi quay lại "Xem tất cả")
+  $('#cats').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.cat = b.dataset.cat; open.clear(); syncSide(); render(); });
   $('#search').addEventListener('submit', e => { e.preventDefault(); state.q = e.target.q.value.trim(); render(); });
   $('#search input').addEventListener('input', e => { if (!e.target.value) { state.q = ''; render(); } });
 
@@ -292,7 +360,7 @@ document.addEventListener('fb:ready', () => {
     preview();
   }
 
-  $('#reset').addEventListener('click', () => { state.q = ''; state.filtered = false; state.cat = 'all'; state.ings = []; state.price = null; state.veg = state.mild = false; $('#search input').value = ''; syncSide(); render(); });
+  $('#reset').addEventListener('click', () => { open.clear(); state.q = ''; state.filtered = false; state.cat = 'all'; state.ings = []; state.price = null; state.veg = state.mild = false; $('#search input').value = ''; syncSide(); render(); });
   $('#suggest').addEventListener('click', e => { const c = e.target.closest('[data-q]'); if (!c) return; state.q = c.dataset.q; $('#search input').value = c.dataset.q; render(); });
 
   // Dropdown "Giao đến" & "Sắp xếp"
