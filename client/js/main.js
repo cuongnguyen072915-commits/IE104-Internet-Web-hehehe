@@ -254,7 +254,7 @@
     const tag = opts.tag !== undefined ? opts.tag : d.tag;
     return `<article class="dish reveal" data-id="${d.id}">
       <a class="dish__media" href="chi_tiet_mon.html?id=${d.id}"><img src="${d.img}" alt="${d.name}" loading="lazy">
-        ${tag ? `<span class="dish__tag">${tag}</span>` : ''}</a>
+        ${tag ? `<span class="dish__tag dish__tag--${/best/i.test(tag) ? 'best' : /chef/i.test(tag) ? 'chef' : /mới|new/i.test(tag) ? 'new' : 'other'}">${tag}</span>` : ''}</a>
       <button class="dish__fav" aria-label="Yêu thích" aria-pressed="false">${icon('heart')}</button>
       <div class="dish__body"><a class="dish__name" href="chi_tiet_mon.html?id=${d.id}">${d.name}</a>
         <p class="dish__desc">${opts.desc || d.desc}</p>

@@ -8,7 +8,7 @@ window.FB_DATA = (function () {
     { id: 'risotto-kem', name: 'Cơm Risotto Kem Phô Mai', desc: 'Gạo Arborio, kem tươi và phô mai Grana Padano.', price: 89000, tag: '', homeTag: 'Mới', img: IMG + 'dish-cheese-cream-risotto.jpg', cat: 'risotto', veg: true },
     { id: 'risotto-ga', name: 'Cơm Risotto Gà', desc: 'Ức gà áp chảo, nấm và sốt kem thảo mộc.', price: 109000, tag: 'Chef’s Pick', img: IMG + 'dish-chicken-risotto.jpg', cat: 'risotto' },
     { id: 'carbonara', name: 'Mì Ý sốt kem Carbonara', desc: 'Guanciale, lòng đỏ trứng, Pecorino Romano.', price: 159000, tag: 'Mới', img: IMG + 'dish-crab-cream-spaghetti.jpg', cat: 'mi-y' },
-    { id: 'bruschetta', name: 'Bánh mì nướng cà chua Bruschetta', short: 'Bánh mì Bruschetta', desc: 'Bánh mì Ciabatta, cà chua, tỏi, lá húng.', price: 89000, tag: 'Khai vị', img: IMG + 'dish-bruschetta.jpg', cat: 'khai-vi', veg: true },
+    { id: 'bruschetta', name: 'Bánh mì nướng cà chua Bruschetta', short: 'Bánh mì Bruschetta', desc: 'Bánh mì Ciabatta, cà chua, tỏi, lá húng.', price: 89000, tag: '', img: IMG + 'dish-bruschetta.jpg', cat: 'khai-vi', veg: true },
     { id: 'caprese', name: 'Salad Caprese', desc: 'Cà chua, burrata, húng quế và dầu ô liu.', price: 109000, tag: '', img: IMG + 'dish-caprese-burrata.jpg', cat: 'salad', veg: true },
     { id: 'minestrone', name: 'Súp Minestrone', desc: 'Súp rau củ, đậu trắng và mì ống nhỏ.', price: 99000, tag: '', img: '../assets/template-20261120T115451Z-1-001 - Copy/template/dish-minestrone-soup.jpg', cat: 'sup', veg: true }
   ];
