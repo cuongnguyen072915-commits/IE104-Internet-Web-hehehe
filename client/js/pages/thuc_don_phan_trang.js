@@ -1,6 +1,7 @@
 /* Thực đơn – phân trang 12 món/trang (Figma: “PC – 02g Thực đơn – Tất cả (Trang 1–8/8)”).
    Nạp SAU ../js/pages/thuc_don.js. Không sửa logic lọc/tìm kiếm của thuc_don.js:
    mỗi khi #grid được render lại, file này chia các thẻ món thành trang và vẽ lại thanh #pager.
+   Bố cục nhóm theo danh mục: đếm món theo thứ tự hiển thị qua mọi nhóm; nhóm không có món ở trang hiện tại bị ẩn.
    B5: luôn có nút Trang trước / Trang sau (khi còn trang), hiện trang hiện tại + các trang liền kề,
    dấu “…” khi bị lược; số trang tính động từ số món sau lọc; Mobile rút gọn còn ±1 trang. */
 document.addEventListener('fb:ready', () => {
@@ -26,18 +27,26 @@ document.addEventListener('fb:ready', () => {
 
   function apply() {
     busy = true;
-    const cards = $$(':scope > .dish', grid);
-    const pages = Math.max(1, Math.ceil(cards.length / SIZE));
+    // Món nằm trong các nhóm danh mục (.qm-group) — lấy theo thứ tự hiển thị trên trang
+    const cards = $$('.dish', grid);
+    // "Xem tất cả" (grid[data-paginate="off"]): hiện toàn bộ món theo từng danh mục — không chia trang
+    const perPage = grid.dataset.paginate === 'off' ? Math.max(1, cards.length) : SIZE;
+    const pages = Math.max(1, Math.ceil(cards.length / perPage));
     page = Math.min(Math.max(1, page), pages); // trang không còn hợp lệ → về trang hợp lệ gần nhất
-    cards.forEach((c, i) => { c.hidden = i < (page - 1) * SIZE || i >= page * SIZE; });
+    cards.forEach((c, i) => { c.hidden = i < (page - 1) * perPage || i >= page * perPage; });
+    // Ẩn nhóm không còn món nào trên trang hiện tại; nhóm bị chia sang trang sau được đánh dấu "tiếp theo"
+    $$('.qm-group', grid).forEach(g => {
+      const own = $$('.dish', g), vis = own.filter(c => !c.hidden);
+      g.hidden = !vis.length; g.classList.toggle('is-cont', !!vis.length && vis[0] !== own[0]);
+    });
 
     // Dòng “Hiển thị …” – giữ phần “· Bộ lọc: …” do thuc_don.js tạo
     if (meta && cards.length) {
       const txt = meta.textContent;
       const total = (txt.match(/\/\s*(\d+)\s*món/) || [])[1] || cards.length;
       const filter = txt.includes(' · Bộ lọc:') ? txt.slice(txt.indexOf(' · Bộ lọc:')) : '';
-      const a = (page - 1) * SIZE + 1, b = Math.min(page * SIZE, cards.length);
-      const shown = cards.length > SIZE ? `${a}–${b}` : `${cards.length}`;
+      const a = (page - 1) * perPage + 1, b = Math.min(page * perPage, cards.length);
+      const shown = cards.length > perPage ? `${a}–${b}` : `${cards.length}`;
       meta.textContent = `Hiển thị ${shown} / ${total} món` + (pages > 1 ? ` · Trang ${page}/${pages}` : '') + filter;
     }
 
@@ -56,7 +65,7 @@ document.addEventListener('fb:ready', () => {
 
   // Cuộn về đầu danh sách món, chừa chỗ cho Header dính
   function toListTop() {
-    const head = $('.site-header'); const anchor = $('#list-title') || grid;
+    const head = $('.site-header'); const anchor = $('#list-meta') || grid; // #list-title có thể đang ẩn (chế độ 1 danh mục)
     const y = anchor.getBoundingClientRect().top + window.scrollY - ((head && head.offsetHeight) || 0) - 24;
     window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
   }

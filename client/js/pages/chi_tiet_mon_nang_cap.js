@@ -158,9 +158,9 @@ document.addEventListener('fb:ready', () => {
     <div class="pd-desc__panel" role="tabpanel" id="panel-ing" aria-labelledby="tab-ing" data-panel="ing" hidden>
       <div class="pd-desc__grid">
         <div class="pd-desc__main">
-          <h3 class="pd-desc__sub">Thành phần &amp; nguyên liệu nổi bật</h3>
+          <h3 class="pd-desc__title pd-desc__title--sec">Thành phần &amp; nguyên liệu nổi bật</h3>
           ${ingList.length ? `<ul class="pd-ing">${ingList.map(x => `<li>${I('leaf')}${esc(x)}</li>`).join('')}</ul>` : `<p class="t-body c-gray">${esc(d.desc)}</p><p class="t-body-s c-gray">Danh sách nguyên liệu chi tiết của món này đang được cập nhật.</p>`}
-          <h3 class="pd-desc__sub">Đặc trưng hương vị</h3>
+          <h3 class="pd-desc__title pd-desc__title--sec">Đặc trưng hương vị</h3>
           <p class="t-body c-gray">${esc(info ? info.long : d.desc)}</p>
         </div>
         <aside class="pd-desc__aside">

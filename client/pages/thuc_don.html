@@ -18,75 +18,89 @@
 <body data-design-system="fiabesco-github" data-page="thuc_don">
   <!-- Frame: PC – 02 Thực đơn (+ E04 ngoài giờ, E05 tìm kiếm không có kết quả) -->
   <header data-header></header>
-  <main class="site-main" id="noi-dung-chinh">
-    <section class="banner" style="background-image:url('../assets/template-20261120T115451Z-1-001 - Copy/template/restaurant-wine-bar.jpg')">
-      <div class="container">
-        <nav class="crumb"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Thực đơn</span></nav>
-        <h1 class="t-h1" style="color:#FFFFFF">Thực đơn</h1>
-        <p class="t-body-l">Hơn 40 món Ý thủ công — giao tận nơi trong 30 phút hoặc thưởng thức ngay tại nhà hàng.</p>
+  <!-- Thiết kế lại theo Figma "QR-M · 02 Thực đơn QR – toàn trang" (phong cách Premium Italian Editorial Menu)
+       — chỉ đổi phần nội dung; Header/Footer dùng chung của website. Toàn bộ id/chức năng cũ được giữ nguyên:
+       #search, Giao đến, #to-filter (popup — bộ lọc DUY NHẤT), Sắp xếp, #cats (thanh ngang), #combos, #grid, #empty, #pager. -->
+  <main class="site-main qm" id="noi-dung-chinh">
+    <!-- Hero editorial: nền navy, đĩa món tròn + vòng tròn vàng, con dấu "Chef's Selection" -->
+    <section class="qm-hero" aria-labelledby="qm-title">
+      <div class="container qm-hero__in">
+        <div class="qm-hero__txt">
+          <nav class="crumb qm-hero__crumb" aria-label="Breadcrumb"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Thực đơn</span></nav>
+          <span class="qm-eyebrow qm-eyebrow--line">Il nostro menu · Thực đơn</span>
+          <h1 class="qm-hero__title" id="qm-title">Hương vị Ý trên từng chiếc đĩa</h1>
+          <p class="qm-hero__lead">Hơn 40 món Ý thủ công — giao tận nơi trong 30 phút hoặc thưởng thức ngay tại nhà hàng.</p>
+          <a class="qm-hero__more" href="#thuc-don"><i data-icon="chevron-down"></i>Lật trang để khám phá</a>
+        </div>
+        <div class="qm-hero__art" aria-hidden="true">
+          <span class="qm-hero__no">N° 02 · Autunno</span>
+          <span class="qm-ring qm-ring--a"></span><span class="qm-ring qm-ring--b"></span>
+          <img class="qm-hero__plate" src="../assets/template-20261120T115451Z-1-001 - Copy/template/risotto-frutti-di-mare.jpg" alt="">
+          <span class="qm-seal"><i data-icon="star"></i><b>Chef’s</b><em>Selection</em></span>
+        </div>
       </div>
     </section>
 
-    <div class="container menu-page">
-      <div class="toolbar" id="tim-kiem">
-        <form class="search" id="search" role="search">
-          <i data-icon="search"></i>
-          <input id="menu-search" type="search" name="q" placeholder="Bạn muốn dùng gì hôm nay?" aria-label="Tìm món">
-        </form>
-        <div class="row" style="gap:12px;flex-wrap:wrap">
-          <div class="dd"><button class="tool-pill" data-dd="area"><i data-icon="location-pin"></i><span>Giao đến: Quận 1</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
-            <div class="dd__menu" data-menu="area"><button class="is-active">Quận 1</button><button>Quận 3</button><button>Quận 7</button><button>Bình Thạnh</button><button>TP. Thủ Đức</button></div></div>
-          <button class="tool-pill" id="to-filter"><i data-icon="filter"></i><span>Lọc theo</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
-          <div class="dd"><button class="tool-pill" data-dd="sort"><i data-icon="grid"></i><span>Sắp xếp: Phổ biến</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
-            <div class="dd__menu dd__menu--right" data-menu="sort"><button class="is-active" data-sort="pop">Phổ biến</button><button data-sort="asc">Giá tăng dần</button><button data-sort="desc">Giá giảm dần</button></div></div>
-        </div>
-      </div>
-
-      <div class="menu-cols">
-        <aside class="side">
-          <div class="side-card">
-            <h2 class="t-h4">Danh mục</h2>
-            <ul class="cats" id="cats"></ul>
-          </div>
-          <form class="side-card side-card--filter" id="filters">
-            <h2 class="t-h4">Bộ lọc</h2>
-            <span class="t-title" style="font-size:14px">Khoảng giá</span>
-            <div class="row" style="gap:8px;flex-wrap:wrap" id="price">
-              <button type="button" class="chip chip--sm" data-p="0-99999">&lt; 100k</button>
-              <button type="button" class="chip chip--sm is-active" data-p="100000-200000">100–200k</button>
-              <button type="button" class="chip chip--sm" data-p="200001-9999999">&gt; 200k</button>
-            </div>
-            <span class="t-title" style="font-size:14px">Chế độ ăn</span>
-            <label class="checkbox"><input type="checkbox" name="veg" checked><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s">Thuần chay</span></label>
-            <label class="checkbox"><input type="checkbox" name="mild"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s">Không cay</span></label>
-            <label class="checkbox"><input type="checkbox" name="gf"><span class="checkbox__box"><i data-icon="check"></i></span><span class="t-body-s">Không gluten</span></label>
-            <button type="submit" class="btn btn--outline btn--block">Áp dụng bộ lọc</button>
+    <!-- "Trang menu" màu kem phủ lên hero -->
+    <div class="qm-sheet" id="thuc-don">
+      <div class="container menu-page">
+        <div class="toolbar" id="tim-kiem">
+          <form class="search" id="search" role="search">
+            <i data-icon="search"></i>
+            <input id="menu-search" type="search" name="q" placeholder="Bạn muốn dùng gì hôm nay?" aria-label="Tìm món">
           </form>
-        </aside>
+          <div class="row toolbar__tools" style="gap:12px;flex-wrap:wrap">
+            <div class="dd"><button class="tool-pill" data-dd="area"><i data-icon="location-pin"></i><span>Giao đến: Quận 1</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
+              <div class="dd__menu" data-menu="area"><button class="is-active">Quận 1</button><button>Quận 3</button><button>Quận 7</button><button>Bình Thạnh</button><button>TP. Thủ Đức</button></div></div>
+            <button class="tool-pill" id="to-filter"><i data-icon="filter"></i><span>Lọc theo</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
+            <div class="dd"><button class="tool-pill" data-dd="sort"><i data-icon="grid"></i><span>Sắp xếp: Phổ biến</span><i data-icon="chevron-down" class="tool-pill__chev"></i></button>
+              <div class="dd__menu dd__menu--right" data-menu="sort"><button class="is-active" data-sort="pop">Phổ biến</button><button data-sort="asc">Giá tăng dần</button><button data-sort="desc">Giá giảm dần</button></div></div>
+          </div>
+        </div>
 
         <div class="menu-main">
-          <div id="combo-block">
-            <div class="sec-head"><div class="stack" style="gap:6px"><h2 class="t-h3">Combo hấp dẫn</h2><p class="t-body-s c-gray">Tiết kiệm đến 20% khi đặt theo nhóm</p></div>
-              <div class="combo-head__side">
-                <a class="fav-link" href="mon_yeu_thich.html"><i data-icon="heart"></i><span>Món yêu thích</span></a>
-                <a class="link-arrow c-wine combo-head__all" href="khuyen_mai.html">Xem tất cả <i data-icon="arrow-right"></i></a>
-              </div></div>
-            <div class="combos" id="combos"></div>
-          </div>
-          <div class="sec-head" style="padding-top:16px"><div class="stack" style="gap:6px"><h2 class="t-h3" id="list-title">Bán chạy</h2><p class="t-body-s c-gray" id="list-meta">Hiển thị 6 / 42 món · Bộ lọc: 100–200k, Thuần chay</p></div></div>
-          <div class="dish-grid" id="grid"></div>
-          <div class="empty" id="empty" hidden>
-            <img src="../assets/template-20261120T115451Z-1-001 - Copy/template/empty-state-cat-box.png" alt="" width="320" height="226">
-            <h3 class="t-h3" id="empty-title">Không tìm thấy</h3>
-            <p class="t-body c-gray" id="empty-desc"></p>
-            <span class="t-title" style="font-size:15px">Gợi ý cho bạn</span>
-            <div class="row" style="gap:10px;flex-wrap:wrap;justify-content:center" id="suggest">
-              <button class="chip" data-q="Burrata">Pizza Margherita</button><button class="chip" data-q="Carbonara">Mì Ý hải sản</button><button class="chip" data-q="Risotto">Risotto nấm</button><button class="chip" data-q="Bò">Món cay</button>
+            <div id="combo-block">
+              <div class="sec-head qm-chapter"><div class="stack" style="gap:8px">
+                  <h2 class="t-h3">Combo hấp dẫn</h2>
+                  <p class="qm-chapter__lead">Tiết kiệm hơn khi thưởng thức theo nhóm</p></div>
+                <div class="combo-head__side">
+                  <a class="fav-link" href="mon_yeu_thich.html"><i data-icon="heart"></i><span>Món yêu thích</span></a>
+                  <a class="link-arrow c-wine combo-head__all" href="khuyen_mai.html">Xem tất cả <i data-icon="arrow-right"></i></a>
+                </div></div>
+              <div class="combos" id="combos"></div>
+              <!-- Dải trích dẫn (QR-M) -->
+              <figure class="qm-quote"><span class="qm-quote__star" aria-hidden="true">✦</span>
+                <blockquote lang="it">«L’appetito vien mangiando.»</blockquote>
+                <figcaption><span>“Càng ăn càng thấy ngon miệng.”</span><small>Tục ngữ Ý</small></figcaption></figure>
             </div>
-            <button class="btn btn--outline" id="reset">Xóa bộ lọc &amp; tìm lại</button>
-          </div>
-          <nav class="pager" id="pager" aria-label="Phân trang">
-          </nav>
+            <!-- Chef's Signature — đặt sau khu Combo; nội dung lấy từ dữ liệu món, JS dựng -->
+            <section class="qm-sig" id="chef-sig" aria-labelledby="sig-title"></section>
+            <!-- Danh mục nằm ngang (chỉ chữ) — cuộn ngang trong thanh khi thiếu chỗ -->
+            <nav class="qm-cats" aria-label="Danh mục món"><ul class="cats" id="cats"></ul></nav>
+            <div class="sec-head qm-chapter qm-chapter--list"><div class="stack" style="gap:6px">
+                <h2 class="t-h3" id="list-title">Toàn bộ thực đơn</h2>
+                <p class="t-body-s c-gray" id="list-meta">Hiển thị 12 / 96 món</p></div></div>
+            <!-- Món được nhóm theo danh mục (mỗi nhóm = 1 "chương"); JS dựng -->
+            <div class="dish-grid" id="grid"></div>
+            <div class="empty" id="empty" hidden>
+              <img src="../assets/template-20261120T115451Z-1-001 - Copy/template/empty-state-cat-box.png" alt="" width="320" height="226">
+              <h3 class="t-h3" id="empty-title">Không tìm thấy</h3>
+              <p class="t-body c-gray" id="empty-desc"></p>
+              <span class="t-title" style="font-size:15px">Gợi ý cho bạn</span>
+              <div class="row" style="gap:10px;flex-wrap:wrap;justify-content:center" id="suggest">
+                <button class="chip" data-q="Burrata">Pizza Margherita</button><button class="chip" data-q="Carbonara">Mì Ý hải sản</button><button class="chip" data-q="Risotto">Risotto nấm</button><button class="chip" data-q="Bò">Món cay</button>
+              </div>
+              <button class="btn btn--outline" id="reset">Xóa bộ lọc &amp; tìm lại</button>
+            </div>
+            <nav class="pager" id="pager" aria-label="Phân trang">
+            </nav>
+        </div>
+
+        <!-- Lời kết thực đơn (QR-M) -->
+        <div class="qm-closing">
+          <img src="../assets/template-20261120T115451Z-1-001 - Copy/template/Logo (remove backround).png" alt="Fiabesco Palace" width="64" height="64">
+          <p>Giá đã bao gồm VAT. Món ăn có thể chứa gluten, sữa, hải sản — hãy ghi chú cho bếp nếu bạn dị ứng.</p>
+          <p class="qm-closing__script">Grazie e buon appetito!</p>
         </div>
       </div>
     </div>

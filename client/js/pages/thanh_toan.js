@@ -525,7 +525,21 @@ document.addEventListener('fb:ready', () => {
         if (ok) { c.classList.add('is-done'); c.lastChild.textContent = 'Đã chép'; setTimeout(() => { c.classList.remove('is-done'); c.lastChild.textContent = 'Sao chép'; }, 1600); } return; }
       const a = e.target.closest('[data-qr]'); if (!a) return;
       if (a.dataset.qr === 'back') return backToMethods();
-      if (a.dataset.qr === 'paid') return checkPayment(O.get(o.id));
+      if (a.dataset.qr === 'paid') {
+        const cur = O.get(o.id);
+        /* VietQR — luồng TRÌNH DIỄN nội bộ (giống ZaloPay / Apple Pay): chỉ khi dùng tài khoản nhận tiền MINH HỌA
+           và chưa có đối soát ngân hàng. "Tôi đã chuyển khoản" → popup đang xử lý → ghi nhận PAID (pay.simulated = true)
+           → đơn CONFIRMED → trang Đặt hàng thành công. Không phải xác nhận tiền thật; khi có tài khoản thật / webhook
+           ngân hàng (B.demo = false hoặc gatewayConfigured = true) sẽ đi qua checkPayment() như cũ. */
+        if (B.demo && !PAYAPI.gatewayConfigured) {
+          if (a.disabled || submitting) return;
+          if (cur.pay.expiresAt && Date.now() > cur.pay.expiresAt) return checkPayment(cur); // mã hết hạn → báo hết hạn + "Tạo mã mới"
+          a.disabled = true; submitting = true; clearInterval(qrTimer);
+          const run = () => { const n = O.get(o.id); if (n) { n.pay.simulated = true; O.put(n); } const r = PAYAPI.demoResolve(o.id, 'PAID'); done(r || O.get(o.id)); };
+          return FB.payProcessing ? FB.payProcessing('VietQR', cur.total, run) : run();
+        }
+        return checkPayment(cur);
+      }
     };
     clearInterval(qrTimer);
     const tick = () => { const n = O.get(o.id); const left = Math.max(0, (n.pay.expiresAt || 0) - Date.now()); const s = Math.ceil(left / 1000);

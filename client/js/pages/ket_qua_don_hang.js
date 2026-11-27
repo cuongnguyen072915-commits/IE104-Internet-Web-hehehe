@@ -7,7 +7,7 @@ document.addEventListener('fb:ready', () => {
   const O = window.FB_ORDERS;
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const id = FB.params.get('ma') || (O && O.lastId());
-  const o = O && id ? O.get(id) : null;
+  const o = O && id ? O.advance(id) : null; // advance = get + bắt kịp tiến trình trình diễn (nếu đang chạy)
   const main = $('main');
 
   function notFound(title, desc) {
@@ -32,7 +32,7 @@ document.addEventListener('fb:ready', () => {
       const a = $('.ok-missing .btn--navy'); if (a) { a.href = 'thanh_toan.html'; a.textContent = 'Quay lại thanh toán'; } return;
     }
     $('#ok-card').removeAttribute('aria-busy');
-    $('#r-desc').textContent = `Cảm ơn ${first || 'bạn'}! Fiabesco Palace đã ghi nhận đơn hàng #${o.id}${cash ? '' : ' và khoản thanh toán của bạn'}. Chúng tôi sẽ thông báo ngay khi nhà hàng xác nhận và bắt đầu chuẩn bị món.`;
+    $('#r-desc').textContent = `Cảm ơn ${first || 'bạn'}! Fiabesco Palace đã ghi nhận đơn hàng #${o.id}${cash ? '' : ' và khoản thanh toán của bạn'}. Đơn hàng đã được xác nhận — bấm “Theo dõi đơn hàng” để xem bếp chuẩn bị và giao món.`;
     table([['Mã đơn hàng', '#' + esc(o.id)], ['Thời gian đặt', O.fmtTime(o.createdAt)], ['Phương thức thanh toán', esc(o.pay.label)],
       ['Trạng thái thanh toán', (cash && o.pay.status === 'UNPAID' ? payState.CASH_UNPAID : payState[o.pay.status]) || o.pay.status, o.pay.status === 'PAID' ? 'is-green' : ''], ['Tổng số tiền', `<span class="money">${money(o.total)}</span>`, 'is-money']]);
     // Thời gian dự kiến: chỉ lấy từ dữ liệu đơn; chưa xác nhận → "Đang cập nhật"
@@ -42,7 +42,8 @@ document.addEventListener('fb:ready', () => {
     $('#r-eta-time').textContent = eta ? `${O.hm(eta.from)} – ${O.hm(eta.to)}` : 'Đang cập nhật thời gian dự kiến'; $('#r-eta-time').classList.toggle('is-text', !eta);
     $('#r-eta-note').textContent = eta ? 'Thời gian có thể thay đổi tùy tình hình chuẩn bị và giao hàng.'
       : `Thời gian dự kiến sẽ hiển thị khi nhà hàng xác nhận đơn (thường ${O.CFG.PREP_MIN + O.CFG.DELIVERY_MIN[0]}–${O.CFG.PREP_MIN + O.CFG.DELIVERY_MIN[1]} phút sau khi xác nhận).`;
-    $('#r-track').href = 'theo_doi_don_hang.html?ma=' + encodeURIComponent(o.id);
+    // batdau=1 → trang Theo dõi bắt đầu tiến trình tự động cho đơn này (chỉ lần đầu, xem FB_ORDERS.startFlow)
+    $('#r-track').href = 'theo_doi_don_hang.html?ma=' + encodeURIComponent(o.id) + '&batdau=1';
     // Chỉ hủy được khi bếp chưa bắt đầu chuẩn bị (theo trạng thái, không theo đồng hồ)
     const btn = $('#cancel-order');
     const canCancel = ['ORDER_PLACED', 'CONFIRMED'].includes(o.status);

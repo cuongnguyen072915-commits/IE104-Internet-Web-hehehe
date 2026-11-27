@@ -3,8 +3,9 @@
    - Dữ liệu: FB_ORDERS (js/don_hang_store.js) theo ?ma=<mã> hoặc đơn gần nhất.
    - Cập nhật “thời gian thực”: FB_ORDERS.subscribe (sự kiện storage + polling 5s, 1 interval).
      Khi có backend: thay bằng SSE/WebSocket — xem TODO(BE) trong don_hang_store.js.
-   - Trạng thái chỉ đổi khi dữ liệu đơn đổi (bộ điều khiển mô phỏng phía nhà hàng),
-     KHÔNG tự chuyển theo đồng hồ. ETA chỉ là ước tính.
+   - Luồng trình diễn: tiến trình tự động 0s Đã xác nhận → 10s Bếp chuẩn bị → 20s Đang giao (3s / điểm lộ trình)
+     → Đã nhận món. Mốc thời gian do FB_ORDERS.startFlow/advance quản lý theo mã đơn (xem don_hang_store.js);
+     trang này chỉ giữ ĐÚNG MỘT setTimeout (clock) để thức dậy ở mốc kế tiếp. Đơn thật: không tự chuyển theo đồng hồ.
    ===================================================================== */
 document.addEventListener('fb:ready', () => {
   const { $, $$, icon: I, money, vnd, Cart } = FB;
@@ -13,7 +14,7 @@ document.addEventListener('fb:ready', () => {
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const maskPhone = p => { const d = String(p || '').replace(/\D/g, ''); return d.length >= 9 ? `${d.slice(0, 4)} *** ${d.slice(-3)}` : '—'; };
   const PAY_STATE = { COD: ['Thanh toán khi nhận hàng', ''], PAID: ['Đã thanh toán', 'is-ok'], PENDING: ['Đang chờ xác nhận', 'is-warn'], UNPAID: ['Chưa thanh toán', 'is-warn'], FAILED: ['Thanh toán thất bại', 'is-bad'], CANCELED: ['Đã hủy giao dịch', 'is-bad'], EXPIRED: ['Hết hạn thanh toán', 'is-bad'] };
-  let sub = null, shownStatus = null;
+  let sub = null, shownStatus = null, curId = null;
 
   /* ---------- Trạng thái tải / lỗi / không có đơn ---------- */
   function error(msg) {
@@ -36,9 +37,17 @@ document.addEventListener('fb:ready', () => {
     let o; const code = FB.params.get('ma');
     try { o = O.get(code || O.lastId()); } catch (e) { return error(); }
     if (!o) return lookup(code);
-    render(o);
+    // Đến từ nút "Theo dõi đơn hàng" (trang Đặt hàng thành công) → bắt đầu tiến trình (chỉ lần đầu; tải lại không reset)
+    if (FB.params.get('batdau') === '1') {
+      O.startFlow(o.id);
+      try { history.replaceState(null, '', location.pathname + '?ma=' + encodeURIComponent(o.id) + location.hash); } catch (e) {}
+    }
+    curId = o.id;
+    o = O.advance(o.id) || o; // bắt kịp các mốc đã trôi qua khi trang đóng / tải lại
     if (sub) sub.stop();
+    stopClock();
     sub = O.subscribe(o.id, (n, prev) => { if (!n) return; render(n, prev); });
+    render(o);
   }
 
   /* ---------- Dựng giao diện ---------- */
@@ -51,7 +60,7 @@ document.addEventListener('fb:ready', () => {
   function render(o, prev) {
     const st = O.info(o, o.status), { idx, reached } = stepState(o);
     const stopped = o.status === 'CANCELED' || o.status === 'FAILED_DELIVERY';
-    stopJourney();
+    stopClock();
     let eta = o.eta || O.computeEta(o);
     const J = journey(o); if (J) eta = { from: J.arrival, to: J.arrival, updatedAt: J.at };
     const placed = O.statusAt(o, 'ORDER_PLACED') || o.createdAt;
@@ -182,11 +191,11 @@ document.addEventListener('fb:ready', () => {
      4 · ĐANG GIAO HÀNG — tài xế + lộ trình
      - Đơn có GPS thật (o.gps.real, do hệ thống cung cấp): dùng vị trí đó.
      - Đơn trình diễn (chưa có backend): lộ trình dựng sẵn từ nhà hàng → địa chỉ nhận, mỗi 3 giây sang điểm kế.
-       Vị trí tính theo THỜI ĐIỂM bắt đầu giao (không cộng dồn) → tải lại trang / mở nhiều tab không tạo tiến trình trùng.
-       Hết lộ trình → chuyển "Đã nhận món" — chỉ áp dụng cho đơn trình diễn (o.demo), không dùng cho đơn thật.
+       Vị trí tính theo THỜI ĐIỂM bắt đầu giao lưu trong history (không cộng dồn) → tải lại trang / mở nhiều tab
+       giữ đúng tiến độ, không chạy lại từ đầu. Hết lộ trình → "Đã nhận món" (FB_ORDERS.advance) — chỉ cho đơn trình diễn.
      ================================================================= */
   const ROUTE = [[120, 230], [120, 155], [365, 155], [365, 265], [540, 265]]; // theo delivery-route-map.svg 776×380
-  const STOPS = 9, STEP_MS = 3000; // 3 giây / chặng
+  const STOPS = O ? O.FLOW.ROUTE_STOPS : 9, STEP_MS = O ? O.FLOW.ROUTE_STEP_MS : 3000; // 9 điểm · 3 giây / điểm (giữ nguyên lộ trình cũ)
   const DEMO_DRIVER = { name: 'Nguyễn Minh Khang', role: 'Nhân viên giao hàng Fiabesco Palace' };
   const SEG = ROUTE.slice(1).map((pt, i) => Math.hypot(pt[0] - ROUTE[i][0], pt[1] - ROUTE[i][1]));
   const TOTAL = SEG.reduce((x, y) => x + y, 0);
@@ -212,19 +221,34 @@ document.addEventListener('fb:ready', () => {
     const step = Math.max(0, Math.min(STOPS - 1, Math.floor((Date.now() - start) / STEP_MS)));
     return { start, step, p: step / (STOPS - 1), arrival: start + (STOPS - 1) * STEP_MS, at: start + step * STEP_MS, done: step >= STOPS - 1 };
   }
-  let jTimer = 0;
-  function stopJourney() { clearTimeout(jTimer); jTimer = 0; }
-  function startJourney(o) {
-    stopJourney();
-    const J = journey(o); if (!J) return;
-    if (J.done) { // hết lộ trình trình diễn → hoàn tất đơn trình diễn
+  /* ---------- Bộ hẹn giờ DUY NHẤT của trang ----------
+     Mỗi lần render/tick đều xóa hẹn giờ cũ rồi đặt đúng 1 setTimeout tới mốc gần nhất:
+     mốc đổi trạng thái (FB_ORDERS.nextFlowAt) hoặc điểm kế tiếp trên lộ trình (3 giây). */
+  let clock = 0;
+  function stopClock() { clearTimeout(clock); clock = 0; }
+  function schedule(o) {
+    stopClock();
+    if (!o || o.id !== curId) return; // không để hẹn giờ của đơn khác chạy trên trang này
+    const J = journey(o);
+    if (J && J.done && !O.flowOn(o)) { // đơn trình diễn cũ (không có flow): hết lộ trình → hoàn tất
       const r = O.transition(o.id, 'DELIVERED', 'Đã giao đến địa chỉ nhận (lộ trình trình diễn)');
       if (r.ok && sub) sub.poke(); return;
     }
-    paintJourney(J);
-    const wait = STEP_MS - ((Date.now() - J.start) % STEP_MS) + 40;
-    jTimer = setTimeout(() => { const cur = O.get(o.id); if (cur) startJourney(cur); }, wait);
+    if (J) paintJourney(J);
+    const next = [O.nextFlowAt(o), J && !J.done ? J.start + (J.step + 1) * STEP_MS : null].filter(t => t != null);
+    if (!next.length) return; // Đã nhận món / đã hủy / đơn thật → không còn hẹn giờ nào
+    clock = setTimeout(tick, Math.max(0, Math.min(...next) - Date.now()) + 40);
   }
+  function tick() {
+    clock = 0;
+    const before = O.get(curId); if (!before) return;
+    const now = O.advance(curId);
+    if (now.status !== before.status) { if (sub) sub.poke(); return; } // render() lại toàn bộ giao diện rồi tự schedule()
+    schedule(now);
+  }
+  window.addEventListener('pagehide', stopClock);
+  // Tab bị trình duyệt hãm hẹn giờ khi ẩn → quay lại thì bắt kịp ngay
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && curId) tick(); });
   function paintJourney(J) {
     const map = $('.trk-map__frame', root); if (!map) return;
     const [x, y] = routeXY(J.p);
@@ -235,7 +259,6 @@ document.addEventListener('fb:ready', () => {
     const m = $('[data-move]', root); if (m) m.innerHTML = `<b>Tài xế đang trên đường giao</b> · đã đi khoảng ${Math.round(J.p * 100)}% lộ trình · dự kiến đến nơi lúc ${O.hm(J.arrival)}${left ? ` (khoảng ${left} giây nữa)` : ''}`;
     const bar = $('[data-move-bar]', root); if (bar) bar.style.width = Math.round(J.p * 100) + '%';
   }
-  window.addEventListener('pagehide', stopJourney);
   function liveHTML(o, eta) {
     const J = journey(o);
     const dr = o.driver && !o.driver.demo ? o.driver : (o.demo ? DEMO_DRIVER : null);
@@ -269,7 +292,7 @@ document.addEventListener('fb:ready', () => {
     </section>`;
   }
   function bind(o) {
-    startJourney(o); // chỉ chạy khi đang giao + đơn trình diễn; tự dừng ở trạng thái khác
+    schedule(o); // hẹn giờ mốc kế tiếp (chỉ đơn trình diễn); tự dừng khi Đã nhận món / đã hủy
     const ro = $('[data-reorder]', root); if (ro) ro.addEventListener('click', () => { const items = Cart.get(); o.items.forEach(it => items.push({ ...it })); Cart.set(FB.Custom ? FB.Custom.mergeCart(items) : items); location.href = 'gio_hang.html'; });
     const cc = $('[data-cancel]', root); if (cc) cc.addEventListener('click', () => FB.openCancelOrder({ id: o.id, code: o.id, pay: o.pay.method === 'Tiền mặt' ? 'Tiền mặt' : o.pay.label, paid: o.pay.status === 'PAID' }));
     const f = $('#trk-review', root); if (!f) return;

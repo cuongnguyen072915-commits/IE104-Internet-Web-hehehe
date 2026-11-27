@@ -99,6 +99,9 @@
 .pd-desc__grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:start}
 .pd-desc__main{display:flex;flex-direction:column;gap:14px;max-width:72ch}
 .pd-desc__title{font:400 26px/1.25 var(--f-display);color:var(--navy);margin:0}
+/* "Thành phần & nguyên liệu" + "Đặc trưng hương vị" dùng chung kiểu chữ với tiêu đề "Công thức…" (tab Giới thiệu) */
+.pd-desc__title--sec:not(:first-child){margin-top:10px}
+@media (max-width:600px){.pd-desc__title{font-size:22px;overflow-wrap:break-word}}
 .pd-desc__lead{font:400 18px/1.65 var(--f-sans);color:var(--navy);margin:0;padding-left:16px;border-left:3px solid var(--gold)}
 .pd-desc__sub{font:600 13px/1.4 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin:10px 0 0}
 .pd-desc__sub:first-child{margin-top:0}
