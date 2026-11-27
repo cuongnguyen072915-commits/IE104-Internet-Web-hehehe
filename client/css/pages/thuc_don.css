@@ -535,31 +535,34 @@ body[data-page="thuc_don"] .qm .qm-group--ed .dish__add .ic{width:18px;height:18
 }
 @media (prefers-reduced-motion:reduce){body[data-page="thuc_don"] .qm .qm-group--ed .dish__media,body[data-page="thuc_don"] .qm .qm-group--ed .dish__media img{transition:none}}
 
-/* ---------- Đường kẻ vùng ảnh — CHỈ Pizza · Tráng miệng · Đồ uống ----------
-   Cùng màu / độ dày với đường kẻ cạnh nhãn chương (1px, đỏ rượu mờ).
-   • Dọc (::before): giữa 2 ảnh liền kề, đặt ở chính giữa khe cột, cao đúng vùng ảnh (đỉnh ảnh → đường ngang).
-   • Ngang (::after): ngay dưới hàng ảnh, trước tên món; nối liền qua khe cột trong 1 hàng, không vượt quá món đầu / cuối hàng.
-   Dựng theo vị trí cột thực tế (nth-child) nên không lệch khi số món thay đổi (6 / 12 / hàng lẻ). */
-body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::before,
-body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::after{
-  content:"";position:absolute;pointer-events:none;background:var(--ed-line)}
-body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::before{
-  top:8px;left:calc(var(--ed-gap) / -2);width:1px;height:calc(var(--ed-d) + var(--ed-lg))}
-body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::after{
-  top:calc(8px + var(--ed-d) + var(--ed-lg));left:calc(var(--ed-gap) / -2);right:calc(var(--ed-gap) / -2);height:1px}
-body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:last-child::after{right:0}
-/* 3 cột */
+/* ---------- Đường phân cách món — Khai vị · Pizza · Tráng miệng · Đồ uống ----------
+   1px, đỏ rượu nhạt, nét liền, không bóng. Hai loại line RỜI NHAU, không giao / không tạo khung:
+   • Dọc (::before): chính giữa khe giữa 2 cột; từ ngang đỉnh ảnh → hết dòng tên món đầu tiên (trước mô tả & giá).
+   • Ngang (::after): riêng từng cột, căn giữa, dài 64% cột; nằm giữa khe hàng (dưới giá + nút "+");
+     chỉ giữa các hàng — hàng cuối không có.
+   Theo vị trí cột thực tế (nth-child) nên tự đúng khi số món / số cột thay đổi. */
+.qm-group--ed{--ed-sep:rgba(160,30,50,.25);--ed-vx:52px;--ed-rgap:52px} /* vx = margin-top phần chữ (30) + ~1 dòng tên (22) */
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::before,
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::after{
+  content:"";position:absolute;pointer-events:none;background:var(--ed-sep)}
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::before{
+  top:8px;left:calc(var(--ed-gap) / -2);width:1px;height:calc(var(--ed-d) + var(--ed-vx))}
+body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish::after{
+  left:18%;right:18%;bottom:calc(var(--ed-rgap) / -2);height:1px}
+/* 3 cột: không line dọc ở cột 1; hàng cuối không có line ngang */
 @media (min-width:901px){
-  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1)::before{content:none}
-  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1)::after{left:0}
-  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n)::after{right:0}
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1)::before,
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1):nth-last-child(-n+3)::after,
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(3n+1):nth-last-child(-n+3) ~ .dish::after{content:none}
 }
-/* 2 cột (Tablet / Mobile): 1 đường dọc giữa 2 ảnh */
+/* 2 cột (Tablet / Mobile): 1 line dọc giữa 2 cột */
 @media (max-width:900px){
-  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1)::before{content:none}
-  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1)::after{left:0}
-  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n)::after{right:0}
+  .qm-group--ed{--ed-rgap:44px}
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1)::before,
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1):nth-last-child(-n+2)::after,
+  body[data-page="thuc_don"] .qm .qm-group--ed:is([data-group="khai-vi"],[data-group="pizza"],[data-group="trang-mieng"],[data-group="do-uong"]) .dish:nth-child(2n+1):nth-last-child(-n+2) ~ .dish::after{content:none}
 }
+@media (max-width:600px){.qm-group--ed{--ed-rgap:34px;--ed-vx:42px}} /* margin-top chữ 22 + ~1 dòng tên 20 */
 
 /* ---------- "Xem tất cả" / "Thu gọn" từng chương (chế độ "Xem tất cả" của thanh danh mục) ---------- */
 .qm-more{display:flex;justify-content:center;margin-top:34px}
