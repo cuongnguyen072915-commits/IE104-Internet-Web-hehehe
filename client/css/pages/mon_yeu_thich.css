@@ -1,18 +1,117 @@
-/* Món yêu thích – Frame "PC – 02b Món yêu thích" & "PC – 02c Yêu thích – Trống" (Luồng 3) */
-.fav{display:flex;flex-direction:column;gap:32px;padding-top:48px;padding-bottom:120px}
-.fav__head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.fav__list{display:flex;flex-direction:column;gap:28px}
-.fav__chips{display:flex;gap:10px;flex-wrap:wrap}
-.fav__chips .chip span{font:400 14px/1 var(--f-price);opacity:.75}
-.fav__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
-.fav__grid .dish{width:auto}
-.fav__grid .dish.is-out{opacity:0;transform:scale(.96);transition:.25s}
-.fav__tip{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:16px;background:var(--cream-2);border:1px solid var(--line);font:400 14px/1.55 var(--f-sans);color:var(--navy)}
-.fav__tip .ic{width:20px;height:20px;color:var(--wine);flex:none}
-.fav__tip button{font-weight:600;text-decoration:underline}
-.fav__empty{display:flex;flex-direction:column;gap:40px}
-.fav__empty .empty-card{padding:56px 48px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-@media (max-width:1100px){.fav__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.fav__grid{grid-template-columns:1fr}.fav__empty .empty-card{padding:40px 20px}.fav__empty img{width:240px}}
-/* Mobile ≤600px: thu khoảng trắng dọc kế thừa từ Desktop (120px) — dùng padding-block/-top/-bottom để không mất lề ngang */
-@media (max-width:600px){.fav{padding-top:32px;padding-bottom:64px}}
+/* =====================================================================
+   Món yêu thích — FIABESCO FAVORITES · YOUR PERSONAL COLLECTION
+   Navy #002842 · Burgundy #A01E32 · Cream #FEF4E4 · Gold #EDC785 · White
+   ===================================================================== */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Hero (gọn, bất đối xứng) ---------- */
+.fv-hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(120% 140% at 85% 20%,#0b3a5a 0%,var(--navy) 60%)}
+.fv-hero::before{content:"";position:absolute;inset:auto -80px -120px auto;width:420px;height:420px;border-radius:50%;border:1px solid rgba(237,199,133,.18)}
+.fv-hero__inner{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:center;gap:48px;padding-top:44px;padding-bottom:44px;min-height:340px}
+.fv-hero__text{display:flex;flex-direction:column;gap:14px;min-width:0}
+.fv-hero .crumb a,.fv-hero .crumb .sep{color:rgba(255,255,255,.7)}
+.fv-hero .crumb .cur{color:#EDC785}
+.fv-hero__kicker{display:inline-flex;align-items:center;gap:8px;font:600 12px/1.4 var(--f-sans);letter-spacing:.22em;text-transform:uppercase;color:#EDC785}
+.fv-hero__kicker .ic{width:16px;height:16px}.fv-hero__kicker .ic path{stroke:#EDC785;fill:#EDC785}
+body[data-design-system] .fv-hero__title{margin:0;font:400 clamp(34px,4vw,56px)/1.08 var(--f-display);color:#fff}
+.fv-hero__desc{margin:0;max-width:520px;font:400 17px/1.6 var(--f-sans);color:rgba(255,255,255,.82)}
+.fv-hero__stats{list-style:none;margin:8px 0 0;padding:0;display:flex;gap:28px}
+.fv-hero__stats li{display:flex;align-items:baseline;gap:8px}
+.fv-hero__stats li+li{padding-left:28px;border-left:1px solid rgba(237,199,133,.3)}
+.fv-hero__stats b{font:400 34px/1 var(--f-price);color:#EDC785}
+.fv-hero__stats span{font:400 14px/1.4 var(--f-sans);color:rgba(255,255,255,.78)}
+.fv-hero__visual{position:relative;justify-self:end;width:min(100%,300px);aspect-ratio:1}
+.fv-hero__ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px dashed rgba(237,199,133,.55)}
+.fv-hero__img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:4px solid #EDC785;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.fv-hero__heart{position:absolute;left:6%;bottom:6%;width:62px;height:62px;border-radius:50%;background:var(--wine);display:grid;place-items:center;box-shadow:0 10px 24px rgba(160,30,50,.45)}
+.fv-hero__heart .ic{width:26px;height:26px}.fv-hero__heart .ic path{stroke:#fff;fill:#fff}
+
+/* ---------- Khu quản lý bộ sưu tập ---------- */
+.fv-body{padding-top:40px;padding-bottom:120px}
+.fv-list{display:flex;flex-direction:column;gap:28px}
+.fv-tools{display:flex;flex-direction:column;gap:16px;padding:22px 24px;border-radius:22px;background:#fff;border:1px solid rgba(204,166,97,.4);box-shadow:var(--sh-card)}
+.fv-tools__head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+body[data-design-system] .fv-tools__title{margin:0;font:400 26px/1.2 var(--f-display);color:var(--navy)}
+.fv-tools__title span{font:400 16px/1.4 var(--f-sans);color:var(--gray)}
+.fv-tools__actions{display:flex;gap:10px;flex-wrap:wrap}
+.fv-search{display:flex;align-items:center;gap:10px;height:46px;width:280px;max-width:100%;padding:0 16px;border-radius:999px;border:1px solid var(--color-border);background:#fff}
+.fv-search:focus-within{border-color:var(--navy)}
+.fv-search .ic{width:18px;height:18px;flex:none;color:var(--gray)}
+.fv-search input{flex:1;min-width:0;border:0;outline:0;background:none;font:400 15px/1.4 var(--f-sans);color:var(--navy)}
+.fv-sort select{height:46px;padding:0 38px 0 16px;border-radius:999px;border:1px solid var(--color-border);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23002842' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center/14px;
+  appearance:none;-webkit-appearance:none;font:600 14px/1 var(--f-sans);color:var(--navy);cursor:pointer}
+.fv-chips{display:flex;gap:8px;flex-wrap:wrap}
+.fv-chip{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--cream-2);font:600 14px/1 var(--f-sans);color:var(--navy);transition:background .2s,border-color .2s,color .2s}
+.fv-chip em{font-style:normal;min-width:22px;padding:2px 6px;border-radius:999px;background:#fff;font:400 13px/1.2 var(--f-price);color:var(--wine)}
+.fv-chip:hover{border-color:var(--navy)}
+.fv-chip.is-active{background:var(--navy);border-color:var(--navy);color:#fff}
+.fv-chip.is-active em{background:#EDC785;color:var(--navy)}
+
+/* ---------- Thẻ món yêu thích ---------- */
+.fv-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
+.fv-grid .dish{width:auto;min-width:0}
+.fvc{display:flex;flex-direction:column;border-radius:22px;overflow:hidden;background:#fff;box-shadow:var(--sh-card);transition:transform .3s ease,box-shadow .3s ease,opacity .22s,scale .22s}
+.fvc:hover{transform:translateY(-4px);box-shadow:var(--sh-float)}
+.fvc.is-out{opacity:0;scale:.96}
+.fvc__media{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--cream-2)}
+.fvc__media img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.fvc:hover .fvc__media img{transform:scale(1.05)}
+.fvc__tag{position:absolute;left:14px;top:14px;max-width:calc(100% - 80px);padding:6px 12px;border-radius:999px;background:var(--navy);color:#EDC785;font:600 11px/1.3 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fvc .fvc__fav{position:absolute;right:14px;top:14px;z-index:2;width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:var(--sh-card);display:grid;place-items:center;color:var(--wine);transition:transform .2s}
+.fvc .fvc__fav:hover{transform:scale(1.08)}
+.fvc .fvc__fav .ic{width:20px;height:20px}
+.fvc .fvc__fav.is-active svg path{fill:var(--wine);stroke:var(--wine)}
+.fvc .fvc__fav:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+.fvc__body{flex:1;display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
+.fvc__cat{font:600 11px/1.4 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.fvc__name{font:400 22px/1.25 var(--f-display)!important;color:var(--navy)}
+.fvc__desc{margin:0;font:400 14px/1.55 var(--f-sans);color:var(--gray);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fvc__foot{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px dashed var(--line)}
+.fvc__price{font:400 19px/1.2 var(--f-price)}
+.fvc__acts{display:flex;align-items:center;gap:10px}
+.fvc__more{font:600 12px/1.3 var(--f-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--navy);white-space:nowrap;border-bottom:1.5px solid #EDC785;padding-bottom:2px}
+.fvc__more:hover{color:var(--wine)}
+.fvc .fvc__add{position:static;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex:none}
+.fvc .fvc__add .ic{width:18px;height:18px}
+.fv-none{margin:0;padding:28px;border-radius:18px;background:#fff;text-align:center;font:400 15px/1.5 var(--f-sans);color:var(--gray)}
+.fv-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.fv-tip{flex:1 1 320px;margin:0;display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:16px;background:var(--cream-2);border:1px solid var(--line);font:400 14px/1.55 var(--f-sans);color:var(--navy)}
+.fv-tip .ic{width:18px;height:18px;flex:none}.fv-tip .ic path{stroke:var(--wine)}
+.fv-tip button{font-weight:600;text-decoration:underline}
+
+/* ---------- Bộ sưu tập trống ---------- */
+.fv-empty{display:flex;flex-direction:column;gap:36px}
+.fv-empty__card{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;padding:56px 40px;border-radius:28px;background:#fff;border:1px solid rgba(204,166,97,.45);box-shadow:var(--sh-card)}
+.fv-empty__art{position:relative;width:120px;height:120px;border-radius:50%;background:var(--cream);display:grid;place-items:center;margin-bottom:6px}
+.fv-empty__art .ic{width:48px;height:48px}.fv-empty__art .ic path{stroke:var(--wine)}
+.fv-empty__art b{position:absolute;width:12px;height:12px;border-radius:50%;background:#EDC785}
+.fv-empty__art b:nth-of-type(1){top:6px;right:14px}.fv-empty__art b:nth-of-type(2){bottom:12px;left:4px;width:8px;height:8px;background:var(--wine)}.fv-empty__art b:nth-of-type(3){top:34px;left:-6px;width:6px;height:6px}
+body[data-design-system] .fv-empty__title{margin:0;max-width:640px;font:400 clamp(24px,2.6vw,34px)/1.25 var(--f-display);color:var(--navy)}
+.fv-empty__desc{margin:0;max-width:520px;font:400 16px/1.6 var(--f-sans);color:var(--gray)}
+.fv-empty .btn .ic path{stroke:#fff}
+body[data-design-system] .fv-empty__sub{margin:0;font:400 26px/1.2 var(--f-display);color:var(--navy)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1280px){.fv-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1023px){
+  .fv-hero__inner{grid-template-columns:minmax(0,1fr) 220px;gap:28px}
+  .fv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:767px){
+  .fv-hero__inner{grid-template-columns:1fr;gap:20px;padding-top:28px;padding-bottom:32px;min-height:0}
+  .fv-hero__visual{display:none}
+  .fv-hero__desc{font-size:15px}
+  .fv-hero__stats b{font-size:28px}
+  .fv-body{padding-top:24px;padding-bottom:64px}
+  .fv-tools{padding:18px 16px}
+  .fv-tools__actions,.fv-search{width:100%}
+  .fv-search{flex:1 1 100%}
+  .fv-sort,.fv-sort select{width:100%}
+  .fv-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .fv-chips::-webkit-scrollbar{display:none}
+  .fv-chip{flex:none}
+  .fv-empty__card{padding:40px 20px}
+}
+@media (max-width:560px){.fv-grid{grid-template-columns:1fr}}
+/* Nút "Thêm tất cả" trên Mobile: chiếm hết chiều rộng, cho phép xuống dòng (trước: chữ dài không xuống dòng → tràn ngang ở ≤402px) */
+@media (max-width:600px){.fv-foot #fav-all{width:100%;white-space:normal;text-align:center;justify-content:center;height:auto;min-height:52px}}

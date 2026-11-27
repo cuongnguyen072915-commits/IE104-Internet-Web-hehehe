@@ -17,35 +17,60 @@
   <link rel="stylesheet" href="../css/tuy_chinh_mon.css">
 </head>
 <body data-design-system="fiabesco-github" data-page="mon_yeu_thich">
-  <!-- Frame: PC – 02b Món yêu thích -->
   <header data-header></header>
-  <main class="site-main container fav" id="noi-dung-chinh">
-    <div class="fav__head" id="fav-head">
-      <div class="stack" style="gap:8px">
-        <nav class="crumb crumb--dark" aria-label="Đường dẫn"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Món yêu thích</span></nav>
-        <h1 class="t-h1">Món yêu thích</h1>
-        <p class="t-body c-gray" id="fav-sub">8 món bạn đã lưu · Bấm ♥ để bỏ khỏi danh sách</p>
+  <!-- FIABESCO FAVORITES — YOUR PERSONAL COLLECTION (dữ liệu: FB.Fav – dùng chung trái tim với mọi trang) -->
+  <main class="site-main fv" id="noi-dung-chinh">
+    <section class="fv-hero" aria-labelledby="fv-title">
+      <div class="container fv-hero__inner">
+        <div class="fv-hero__text">
+          <nav class="crumb" aria-label="Đường dẫn"><a href="trang_chu.html">Trang chủ</a><span class="sep">/</span><span class="cur">Món yêu thích</span></nav>
+          <span class="fv-hero__kicker"><i data-icon="heart"></i>Your favorites</span>
+          <h1 class="fv-hero__title" id="fv-title">Món ngon bạn yêu thích</h1>
+          <p class="fv-hero__desc">Những hương vị đáng nhớ, được lưu giữ dành riêng cho bạn tại Fiabesco Palace.</p>
+          <ul class="fv-hero__stats" id="fv-stats" aria-live="polite"></ul>
+        </div>
+        <div class="fv-hero__visual" aria-hidden="true">
+          <span class="fv-hero__ring"></span>
+          <img class="fv-hero__img" id="fv-hero-img" src="../assets/template-20261120T115451Z-1-001 - Copy/template/dish-lasagna-top-view.jpg" alt="">
+          <span class="fv-hero__heart"><i data-icon="heart"></i></span>
+        </div>
       </div>
-      <button class="btn btn--navy" type="button" id="fav-all">Thêm tất cả vào giỏ <i data-icon="shopping-cart"></i></button>
+    </section>
+
+    <div class="container fv-body">
+      <!-- Bộ sưu tập: thống kê + tìm kiếm + lọc + sắp xếp -->
+      <section class="fv-list" id="fv-list" aria-labelledby="fv-count">
+        <div class="fv-tools">
+          <div class="fv-tools__head">
+            <h2 class="fv-tools__title" id="fv-count">Bộ sưu tập của bạn</h2>
+            <div class="fv-tools__actions">
+              <label class="fv-search"><i data-icon="search"></i><input type="search" id="fv-q" placeholder="Tìm trong món yêu thích…" aria-label="Tìm trong danh sách món yêu thích" maxlength="60"></label>
+              <label class="fv-sort"><span class="sr-only">Sắp xếp</span><select id="fv-sort" aria-label="Sắp xếp món yêu thích">
+                <option value="recent">Mới lưu gần đây</option><option value="name">Tên A → Z</option><option value="asc">Giá tăng dần</option><option value="desc">Giá giảm dần</option></select></label>
+            </div>
+          </div>
+          <div class="fv-chips" id="fv-chips" role="tablist" aria-label="Lọc theo danh mục"></div>
+        </div>
+        <div class="fv-grid" id="fv-grid"></div>
+        <p class="fv-none" id="fv-none" hidden></p>
+        <div class="fv-foot">
+          <p class="fv-tip"><i data-icon="heart"></i><span id="fv-tip"></span></p>
+          <button class="btn btn--outline" type="button" id="fav-all">Thêm tất cả (phần tiêu chuẩn) vào giỏ <i data-icon="shopping-cart"></i></button>
+        </div>
+      </section>
+
+      <!-- Bộ sưu tập trống -->
+      <section class="fv-empty" id="fv-empty" hidden aria-labelledby="fv-empty-title">
+        <div class="fv-empty__card">
+          <span class="fv-empty__art" aria-hidden="true"><i data-icon="heart"></i><b></b><b></b><b></b></span>
+          <h2 class="fv-empty__title" id="fv-empty-title">Bộ sưu tập của bạn đang chờ những hương vị đầu tiên.</h2>
+          <p class="fv-empty__desc">Khám phá thực đơn và nhấn biểu tượng trái tim để lưu lại những món ăn bạn yêu thích.</p>
+          <a class="btn btn--navy" href="thuc_don.html">Khám phá thực đơn <i data-icon="arrow-right"></i></a>
+        </div>
+        <h2 class="fv-empty__sub">Gợi ý từ bếp Fiabesco</h2>
+        <div class="fv-grid" id="fv-suggest"></div>
+      </section>
     </div>
-
-    <section class="fav__list" id="fav-list" aria-labelledby="fav-head">
-      <div class="fav__chips" id="fav-chips" role="tablist" aria-label="Lọc theo danh mục"></div>
-      <div class="fav__grid" id="fav-grid"></div>
-      <p class="fav__tip"><i data-icon="heart"></i><span id="fav-tip">Danh sách yêu thích được lưu theo tài khoản — <button type="button" class="c-wine" data-pp="login">đăng nhập</button> để xem trên mọi thiết bị.</span></p>
-    </section>
-
-    <!-- Frame: PC – 02c Yêu thích – Trống -->
-    <section class="fav__empty" id="fav-empty" hidden>
-      <div class="empty-card card">
-        <img src="../assets/template-20261120T115451Z-1-001 - Copy/template/empty-state-cat-box.png" alt="" width="360">
-        <h2 class="t-h2">Chưa có món yêu thích</h2>
-        <p class="t-body-l c-gray">Hãy thêm món yêu thích của bạn vào nhé! Bấm ♥ trên thẻ món để lưu lại.</p>
-        <div class="row" style="gap:12px;flex-wrap:wrap;justify-content:center"><a class="btn btn--navy" href="thuc_don.html">Quay lại thực đơn <i data-icon="arrow-right"></i></a><a class="btn btn--outline" href="thuc_don.html#combo-block">Xem combo tiết kiệm</a></div>
-      </div>
-      <h2 class="t-h3">Gợi ý cho bạn</h2>
-      <div class="fav__grid" id="fav-suggest"></div>
-    </section>
   </main>
   <footer data-footer></footer>
   <script src="../js/icons.js"></script>
